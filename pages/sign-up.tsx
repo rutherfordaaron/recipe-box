@@ -1,4 +1,6 @@
 import { useState } from "react"
+import Input from "../components/input/input";
+import styles from "../public/styles/new-user.module.scss";
 
 export default function signUp() {
   // Strength type to make sure strength is always one of these 3 values
@@ -9,16 +11,19 @@ export default function signUp() {
   }
 
   // State for form validation
+  let [email, setEmail] = useState("");
+  let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [confirmPassword, setConfirmPassword] = useState("");
   let [passwordMatch, setPasswordMatch] = useState(true);
   let [passwordStrength, setPasswordStrength] = useState(Strength.Weak);
+  let [valid, setValid] = useState(true);
 
   // Check the strength of the password via regex
   const checkStrength = (password: string) => {
     setPassword(password);
-    const strong = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/;
-    const medium = /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))/;
+    const strong = /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){2,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/;
+    const medium = /^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{6,}$/;
 
     if (strong.test(password)) {
       setPasswordStrength(Strength.Strong);
@@ -42,58 +47,85 @@ export default function signUp() {
   const validate = () => {
     const form = document.querySelector("form");
     if (passwordStrength !== Strength.Weak && passwordMatch && form) {
+      setValid(true);
       form.submit();
+    } else {
+      setValid(false);
     }
   }
 
   return (
     <main>
-      <h1>Enter your information below</h1>
-      <form action="/api/users/new-user" method="POST" id="form">
-        <label htmlFor="user">User Name:</label>
-        <input
-          required
-          type="text"
+      <form action="/api/users/new-user" method="POST" id="form" className={valid ? "" : "invalid"}>
+        <h1>New User</h1>
+        <Input
           id="user"
-          name="user"
+          type="text"
+          label="Username"
+          onChange={(e) => setUsername(e.target.value)}
+          state={username}
+          valid={valid}
         />
-
-        <label htmlFor="email">Email:</label>
-        <input
-          required
-          type="email"
+        <Input
           id="email"
-          name="email"
+          type="email"
+          label="Email"
+          onChange={(e) => setEmail(e.target.value)}
+          state={email}
+          valid={valid}
         />
 
-        <p>Password Rules:</p>
-        <ul>
-          <li>At least 8 characters long.</li>
-          <li>At least one uppercase letter</li>
-          <li>At least one lowercase letter</li>
-          <li>At least one digit (0-9)</li>
-          <li>The password has at least one special character</li>
-        </ul>
+        <div className={
+          `${styles.warning} 
+          ${styles.passReq} 
+          ${valid ? styles.hidden : ""}`
+        }>
+          <p>Password Requirements:</p>
+          <ul>
+            <li>At least 6 characters long.</li>
+            <li>At least one uppercase letter</li>
+            <li>At least one lowercase letter</li>
+            <li>At least one digit (0-9)</li>
+            <li>The password has at least one special character</li>
+          </ul>
+        </div>
 
-        <label htmlFor="pass">Password:</label>
-        <input
-          required
-          type="password"
+
+        <Input
           id="pass"
-          name="pass"
-          onChange={(e) => { checkStrength(e.target.value); checkMatch(confirmPassword, e.target.value) }}
-        />
-        <p>Strength: {passwordStrength}</p>
-
-        <label htmlFor="pass">Confirm Password:</label>
-        <input
-          required
           type="password"
-          id="confirm-pass"
-          name="confirm-pass"
-          onChange={(e) => { setConfirmPassword(e.target.value); checkMatch(e.target.value); }}
+          label="Password"
+          onChange={(e: any) => {
+            checkStrength(e.target.value);
+            checkMatch(confirmPassword, e.target.value)
+          }}
+          state={password}
+          valid={valid}
         />
-        <p>{passwordMatch ? "" : "Passwords must match"}</p>
+
+        <p
+          className={
+            `${passwordStrength === Strength.Weak ? styles.weak :
+              passwordStrength === Strength.Medium ? styles.medium :
+                styles.strong} ${styles.strength}
+            ${password === "" ? styles.hidden : ""}`
+          }
+        >
+          {passwordStrength}
+        </p>
+
+        <Input
+          id="confirm-pass"
+          type="password"
+          label="Confirm Password"
+          onChange={(e: any) => {
+            setConfirmPassword(e.target.value);
+            checkMatch(e.target.value);
+          }}
+          state={confirmPassword}
+          valid={valid}
+        />
+        <p className={styles.warning}>{passwordMatch ? "" : "Passwords must match"}</p>
 
         <button type="button" onClick={validate}>Submit</button>
       </form>
