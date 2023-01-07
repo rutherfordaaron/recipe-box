@@ -14,7 +14,7 @@ const Input = (props: {
     <div className="input-container">
       <label
         htmlFor={props.id}
-        className={props.state ? styles.active : ""}
+        className={!props.valid && props.state ? styles.invalidLabel : props.state ? styles.active : ""}
       >
         {props.label}
       </label>
@@ -24,7 +24,8 @@ const Input = (props: {
         id={props.id}
         name={props.id}
         onChange={props.onChange}
-        className={`${props.state ? styles.activeInput : ""} ${!props.state && !props.valid ? styles.invalid : ""}`}
+        className={`${props.state ? styles.activeInput : ""} ${!props.valid ? styles.invalid : ""}`}
+        value={props.state}
       />
     </div>
   )

@@ -1,6 +1,5 @@
 .active {
   font-size: .5rem;
-  // position: absolute;
   top: -10px !important;
   color: var(--action-color) !important;
 }
@@ -11,4 +10,10 @@
 
 .invalid {
   border-color: var(--warning-color) !important;
+}
+
+.invalidLabel {
+  font-size: .5rem;
+  top: -10px !important;
+  color: var(--warning-color) !important;
 }

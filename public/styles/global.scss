@@ -97,14 +97,14 @@ body {
         top: 0px;
         background-color: inherit;
         box-shadow: 0 2px 2px 1px var(--shadow-color);
-        transition: all .3s;
+        transition: inherit;
       }
 
       button:hover {
-        transition: all .3s;
+        transition: inherit;
         border-color: var(--action-color);
         position: relative;
-        top: 3px;
+        top: 1px;
         box-shadow: inset 0 2px 2px 1px var(--shadow-color);
       }
     }

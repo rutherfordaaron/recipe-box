@@ -19,13 +19,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const userExists = await users.findOne({ username: username });
       if (userExists) {
         // 409: CONFLICT
-        res.status(409).redirect("/sign-up?user-exists=true");
+        res.status(409).redirect("/sign-up?error=Username-already-in-use");
         break;
       }
       const emailExists = await users.findOne({ email: email });
       if (emailExists) {
         // 409: CONFLICT
-        res.status(409).redirect("/sign-up?email-exists=true");
+        res.status(409).redirect("/sign-up?error=Email-already-in-use");
         break;
       }
 

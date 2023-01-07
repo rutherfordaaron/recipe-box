@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState, useEffect, Dispatch, SetStateAction } from "react"
+import { useRouter } from "next/router";
 import Input from "../components/input/input";
 import styles from "../public/styles/new-user.module.scss";
 
@@ -12,14 +13,46 @@ export default function signUp() {
 
   // State for form validation
   let [email, setEmail] = useState("");
+  let [emailValid, setEmailValid] = useState(true);
   let [username, setUsername] = useState("");
+  let [usernameValid, setUsernameValid] = useState(true);
   let [password, setPassword] = useState("");
   let [confirmPassword, setConfirmPassword] = useState("");
   let [passwordMatch, setPasswordMatch] = useState(true);
-  let [passwordStrength, setPasswordStrength] = useState(Strength.Weak);
-  let [valid, setValid] = useState(true);
+  let [passwordStrength, setPasswordStrength] = useState<null | Strength>(null);
 
-  // Check the strength of the password via regex
+  // get any errors thrown from the API by accessing URL parameters
+  const router = useRouter();
+  const { error } = router.query;
+  let parsedError: string;
+  if (error && typeof error === "string") {
+    parsedError = error.split("-").join(" ");
+  } else {
+    parsedError = ""
+  }
+
+  // Check to ensure valid email
+  const checkEmail = (email: string) => {
+    setEmail(email);
+    const emailTest = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    if (emailTest.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  }
+
+  // Check username to ensure it's valid
+  const checkUsername = (username: string) => {
+    setUsername(username);
+    if (username === "") {
+      setUsernameValid(false);
+    } else {
+      setUsernameValid(true);
+    }
+  }
+
+  // Check and set the strength of the password via regex
   const checkStrength = (password: string) => {
     setPassword(password);
     const strong = /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){2,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/;
@@ -43,42 +76,42 @@ export default function signUp() {
     }
   }
 
-  // if password is not weak and matches, submit the form (attempt to create new user)
+  // if password is not weak and matches, submit the form (attempt to create the new user)
   const validate = () => {
     const form = document.querySelector("form");
-    if (passwordStrength !== Strength.Weak && passwordMatch && form) {
-      setValid(true);
+    if (password && passwordMatch && emailValid && usernameValid && form) {
       form.submit();
-    } else {
-      setValid(false);
     }
   }
 
   return (
     <main>
-      <form action="/api/users/new-user" method="POST" id="form" className={valid ? "" : "invalid"}>
+      <form action="/api/users/new-user" method="POST" id="form">
         <h1>New User</h1>
+        {parsedError ? <p className={styles.warning}>{parsedError}. Please try again.</p> : ""}
+
         <Input
           id="user"
           type="text"
           label="Username"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => checkUsername(e.target.value)}
           state={username}
-          valid={valid}
+          valid={usernameValid}
         />
+
         <Input
           id="email"
           type="email"
           label="Email"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => checkEmail(e.target.value)}
           state={email}
-          valid={valid}
+          valid={emailValid}
         />
 
         <div className={
           `${styles.warning} 
           ${styles.passReq} 
-          ${valid ? styles.hidden : ""}`
+          ${passwordStrength !== Strength.Weak ? styles.hidden : ""}`
         }>
           <p>Password Requirements:</p>
           <ul>
@@ -100,7 +133,7 @@ export default function signUp() {
             checkMatch(confirmPassword, e.target.value)
           }}
           state={password}
-          valid={valid}
+          valid={passwordStrength === Strength.Weak && password !== "" ? false : true}
         />
 
         <p
@@ -123,11 +156,16 @@ export default function signUp() {
             checkMatch(e.target.value);
           }}
           state={confirmPassword}
-          valid={valid}
+          valid={passwordMatch}
         />
         <p className={styles.warning}>{passwordMatch ? "" : "Passwords must match"}</p>
 
-        <button type="button" onClick={validate}>Submit</button>
+        <button
+          type="button"
+          onClick={validate}
+          className={emailValid && usernameValid && passwordMatch && passwordStrength !== Strength.Weak && email && username && password ? "" : styles.invalidButton}
+        >Submit
+        </button>
       </form>
     </main>
   )
