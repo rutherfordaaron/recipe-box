@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case "POST":
       const username = req.body.user;
       const email = req.body.email;
-      const password = req.body.password;
+      const password = req.body.pass;
 
       // Check to see if user already exists (username or email)
       const userExists = await users.findOne({ username: username });
@@ -36,7 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const newUser = {
         username: username,
         email: email,
-        password: hashPassword
+        password: hashPassword,
+        created: new Date()
       }
       users.insertOne(newUser);
 
