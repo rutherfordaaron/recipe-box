@@ -1,6 +1,7 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react"
 import { useRouter } from "next/router";
 import Input from "../components/input/input";
+import Link from "next/link";
 import styles from "../public/styles/new-user.module.scss";
 
 export default function signUp() {
@@ -166,6 +167,7 @@ export default function signUp() {
           className={emailValid && usernameValid && passwordMatch && passwordStrength !== Strength.Weak && email && username && password ? "" : styles.invalidButton}
         >Submit
         </button>
+        <p className={styles.link}>Already have an account? <Link href="/login">Login here</Link>.</p>
       </form>
     </main>
   )
