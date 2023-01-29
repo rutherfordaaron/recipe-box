@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import Input from "../components/input/input";
 import Link from "next/link";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 const Login = () => {
+  let [cookie, setCookie] = useCookies(["user"])
   let [username, setUsername] = useState("");
   let [usernameValid, setUsernameValid] = useState(true);
   let [password, setPassword] = useState("");
@@ -20,11 +22,30 @@ const Login = () => {
     parsedError = ""
   }
 
-  const submit = () => {
+  const submit = async () => {
     const form = document.querySelector("form");
     if (form && username && password && usernameValid && passwordValid) {
-      form.submit();
+      // form.submit();
+      const info = new FormData(form);
+      const username = info.get("username");
+      const password = info.get("password");
+
+      fetch(`/api/users/login?username=${username}&password=${password}`,
+        { method: "POST", body: JSON.stringify({ username: username, password: password }) })
+        .then(response => response.json())
+        .then(data => createCookie(data.token));
+
+    } else {
+      return false;
     }
+  }
+
+  const createCookie = (data: string) => {
+    setCookie("user", data, {
+      path: "/",
+      maxAge: 3600,
+      sameSite: true
+    })
   }
 
   return (
@@ -55,9 +76,9 @@ const Login = () => {
           valid={passwordValid}
         />
         <button
-          type="submit"
+          type="button"
           className={usernameValid && username && password && passwordValid ? "" : styles.invalidButton}
-          onSubmit={submit}
+          onClick={submit}
         >Submit
         </button>
         <p className={styles.link}>New user? <Link href="/sign-up">Sign up</Link> for a free account!</p>
@@ -66,4 +87,15 @@ const Login = () => {
   )
 }
 
-export default Login
+// type Data = {
+//   user: string
+// }
+
+// export const getServerSideProps: GetServerSideProps<{ data: Data }> = (context) => {
+//   console.log(context.req);
+//   const data = parseCookie(context.req);
+//   console.log("cookie: ", data);
+//   return { props: data }
+// }
+
+export default Login;

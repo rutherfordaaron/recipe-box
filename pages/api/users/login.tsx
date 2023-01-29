@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../../util/db";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Connect to the "users" collection on the database
@@ -8,10 +9,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = client.db(process.env.DB);
   const users = db.collection("users");
 
+  const { username, password } = JSON.parse(req.body)
+
   switch (req.method) {
     case "POST":
       // Get the user according to the provided username
-      const user = await users.findOne({ username: req.body.username });
+      const user = await users.findOne({ username: username });
       // If the user doesn't exist in the database,
       // return 404 (Not Found) and redirect to /login with error
       if (!user) {
@@ -19,8 +22,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       }
 
-      // Get the provided password
-      const password = req.body.password;
       // Hash the password for comparison
       let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
       // If the password doesn't match what's on file, 
@@ -30,7 +31,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       }
 
-      res.status(200).redirect("/?Loggedin=true")
+      // create JWT
+      const secret = process.env.SECRET;
+      const token = jwt.sign({ user: user.username }, secret, { expiresIn: "1h" });
+
+      // Attach the token to the user in the database
+      users.updateOne({ username: username }, { $set: { token: token } });
+
+      // Send token to client to be stored in a cookie
+      res.status(200).json({ token: token });
       break;
     default:
       // 405: METHOD NOT ALLOWED
