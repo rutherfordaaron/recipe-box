@@ -1,9 +1,10 @@
 import styles from "../public/styles/new-user.module.scss";
-import { useRouter } from "next/router";
+import { useRouter, Router } from "next/router";
 import Input from "../components/input/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import crypto from "crypto";
 
 const Login = () => {
   let [cookie, setCookie] = useCookies(["user"])
@@ -27,13 +28,21 @@ const Login = () => {
     if (form && username && password && usernameValid && passwordValid) {
       // form.submit();
       const info = new FormData(form);
-      const username = info.get("username");
-      const password = info.get("password");
+      const username = String(info.get("username"));
+      const password = String(info.get("password"));
 
-      fetch(`/api/users/login?username=${username}&password=${password}`,
-        { method: "POST", body: JSON.stringify({ username: username, password: password }) })
+      // Hash the password before passing it to the API
+      let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
+
+      // Use the login API endpoint to authenticate the user
+      // Store the response (a JWT) as a cookie on the client
+      fetch(`/api/users/login?username=${username}&password=${hashPassword}`,
+        { method: "POST", body: JSON.stringify({ username: username, password: hashPassword }) })
         .then(response => response.json())
         .then(data => createCookie(data.token));
+
+      // Redirect to the main page after login
+      router.push(`/`);
 
     } else {
       return false;
@@ -86,16 +95,5 @@ const Login = () => {
     </main>
   )
 }
-
-// type Data = {
-//   user: string
-// }
-
-// export const getServerSideProps: GetServerSideProps<{ data: Data }> = (context) => {
-//   console.log(context.req);
-//   const data = parseCookie(context.req);
-//   console.log("cookie: ", data);
-//   return { props: data }
-// }
 
 export default Login;

@@ -22,11 +22,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       }
 
-      // Hash the password for comparison
-      let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
+      // Password is hashed on the client side so no need to do that here.
+
       // If the password doesn't match what's on file, 
       // return 400 (bad request) and redirect to /login with error
-      if (hashPassword !== user.password) {
+      if (password !== user.password) {
         res.status(400).redirect("/login?error=Incorrect-password");
         break;
       }
