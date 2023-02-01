@@ -3,7 +3,8 @@ declare global {
     interface ProcessEnv {
       DB_URI: string,
       DB: string,
-      SECRET: string
+      SECRET: string,
+      HOST: string
     }
   }
 }

@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../../util/db";
-import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -8,26 +7,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const client = await clientPromise;
   const db = client.db(process.env.DB);
   const users = db.collection("users");
+  const userData = req.headers["user-data"];
 
-  const { username, password } = JSON.parse(req.body)
+  let username = "";
+  let password = "";
+
+  if (typeof userData === "string") {
+    username = JSON.parse(userData).username;
+    password = JSON.parse(userData).password;
+  }
 
   switch (req.method) {
-    case "POST":
+    case "GET":
       // Get the user according to the provided username
       const user = await users.findOne({ username: username });
       // If the user doesn't exist in the database,
-      // return 404 (Not Found) and redirect to /login with error
-      if (!user) {
-        res.status(404).redirect("/login?error=User-does-not exist");
+      // return 401 (unauthorized) and redirect to /login with error
+      if (user === null) {
+        res.status(401).json({ error: "User does not exist" })
         break;
       }
 
       // Password is hashed on the client side so no need to do that here.
 
       // If the password doesn't match what's on file, 
-      // return 400 (bad request) and redirect to /login with error
+      // return 401 (unauthorized) and redirect to /login with error
       if (password !== user.password) {
-        res.status(400).redirect("/login?error=Incorrect-password");
+        res.status(401).json({ error: "Password is incorrect" })
+
         break;
       }
 

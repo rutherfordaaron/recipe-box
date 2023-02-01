@@ -1,5 +1,5 @@
 import styles from "../public/styles/new-user.module.scss";
-import { useRouter, Router } from "next/router";
+import { useRouter } from "next/router";
 import Input from "../components/input/input";
 import Link from "next/link";
 import { useState } from "react";
@@ -7,21 +7,15 @@ import { useCookies } from "react-cookie";
 import crypto from "crypto";
 
 const Login = () => {
-  let [cookie, setCookie] = useCookies(["user"])
+  let [cookie, setCookie] = useCookies(["token"])
   let [username, setUsername] = useState("");
   let [usernameValid, setUsernameValid] = useState(true);
   let [password, setPassword] = useState("");
   let [passwordValid, setPasswordValid] = useState(true);
+  let [error, setError] = useState("");
 
-  // get any errors thrown from the API by accessing URL parameters
   const router = useRouter();
-  const { error } = router.query;
-  let parsedError: string;
-  if (error && typeof error === "string") {
-    parsedError = error.split("-").join(" ");
-  } else {
-    parsedError = ""
-  }
+
 
   const submit = async () => {
     const form = document.querySelector("form");
@@ -34,25 +28,39 @@ const Login = () => {
       // Hash the password before passing it to the API
       let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
 
-      // Use the login API endpoint to authenticate the user
+      // Use the users/login API endpoint to authenticate the user
       // Store the response (a JWT) as a cookie on the client
       fetch(`/api/users/login?username=${username}&password=${hashPassword}`,
-        { method: "POST", body: JSON.stringify({ username: username, password: hashPassword }) })
-        .then(response => response.json())
-        .then(data => createCookie(data.token));
+        {
+          method: "GET",
+          headers: {
+            "user-data": JSON.stringify({ username: username, password: hashPassword })
+          },
+          redirect: "follow"
+        })
+        .then(response => {
+          const data = response.json();
+          return data;
+        })
+        .then(data => {
+          if (data.token) {
+            // Redirect to the main page after successful login
+            createCookie(data.token);
+            router.push("/")
+          } else {
+            setError(data.error);
+          }
 
-      // Redirect to the main page after login
-      router.push(`/`);
-
+        })
     } else {
       return false;
     }
   }
 
   const createCookie = (data: string) => {
-    setCookie("user", data, {
+    setCookie("token", data, {
       path: "/",
-      maxAge: 3600,
+      maxAge: 86400,
       sameSite: true
     })
   }
@@ -61,7 +69,7 @@ const Login = () => {
     <main>
       <form action="/api/users/login" method="POST">
         <h1>Login</h1>
-        {parsedError ? <p className={styles.warning}>{parsedError}. Please try again.</p> : ""}
+        {error ? <p className={styles.warning}>{error}. Please try again.</p> : ""}
         <Input
           id="username"
           type="text"

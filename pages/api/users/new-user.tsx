@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       users.insertOne(newUser);
 
       // 201: CREATED
-      res.status(201).redirect("/");
+      res.status(201).redirect("/login");
       break;
     default:
       // 405: METHOD NOT ALLOWED
