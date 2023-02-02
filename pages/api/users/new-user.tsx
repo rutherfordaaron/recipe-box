@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../../util/db";
 import crypto from "crypto";
+import User from "../../../models/user";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Connect to the "users" collection on the database
@@ -33,16 +34,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
 
       // create a user object and post it to the database
-      const newUser = {
-        username: username,
-        email: email,
-        password: hashPassword,
-        created: new Date()
-      }
+      const newUser = new User(username, email, hashPassword, new Date());
       users.insertOne(newUser);
 
       // 201: CREATED
-      res.status(201).redirect("/");
+      res.status(201).redirect("/login");
       break;
     default:
       // 405: METHOD NOT ALLOWED
