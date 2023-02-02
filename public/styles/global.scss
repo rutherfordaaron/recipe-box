@@ -2,7 +2,8 @@
 
 body {
   --accent-color: hsl(0, 0%, 85%);
-  --secondary-color: hsl(170, 100%, 13%);
+  --primary-color: hsl(130, 41%, 21%);
+  --secondary-color: hsl(159, 54%, 49%);
   --secondary-font: white;
   --action-color: hsl(237, 100%, 65%);
   --warning-color: hsl(0, 89%, 68%);
@@ -15,21 +16,9 @@ body {
   font-family: 'Ubuntu', sans-serif;
   font-size: 18px;
 
-  nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: var(--secondary-color);
-    box-shadow: 0 10px 10px 3px hsla(0, 0%, 0%, 0.05);
-    color: var(--secondary-font);
-
-    a {
-      color: inherit;
-    }
-  }
-
   main {
     padding: 0 1rem;
+    min-height: 80vh;
 
     form {
       display: flex;
@@ -118,5 +107,11 @@ body {
         box-shadow: inset 0 2px 2px 1px var(--shadow-color);
       }
     }
+  }
+
+  .hidden {
+    transform: scale(0);
+    top: -250px;
+    right: -250px;
   }
 }
