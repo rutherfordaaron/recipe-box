@@ -7,7 +7,8 @@ body {
   --secondary-font: white;
   --action-color: hsl(237, 100%, 65%);
   --warning-color: hsl(0, 89%, 68%);
-  --shadow-color: rgba(217, 217, 217, 0.4);
+  --shadow-color: rgba(0, 0, 0, .25);
+  --box-shadow: -3px 3px 15px 3px var(--shadow-color);
   padding: 0;
   margin: 0;
   display: block;

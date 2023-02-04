@@ -10,7 +10,7 @@
   top: 0;
   right: 0;
   width: 200px;
-  box-shadow: 5px 5px 10px 5px var(--shadow-color);
+  box-shadow: var(--box-shadow);
   z-index: 19;
   transition: all .2s;
 
