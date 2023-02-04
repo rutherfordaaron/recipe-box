@@ -110,6 +110,11 @@ body {
     }
   }
 
+  .warning {
+    color: var(--warning-color);
+    font-weight: 700;
+  }
+
   .hidden {
     transform: scale(0);
     top: -250px;
