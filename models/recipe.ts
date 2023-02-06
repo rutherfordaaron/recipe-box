@@ -18,7 +18,7 @@ export default class Recipe {
     public prepTime: number | undefined,
     public cookTime: number | undefined,
     public servingsYield: [(number | undefined), (number | undefined)],
-    public rating: number | undefined,
+    public rating: number[] | undefined,
     public _id?: ObjectId
   ) {
     this.name = name;
