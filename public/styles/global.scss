@@ -20,6 +20,15 @@ body {
   main {
     padding: 0 1rem;
     min-height: 80vh;
+    padding-top: 75px;
+
+    button {
+      font-family: inherit;
+      font-size: inherit;
+      background-color: transparent;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
 
     form {
       display: flex;
