@@ -6,10 +6,17 @@ import { faGripLines, faXmark } from "@fortawesome/free-solid-svg-icons"
 import styles from "../../public/styles/profile/new-recipe-form.module.scss";
 
 const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {
+  // State variables
   const [newIngredient, setNewIngredient] = useState("");
   const [newMeasurement, setNewMeasurement] = useState("")
   const [ingredientArr, setIngredientArr] = useState<string[][]>(props.recipe.ingredients ? [...props.recipe.ingredients] : []);
 
+  /**Add ingredients to the ingredientArr variable.
+   * ingredientArr is of type String[][]
+   * Nested array first element is measurment, second element is ingredient name.
+   * This is to set up the ability to create grocery lists. I figured separating names from measurements now would make that easier.
+   * Clear the newIngredient and newMeasurement state variable after pushing new ingredient to ingredientArr
+   */
   const addIngredient = () => {
     const ingredient = [newMeasurement, newIngredient];
     const tempIngredientArr = [...ingredientArr];
@@ -19,16 +26,19 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
     setNewMeasurement("");
   }
 
+  /**Remove and item from the ingredientArr by using .filter() */
   const removeItem = (item: String[]) => {
     const tempIngredientArr = [...ingredientArr];
     const newArr = tempIngredientArr.filter(el => el != item);
     setIngredientArr(newArr);
   }
 
+  /**Set the ingredient list to the recipe object before moving to the next page.
+   * Also, make sure that there is at least one ingredient in the array before allowing to move to the next page.
+   */
   const validatePage = () => {
     const recipe: Record<string, any> = { ...props.recipe }
     recipe.ingredients = ingredientArr;
-    console.log(recipe);
     props.setRecipe(recipe);
   }
 

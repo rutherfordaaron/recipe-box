@@ -6,6 +6,7 @@ import NavButtons from "./NavButtons";
 
 const PageOne = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {
   // Form page 1
+  // State variables
   const [name, setName] = useState(props.recipe.name ? props.recipe.name : "");
   const [nameValid, setNameValid] = useState(true);
   const [description, setDescription] = useState(props.recipe.description ? props.recipe.description : "");
@@ -13,8 +14,14 @@ const PageOne = (props: { recipe: Record<string, any>, setRecipe: Function, setP
   const [originValid, setOriginValid] = useState(true);
   const [recipeType, setRecipeType] = useState<RecipeType | string>(props.recipe.recipeType ? props.recipe.recipeType : "");
 
+  /**Validate the page before you can move forward through the form
+   * If it has all the required fields, set the new values to the recipe object from parent
+   * component. Then, return true so that the next page shows.
+   * This function is passed though the navButton component. It must return true for the navButton component otherwise it will not move to the next page. */
   const validatePage = () => {
+    // All recipes must have a name, origin, and recipe type
     if (name && origin && recipeType) {
+      // Add fields to recipe object and set it
       const recipe: Record<string, any> = { ...props.recipe }
       recipe.name = name;
       recipe.description = description;
@@ -23,6 +30,9 @@ const PageOne = (props: { recipe: Record<string, any>, setRecipe: Function, setP
       props.setRecipe(recipe);
       return true
     } else {
+      // otherwise, return false
+      // if there is no recipe type, show an error
+      // Other fields being invalid is handled within the Input component
       if (!recipeType) {
         const error = document.getElementById("error");
         if (error) {
