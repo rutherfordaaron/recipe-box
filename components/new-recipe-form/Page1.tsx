@@ -21,7 +21,6 @@ const PageOne = (props: { recipe: object, setRecipe: Function, setPage: Function
       recipe.origin = origin;
       recipe.recipeType = recipeType;
       props.setRecipe(recipe);
-      console.log(recipe);
       return true
     } else {
       if (!recipeType) {

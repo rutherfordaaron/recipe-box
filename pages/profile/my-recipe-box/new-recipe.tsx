@@ -5,6 +5,7 @@ import getUser from "../../../util/getUser";
 import { GetUserProps } from "../../../util/getUser";
 import styles from "../../../public/styles/profile/new-recipe-form.module.scss";
 import PageOne from "../../../components/new-recipe-form/Page1";
+import PageTwo from "../../../components/new-recipe-form/Page2";
 
 
 
@@ -39,7 +40,7 @@ const NewRecipe: NextPage<GetUserProps> = (props) => {
       case 1:
         return <PageOne setRecipe={setRecipe} recipe={recipe} setPage={setPage} />
       case 2:
-        return <>2</>
+        return <PageTwo setRecipe={setRecipe} recipe={recipe} setPage={setPage} />
       case 3:
         return <>3</>
       case 4:

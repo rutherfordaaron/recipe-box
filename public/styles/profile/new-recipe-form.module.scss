@@ -3,3 +3,33 @@
   justify-content: center;
   align-items: center;
 }
+
+.ingredientsContainer {
+  margin-top: 15px;
+
+  .ingredientWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .ingredientNameAndGripLines {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      .gripLines:hover {
+        cursor: grab;
+      }
+
+      .ingredientName {
+        font-size: 16px !important;
+        margin: 0;
+        padding: 4px;
+      }
+    }
+  }
+
+  .xmark:hover {
+    cursor: pointer;
+  }
+}
