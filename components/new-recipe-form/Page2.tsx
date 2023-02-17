@@ -24,6 +24,10 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
     setIngredientArr(tempIngredientArr);
     setNewIngredient("");
     setNewMeasurement("");
+    const error = document.getElementById("error");
+    if (error) {
+      error.innerHTML = "";
+    }
   }
 
   /**Remove and item from the ingredientArr by using .filter() */
@@ -40,6 +44,14 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
     const recipe: Record<string, any> = { ...props.recipe }
     recipe.ingredients = ingredientArr;
     props.setRecipe(recipe);
+    if (ingredientArr[0]) {
+      return true;
+    } else {
+      const error = document.getElementById("error");
+      if (error) {
+        error.innerHTML = "You must have at least one ingredient"
+      }
+    }
   }
 
   return (
@@ -88,6 +100,8 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
           })}
         </div>
       </div>
+
+      <p id="error" className="warning"></p>
 
       <NavButtons page={2} setState={props.setPage} validate={validatePage} />
     </>
