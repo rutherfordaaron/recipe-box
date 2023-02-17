@@ -80,6 +80,7 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
         </button>
 
         <div className={styles.ingredientsContainer}>
+          {/* Map over the ingredients list to render a visually editable list */}
           {ingredientArr.map((el, i) => {
             return (
               <div className={styles.ingredientWrapper}>
