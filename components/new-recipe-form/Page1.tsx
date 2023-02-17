@@ -4,14 +4,14 @@ import Recipe, { RecipeType } from "../../models/recipe";
 import RadioButton from "../radio-button/radioButton";
 import NavButtons from "./NavButtons";
 
-const PageOne = (props: { recipe: object, setRecipe: Function, setPage: Function }) => {
+const PageOne = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {
   // Form page 1
-  const [name, setName] = useState("");
+  const [name, setName] = useState(props.recipe.name ? props.recipe.name : "");
   const [nameValid, setNameValid] = useState(true);
-  const [description, setDescription] = useState("");
-  const [origin, setOrigin] = useState("");
+  const [description, setDescription] = useState(props.recipe.description ? props.recipe.description : "");
+  const [origin, setOrigin] = useState(props.recipe.origin ? props.recipe.origin : "");
   const [originValid, setOriginValid] = useState(true);
-  const [recipeType, setRecipeType] = useState<undefined | RecipeType>(undefined);
+  const [recipeType, setRecipeType] = useState<RecipeType | string>(props.recipe.recipeType ? props.recipe.recipeType : "");
 
   const validatePage = () => {
     if (name && origin && recipeType) {
@@ -91,18 +91,21 @@ const PageOne = (props: { recipe: object, setRecipe: Function, setPage: Function
           label="Modified"
           name="recipeType"
           onClick={e => setRecipeType(RecipeType.Modified)}
+          checked={recipeType === RecipeType.Modified ? true : false}
         />
         <RadioButton
           id="copied"
           label="Copied"
           name="recipeType"
           onClick={e => setRecipeType(RecipeType.Copied)}
+          checked={recipeType === RecipeType.Copied ? true : false}
         />
         <RadioButton
           id="original"
           label="Original"
           name="recipeType"
           onClick={e => setRecipeType(RecipeType.Original)}
+          checked={recipeType === RecipeType.Original ? true : false}
         />
       </div>
 

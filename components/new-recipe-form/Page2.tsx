@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGripLines, faXmark } from "@fortawesome/free-solid-svg-icons"
 import styles from "../../public/styles/profile/new-recipe-form.module.scss";
 
-const PageTwo = (props: { recipe: object, setRecipe: Function, setPage: Function }) => {
+const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {
   const [newIngredient, setNewIngredient] = useState("");
   const [newMeasurement, setNewMeasurement] = useState("")
-  const [ingredientArr, setIngredientArr] = useState<string[][]>([]);
+  const [ingredientArr, setIngredientArr] = useState<string[][]>(props.recipe.ingredients ? [...props.recipe.ingredients] : []);
 
   const addIngredient = () => {
     const ingredient = [newMeasurement, newIngredient];
@@ -26,7 +26,10 @@ const PageTwo = (props: { recipe: object, setRecipe: Function, setPage: Function
   }
 
   const validatePage = () => {
-
+    const recipe: Record<string, any> = { ...props.recipe }
+    recipe.ingredients = ingredientArr;
+    console.log(recipe);
+    props.setRecipe(recipe);
   }
 
   return (
