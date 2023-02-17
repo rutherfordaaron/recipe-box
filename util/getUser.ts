@@ -2,6 +2,10 @@ import { GetServerSidePropsContext } from "next/types";
 import clientPromise from "./db";
 import parseCookie from "./parseCookie";
 
+export type GetUserProps = {
+  user: string
+}
+
 const redirect = {
   redirect: {
     permanent: false,

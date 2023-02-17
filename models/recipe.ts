@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb";
 
-export type RecipeType = {
-  modified: "MODIFIED",
-  copied: "COPIED",
-  original: "ORIGINAL"
+export enum RecipeType {
+  Modified = "MODIFIED",
+  Copied = "COPIED",
+  Original = "ORIGINAL"
 }
 
 export default class Recipe {
