@@ -67,6 +67,7 @@ const PageOne = (props: { recipe: Record<string, any>, setRecipe: Function, setP
 
   return (
     <>
+      <h2>Basic Info</h2>
       <Input
         id="name"
         type="text"
