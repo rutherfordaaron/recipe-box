@@ -6,7 +6,7 @@ const Input = (props: {
   type: string,
   label: string,
   onChange: ChangeEventHandler<HTMLInputElement>,
-  state: string
+  state: any
   valid: boolean
 }) => {
 
