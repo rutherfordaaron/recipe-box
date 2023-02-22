@@ -19,15 +19,17 @@ const PageFour = (props: { recipe: Record<string, any>, setRecipe: Function, set
 
   return (
     <>
+      <h2>Time and Yield</h2>
       <Input
         id="prepTime"
         type="number"
         label="Prep Time (Minutes)"
         onChange={(e) => {
           const value = Number(e.target.value);
-          setPrepTime(value || value === 0 ? value : 0)
+          setPrepTime(value <= 100000 && value > 0 ? value : 0)
         }} state={prepTime <= 0 || typeof prepTime !== "number" ? "" : prepTime}
         valid={true}
+        range={[1, 100000]}
       />
       <Input
         id="cookTime"
@@ -35,9 +37,11 @@ const PageFour = (props: { recipe: Record<string, any>, setRecipe: Function, set
         label="Cook Time (Minutes)"
         onChange={(e) => {
           const value = Number(e.target.value);
-          setCookTime(value || value === 0 ? value : 0)
-        }} state={cookTime <= 0 || typeof cookTime !== "number" ? "" : cookTime}
+          setCookTime(value <= 100000 && value > 0 ? value : 0)
+        }}
+        state={cookTime <= 0 || typeof cookTime !== "number" ? "" : cookTime}
         valid={true}
+        range={[1, 100000]}
       />
       <Input
         id="servingsYield"
@@ -45,10 +49,11 @@ const PageFour = (props: { recipe: Record<string, any>, setRecipe: Function, set
         label="Servings Yield"
         onChange={(e) => {
           const value = Number(e.target.value);
-          setServingsYield(value || value === 0 ? value : 0)
+          setServingsYield(value <= 100000 && value > 0 ? value : 0)
         }}
         state={servingsYield === 0 ? "" : servingsYield}
         valid={true}
+        range={[1, 100000]}
       />
 
       <NavButtons page={4} setState={props.setPage} validate={validatePage} />
