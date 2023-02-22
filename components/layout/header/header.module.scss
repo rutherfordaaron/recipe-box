@@ -10,6 +10,7 @@
   top: 0;
   left: 0;
   width: calc(100vw - 2rem);
+  z-index: 50;
 
   .homeLink {
     text-decoration: none;
@@ -17,7 +18,7 @@
   }
 
   .menuIconContainer {
-    z-index: 20;
+    z-index: 51;
     background-color: transparent;
     border: none;
     color: inherit;

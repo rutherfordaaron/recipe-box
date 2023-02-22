@@ -24,12 +24,12 @@ const Header = () => {
 
   const isAuthenticated =
     <Nav>
-      <Link href="/profile">Profile</Link>
-      <Link href="/profile/favorites">Favorites</Link>
-      <Link href="/profile/boxes">Boxes</Link>
+      <Link href="/profile/my-recipe-box">My Recipe Box</Link>
+      <Link href="/profile/favorites">Favorite Recipes</Link>
       <Link href="/profile/meal-plan">Meal Plan</Link>
       <Link href="/profile/grocery-list">Grocery List</Link>
       <Link href="/profile/friends">Friends</Link>
+      <Link href="/profile">Profile</Link>
       <Link href="/profile/settings">Settings</Link>
     </Nav>
 

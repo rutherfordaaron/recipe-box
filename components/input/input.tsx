@@ -6,8 +6,9 @@ const Input = (props: {
   type: string,
   label: string,
   onChange: ChangeEventHandler<HTMLInputElement>,
-  state: string
-  valid: boolean
+  state: any,
+  valid: boolean,
+  range?: [number, number]
 }) => {
 
   return (
@@ -26,6 +27,8 @@ const Input = (props: {
         onChange={props.onChange}
         className={`${props.state ? styles.activeInput : ""} ${!props.valid ? styles.invalid : ""}`}
         value={props.state}
+        min={props.range ? props.range[0] : undefined}
+        max={props.range ? props.range[1] : undefined}
       />
     </div>
   )
