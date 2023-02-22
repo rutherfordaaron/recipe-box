@@ -8,6 +8,7 @@ import PageOne from "../../../components/new-recipe-form/Page1";
 import PageTwo from "../../../components/new-recipe-form/Page2";
 import PageThree from "../../../components/new-recipe-form/Page3";
 import PageFour from "../../../components/new-recipe-form/Page4";
+import PageFive from "../../../components/new-recipe-form/Page5";
 
 
 
@@ -48,7 +49,7 @@ const NewRecipe: NextPage<GetUserProps> = (props) => {
       case 4:
         return <PageFour setRecipe={setRecipe} recipe={recipe} setPage={setPage} />
       default:
-        return <>5</>
+        return <PageFive setRecipe={setRecipe} recipe={recipe} setPage={setPage} owner={owner} />
     }
   }
 
