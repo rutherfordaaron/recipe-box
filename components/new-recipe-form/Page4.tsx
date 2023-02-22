@@ -4,9 +4,9 @@ import { useState } from "react";
 
 const PageFour = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {
   // State Variables
-  const [prepTime, setPrepTime] = useState(0);
-  const [cookTime, setCookTime] = useState(0);
-  const [servingsYield, setServingsYield] = useState<string | number>(0);
+  const [prepTime, setPrepTime] = useState(props.recipe.prepTime | 0);
+  const [cookTime, setCookTime] = useState(props.recipe.cookTime | 0);
+  const [servingsYield, setServingsYield] = useState(props.recipe.servingsYield | 0);
 
   const validatePage = () => {
     const recipe: Record<string, any> = { ...props.recipe }
@@ -23,16 +23,20 @@ const PageFour = (props: { recipe: Record<string, any>, setRecipe: Function, set
         id="prepTime"
         type="number"
         label="Prep Time (Minutes)"
-        onChange={(e) => { setPrepTime(Number(e.target.value)) }}
-        state={prepTime <= 0 || typeof prepTime !== "number" ? "" : prepTime}
+        onChange={(e) => {
+          const value = Number(e.target.value);
+          setPrepTime(value || value === 0 ? value : 0)
+        }} state={prepTime <= 0 || typeof prepTime !== "number" ? "" : prepTime}
         valid={true}
       />
       <Input
         id="cookTime"
         type="number"
         label="Cook Time (Minutes)"
-        onChange={(e) => { setCookTime(Number(e.target.value)) }}
-        state={cookTime <= 0 || typeof cookTime !== "number" ? "" : cookTime}
+        onChange={(e) => {
+          const value = Number(e.target.value);
+          setCookTime(value || value === 0 ? value : 0)
+        }} state={cookTime <= 0 || typeof cookTime !== "number" ? "" : cookTime}
         valid={true}
       />
       <Input
