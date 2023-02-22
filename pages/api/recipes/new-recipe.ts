@@ -6,16 +6,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const client = await clientPromise;
   const db = client.db(process.env.DB);
   const recipes = db.collection("recipes");
-  const newRecipe = req.headers["recipe"];
+  const recipe = req.headers["recipe"];
 
   switch (req.method) {
     case "POST":
-      if (typeof newRecipe === "string") {
-        await recipes.insertOne(JSON.parse(newRecipe));
-        console.log("New Recipe Inserted");
+      if (typeof recipe === "string") {
+        const newRecipe = JSON.parse(recipe);
+        // Insert new recipe
+        const recipeResult = await recipes.insertOne(newRecipe);
         res.status(200).json({ success: true });
       } else {
-        console.log("wrong data type");
+        // wrong data type
         res.status(500).json({ success: false });
       }
       break;
