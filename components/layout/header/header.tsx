@@ -1,4 +1,4 @@
-import styles from "./header.module.scss";
+// import styles from "./header.module.scss";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
 import { Children, useEffect, useState } from "react";
@@ -52,15 +52,15 @@ const Header = () => {
   }
 
   return (
-    <header className={styles.header}>
-      <Link href="/" className={styles.homeLink}>Recipe Box</Link>
+    <header className="bg-green-300 flex justify-between p-2">
+      <Link href="/" className="">Recipe Box</Link>
 
       <motion.button
-        className={styles.menuIconContainer}
+        className=""
         whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 0.9 }}
       >
-        <FontAwesomeIcon icon={faBars} className={styles.menuIcon} onClick={toggleNav} />
+        <FontAwesomeIcon icon={faBars} className="" onClick={toggleNav} />
       </motion.button>
 
       {authenticated ? isAuthenticated : notAuthenticated}
