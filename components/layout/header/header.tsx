@@ -40,10 +40,12 @@ const Header = () => {
       if (!listener) {
         setListener(true);
         nav.classList.remove("hidden");
+        nav.classList.add("flex");
 
         setTimeout(() => {
           body.addEventListener("click", () => {
             nav.classList.add("hidden")
+            nav.classList.remove("flex")
             setListener(false);
           }, { once: true })
         }, 10)
@@ -52,15 +54,15 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-green-300 flex justify-between p-2">
+    <header className="bg-blue-200 flex justify-between p-3 shadow-md text-xl font-bold fixed inset-x-0 top-0">
       <Link href="/" className="">Recipe Box</Link>
 
       <motion.button
-        className=""
+        className="hover:cursor-pointer z-20"
         whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 0.9 }}
       >
-        <FontAwesomeIcon icon={faBars} className="" onClick={toggleNav} />
+        <FontAwesomeIcon icon={faBars} className="hover:cursor-pointer" onClick={toggleNav} />
       </motion.button>
 
       {authenticated ? isAuthenticated : notAuthenticated}
