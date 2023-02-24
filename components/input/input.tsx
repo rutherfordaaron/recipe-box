@@ -15,10 +15,10 @@ const Input = (props: {
       <label
         htmlFor={props.id}
         className={`
-          absolute top-0 left-2  transition-all
+          absolute left-2  transition-all
           ${!props.valid && props.state ? "text-red-400 text-xs -top-[15px]"
             : props.state ? "text-blue-300 text-xs -top-[15px]"
-              : "bottom-0 text-slate-200"}
+              : "bottom-0 text-slate-200 top-0"}
         `}
       >
         {props.label}
