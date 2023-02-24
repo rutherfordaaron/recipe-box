@@ -161,7 +161,7 @@ export default function signUp() {
           onClick={validate}
           className={`
             ${emailValid && usernameValid && passwordMatch && passwordStrength !== Strength.Weak && email && username && password ? "bg-blue-300 text-black shadow-lg top-[-10px] hover:bg-blue-500"
-              : "bg-slate-200 text-gray-300 hover:cursor-not-allowed top-0"} 
+              : "bg-slate-200 text-gray-300 hover:cursor-not-allowed top-0 hover:bg-slate-200"} 
             w-max px-6 py-2 rounded mx-auto font-bold relative transition-all mt-4`}
         >Submit
         </button>
