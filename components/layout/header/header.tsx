@@ -16,21 +16,23 @@ const Header = () => {
     setAuthenticated(Boolean(cookie.token));
   })
 
+  const linkClass = "hover:text-sky-500 hover:scale-110 my-2 transition-all"
+
   const notAuthenticated =
     <Nav>
-      <Link href="/login">Login</Link>
-      <Link href="/sign-up">Sign Up</Link>
+      <Link className={linkClass} href="/login">Login</Link>
+      <Link className={linkClass} href="/sign-up">Sign Up</Link>
     </Nav>
 
   const isAuthenticated =
     <Nav>
-      <Link href="/profile/my-recipe-box">My Recipe Box</Link>
-      <Link href="/profile/favorites">Favorite Recipes</Link>
-      <Link href="/profile/meal-plan">Meal Plan</Link>
-      <Link href="/profile/grocery-list">Grocery List</Link>
-      <Link href="/profile/friends">Friends</Link>
-      <Link href="/profile">Profile</Link>
-      <Link href="/profile/settings">Settings</Link>
+      <Link className={linkClass} href="/profile/my-recipe-box">My Recipe Box</Link>
+      {/* <Link className={linkClass} href="/profile/favorites">Favorite Recipes</Link>
+      <Link className={linkClass} href="/profile/meal-plan">Meal Plan</Link>
+      <Link className={linkClass} href="/profile/grocery-list">Grocery List</Link>
+      <Link className={linkClass} href="/profile/friends">Friends</Link>
+      <Link className={linkClass} href="/profile">Profile</Link> */}
+      <Link className={linkClass} href="/profile/settings">Settings</Link>
     </Nav>
 
   const toggleNav = () => {
