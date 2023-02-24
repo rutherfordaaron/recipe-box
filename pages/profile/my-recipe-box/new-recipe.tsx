@@ -34,7 +34,7 @@ const NewRecipe: NextPage<GetUserProps> = (props) => {
   }
 
   return (
-    <form>
+    <form className="flex flex-col justify-center items-center">
       {getFormPage(page)}
     </form>
   )

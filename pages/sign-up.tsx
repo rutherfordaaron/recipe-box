@@ -2,7 +2,6 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react"
 import { useRouter } from "next/router";
 import Input from "../components/input/input";
 import Link from "next/link";
-import styles from "../public/styles/new-user.module.scss";
 
 export default function signUp() {
   // Strength type to make sure strength is always one of these 3 values
@@ -86,10 +85,10 @@ export default function signUp() {
   }
 
   return (
-    <main>
-      <form action="/api/users/new-user" method="POST" id="form">
-        <h1>New User</h1>
-        {parsedError ? <p className={styles.warning}>{parsedError}. Please try again.</p> : ""}
+    <>
+      <form action="/api/users/new-user" method="POST" id="form" className="flex flex-col align-middle">
+        <h1 className="text-center mb-3">New User</h1>
+        {parsedError ? <p className="text-sm text-red-500">{parsedError}. Please try again.</p> : ""}
 
         <Input
           id="user"
@@ -109,18 +108,14 @@ export default function signUp() {
           valid={emailValid}
         />
 
-        <div className={
-          `${styles.warning} 
-          ${styles.passReq} 
-          ${passwordStrength !== Strength.Weak ? styles.hidden : ""}`
-        }>
-          <p>Password Requirements:</p>
+        <div className="border rounded shadow-md bg-sky-200 text-sm p-4 w-max mx-auto">
+          <p className="font-semibold text-center mb-2">Password Requirements:</p>
           <ul>
             <li>At least 6 characters long.</li>
             <li>At least one uppercase letter</li>
             <li>At least one lowercase letter</li>
             <li>At least one digit (0-9)</li>
-            <li>The password has at least one special character</li>
+            <li>At least one special character</li>
           </ul>
         </div>
 
@@ -139,10 +134,10 @@ export default function signUp() {
 
         <p
           className={
-            `${passwordStrength === Strength.Weak ? styles.weak :
-              passwordStrength === Strength.Medium ? styles.medium :
-                styles.strong} ${styles.strength}
-            ${password === "" ? styles.hidden : ""}`
+            `text-xs text-center mx-auto rounded-lg transition-all h-[16px]
+            ${passwordStrength === Strength.Strong ? "bg-green-400 w-32" :
+              passwordStrength === Strength.Medium ? "bg-orange-400 w-24" : "bg-red-400 w-16"}
+            ${password === "" ? "opacity-0" : ""}`
           }
         >
           {passwordStrength}
@@ -159,16 +154,19 @@ export default function signUp() {
           state={confirmPassword}
           valid={passwordMatch}
         />
-        <p className={styles.warning}>{passwordMatch ? "" : "Passwords must match"}</p>
+        <p className="text-sm text-center text-red-400 h-[20px]">{passwordMatch ? "" : "Passwords must match"}</p>
 
         <button
           type="button"
           onClick={validate}
-          className={emailValid && usernameValid && passwordMatch && passwordStrength !== Strength.Weak && email && username && password ? "" : styles.invalidButton}
+          className={`
+            ${emailValid && usernameValid && passwordMatch && passwordStrength !== Strength.Weak && email && username && password ? "bg-blue-300 text-black shadow-lg top-[-10px] hover:bg-blue-500"
+              : "bg-slate-200 text-gray-300 hover:cursor-not-allowed top-0 hover:bg-slate-200"} 
+            w-max px-6 py-2 rounded mx-auto font-bold relative transition-all mt-4`}
         >Submit
         </button>
-        <p className={styles.link}>Already have an account? <Link href="/login">Login here</Link>.</p>
+        <p className="text-sm text-center my-3">Already have an account? <Link className="text-blue-400 underline" href="/login">Login here</Link>.</p>
       </form>
-    </main>
+    </>
   )
 }

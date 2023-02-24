@@ -1,5 +1,4 @@
 import { motion } from "framer-motion"
-import styles from "./nav.module.scss";
 
 type Props = {
   children: JSX.Element[]
@@ -7,7 +6,7 @@ type Props = {
 
 const Nav = ({ children }: Props) => {
   return (
-    <motion.nav className={`${styles.nav} hidden`} id="nav">
+    <motion.nav className="hidden absolute top-0 right-0 flex-col bg-sky-300 p-4 pt-10 w-52 shadow-xl" id="nav">
       {children}
     </motion.nav>
   )
