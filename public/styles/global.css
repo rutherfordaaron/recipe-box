@@ -10,14 +10,11 @@
   }
 
   h1 {
-    @apply text-3xl;
-    @apply font-bold;
-    @apply: mb-3;
+    @apply text-3xl my-3 font-bold;
   }
 
   ul {
-    @apply list-inside;
-    @apply list-disc;
+    @apply list-inside list-disc;
   }
 
   button {
