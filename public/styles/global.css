@@ -19,4 +19,8 @@
     @apply list-inside;
     @apply list-disc;
   }
+
+  button {
+    @apply rounded-md py-1 px-3;
+  }
 }

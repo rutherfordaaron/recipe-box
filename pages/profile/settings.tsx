@@ -33,19 +33,36 @@ const Settings: NextPage<PageProps> = (props) => {
     const element = document.getElementById("confirmDelete");
     if (element) {
       element.classList.toggle("hidden");
+      element.classList.toggle("flex");
     }
   }
   return (
     <>
-      <button type="button" onClick={logout}>Log out</button>
-      <button type="button" onClick={toggleConfirmation}>Delete Profile</button>
-      <div className={`${styles.confirmDeleteWrapper} hidden`} id="confirmDelete">
-        <div className={styles.confirmDelete}>
+      <button
+        type="button"
+        className="block my-3 border hover:bg-gray-200"
+        onClick={logout}
+      >
+        Log out
+      </button>
+      <button
+        type="button"
+        className="block my-3 border hover:bg-gray-200"
+        onClick={toggleConfirmation}
+      >
+        Delete Profile
+      </button>
+      <div className="hidden fixed p-4 inset-0 bg-gray-100 top-0 right-0 flex-col justify-center align-middle" id="confirmDelete">
+        <div className="text-center">
           <p>Are you sure you want to delete your profile?</p>
-          <p className={`warning`}>This cannot be undone.</p>
-          <div className={styles.confirmDeleteButtonWrapper} >
-            <button className="warning" type="button" onClick={deleteUser}>Yes</button>
-            <button type="button" onClick={toggleConfirmation}>No</button>
+          <p className="text-sm text-red-400 text-center my-2">This cannot be undone.</p>
+          <div className="flex justify-center gap-3 my-2" >
+            <button
+              className="text-red-400 border hover:bg-rose-200" type="button" onClick={deleteUser}
+            >
+              Yes, delete my profile
+            </button>
+            <button type="button" className="border hover:bg-gray-200" onClick={toggleConfirmation}>No, I changed my mind</button>
           </div>
         </div>
       </div>
