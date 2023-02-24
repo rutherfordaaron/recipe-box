@@ -8,7 +8,7 @@ import Loading from "../../../../components/loading";
 const RecipeDetails: NextPage<GetUserProps> = (props) => {
   const user = JSON.parse(props.user);
   const router = useRouter();
-  const { rid } = router.query
+  const { id } = router.query
 
   const [recipe, setRecipe] = useState<Record<string, any> | number>({})
   const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ const RecipeDetails: NextPage<GetUserProps> = (props) => {
     fetch("/api/recipes/get-private-recipe", {
       method: "GET",
       headers: {
-        "id": String(rid),
+        "id": String(id),
         "token": user.token,
         "user": user.username
       }
