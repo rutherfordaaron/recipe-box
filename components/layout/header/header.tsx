@@ -16,7 +16,7 @@ const Header = () => {
     setAuthenticated(Boolean(cookie.token));
   })
 
-  const linkClass = "hover:text-sky-500 hover:scale-110 my-2 transition-all"
+  const linkClass = "hover:text-sky-800 hover:scale-110 my-2 transition-all"
 
   const notAuthenticated =
     <Nav>
