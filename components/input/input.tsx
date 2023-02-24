@@ -11,14 +11,14 @@ const Input = (props: {
 }) => {
 
   return (
-    <div className="relative my-4">
+    <div className="relative my-4 transition-all mx-auto">
       <label
         htmlFor={props.id}
         className={`
-          absolute top-0 left-2 text-slate-200 transition-all
-          ${!props.valid && props.state ? "text-red-400 border-red-400 text-xs -top-[10px]"
-            : props.state ? "border-blue-300 text-blue-300 text-xs -top-[10px]"
-              : "bottom-0"}
+          absolute top-0 left-2  transition-all
+          ${!props.valid && props.state ? "text-red-400 text-xs -top-[15px]"
+            : props.state ? "text-blue-300 text-xs -top-[15px]"
+              : "bottom-0 text-slate-200"}
         `}
       >
         {props.label}
@@ -30,7 +30,7 @@ const Input = (props: {
         name={props.id}
         onChange={props.onChange}
         className={`
-          border-b focus:outline-none focus:border-blue-300 transition-all
+          border-b-2 focus:outline-none focus:border-blue-200 transition-all
           ${!props.valid && props.state ? "border-red-400" : props.state ? "border-blue-400" : ""}
         `}
         value={props.state}
