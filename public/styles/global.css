@@ -13,11 +13,19 @@
     @apply text-3xl my-3 font-bold;
   }
 
+  h2 {
+    @apply text-2xl font-bold my-3;
+  }
+
   ul {
     @apply list-inside list-disc;
   }
 
   button {
-    @apply rounded-md py-1 px-3;
+    @apply rounded-md py-1 px-3 border;
+  }
+
+  button:hover {
+    @apply bg-gray-100;
   }
 }

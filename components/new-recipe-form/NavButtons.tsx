@@ -1,5 +1,4 @@
 import Recipe from "../../models/recipe";
-import styles from "../../public/styles/profile/new-recipe-form.module.scss";
 import { useRouter } from "next/router";
 
 const NavButtons = (props: { page: number, setState: Function, validate: Function, recipe?: Record<string, any>, owner?: string }) => {
@@ -42,11 +41,11 @@ const NavButtons = (props: { page: number, setState: Function, validate: Functio
   }
 
   return (
-    <div className={styles.navButtonContainer}>
+    <div className="flex justify-center gap-3 my-4">
       <button
         type="button"
         onClick={() => props.setState(props.page <= 1 ? 1 : props.page - 1)}
-        className={props.page <= 1 ? "noDisplay" : ""}
+        className={props.page <= 1 ? "hidden" : ""}
       >
         Prev
       </button>

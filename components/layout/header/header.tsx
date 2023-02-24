@@ -60,7 +60,7 @@ const Header = () => {
       <Link href="/" className="">Recipe Box</Link>
 
       <motion.button
-        className="hover:cursor-pointer z-20"
+        className="hover:cursor-pointer z-20 border-none hover:bg-inherit"
         whileHover={{ scale: 1.2 }}
         whileTap={{ scale: 0.9 }}
       >

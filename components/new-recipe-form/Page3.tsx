@@ -3,7 +3,6 @@ import Input from "../input/input"
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGripLines, faXmark } from "@fortawesome/free-solid-svg-icons"
-import styles from "../../public/styles/profile/new-recipe-form.module.scss";
 
 const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {
   // State variables
@@ -65,21 +64,21 @@ const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, se
           Add Direction
         </button>
 
-        <div className={styles.ingredientsContainer}>
+        <div>
           {/* Map over the directions list to render a visually editable list */}
           {directionArr.map((el, i) => {
             return (
-              <div className={styles.ingredientWrapper}>
-                <div className={styles.ingredientNameAndGripLines}>
+              <div className="flex justify-between gap-3 my-3">
+                <div className="flex gap-3 items-center">
                   <FontAwesomeIcon
                     icon={faGripLines}
-                    className={styles.gripLines}
+                    className="hover:cursor-move"
                   />
-                  <p key={`direction${i}`} className={styles.ingredientName}>{i + 1}. {el}</p>
+                  <p key={`direction${i}`}>{i + 1}. {el}</p>
                 </div>
                 <FontAwesomeIcon
                   icon={faXmark}
-                  className={styles.xmark}
+                  className="hover:cursor-pointer"
                   onClick={() => removeItem(el)}
                 />
               </div>
