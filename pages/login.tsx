@@ -1,4 +1,3 @@
-import styles from "../public/styles/new-user.module.scss";
 import { useRouter } from "next/router";
 import Input from "../components/input/input";
 import Link from "next/link";
@@ -66,10 +65,10 @@ const Login = () => {
   }
 
   return (
-    <main>
-      <form action="/api/users/login" method="POST">
-        <h1>Login</h1>
-        {error ? <p className={styles.warning}>{error}. Please try again.</p> : ""}
+    <>
+      <form action="/api/users/login" method="POST" className="flex-col flex align-middle">
+        <h1 className="text-center">Login</h1>
+        {error ? <p className="">{error}. Please try again.</p> : ""}
         <Input
           id="username"
           type="text"
@@ -94,13 +93,17 @@ const Login = () => {
         />
         <button
           type="button"
-          className={usernameValid && username && password && passwordValid ? "" : styles.invalidButton}
+          className={`
+            ${usernameValid && username && password && passwordValid ? "bg-blue-300 text-black shadow-lg top-[-10px]"
+              : "bg-slate-200 text-gray-300 hover:cursor-not-allowed top-0"} 
+            w-max px-6 py-2 rounded mx-auto font-bold relative transition-all mt-4
+          `}
           onClick={submit}
         >Submit
         </button>
-        <p className={styles.link}>New user? <Link href="/sign-up">Sign up</Link> for a free account!</p>
+        <p className="text-sm text-center my-2">New user? <Link href="/sign-up" className="text-blue-400 underline">Sign up</Link> for a free account!</p>
       </form>
-    </main>
+    </>
   )
 }
 
