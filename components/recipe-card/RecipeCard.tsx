@@ -12,7 +12,7 @@ const RecipeCard = (props: { id: ObjectId, name: string, description: string, re
   }
 
   return (
-    <Link href="/" className="border rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md">
+    <Link href={`/profile/my-recipe-box/recipe/${String(props.id)}`} className="border rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md">
       <h2>{props.name}</h2>
       <p className="line-clamp-4 h-24">{props.description}</p>
       <p className="my-3">{props.recipeType} from {props.origin}</p>
