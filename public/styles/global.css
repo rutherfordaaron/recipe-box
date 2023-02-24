@@ -12,6 +12,7 @@
   h1 {
     @apply text-3xl;
     @apply font-bold;
+    @apply: mb-3;
   }
 
   ul {
