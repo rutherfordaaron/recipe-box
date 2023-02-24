@@ -56,7 +56,7 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-sky-200 flex justify-between p-3 shadow-md text-xl font-bold fixed inset-x-0 top-0 z-10">
+    <header className="bg-sky-200 flex justify-between items-center p-3 shadow-md text-xl font-bold fixed inset-x-0 top-0 z-10">
       <Link href="/" className="">Recipe Box</Link>
 
       <motion.button
