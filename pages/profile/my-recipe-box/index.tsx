@@ -39,7 +39,13 @@ const MyRecipeBox: NextPage<GetUserProps> = (props) => {
           </>
         )
       })}
-      <Link className={styles.newRecipeLink} href="./my-recipe-box/new-recipe">
+      <Link
+        className="fixed bottom-5 right-5 text-5xl bg-sky-500 shadow-md w-20 h-20
+       flex justify-center items-center rounded-full 
+       hover:bg-sky-300 hover:shadow-none hover:bottom-4 hover:text-gray-800 
+       transition-all"
+        href="./my-recipe-box/new-recipe"
+      >
         <FontAwesomeIcon icon={faPlus} />
       </Link>
     </>
