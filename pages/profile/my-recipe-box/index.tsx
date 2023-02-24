@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import styles from "../../../public/styles/profile/my-recipe-box.module.scss";
 import { NextPage } from "next";
 import getUser from "../../../util/getUser";
 import { GetUserProps } from "../../../util/getUser";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
+import Loading from "../../../components/loading";
+import RecipeCard from "../../../components/recipe-card/RecipeCard";
 
 const MyRecipeBox: NextPage<GetUserProps> = (props) => {
   const user = JSON.parse(props.user);
@@ -30,15 +31,23 @@ const MyRecipeBox: NextPage<GetUserProps> = (props) => {
   return (
     <>
       <h1>My Recipe Box</h1>
-      <p>Loading {String(loading)}</p>
-      {userRecipes.map((el, i) => {
-        return (
-          <>
-            <p key={i}>{el.name}</p>
-            <p>{el.recipeType} from {el.origin}</p>
-          </>
-        )
-      })}
+      <div className="flex flex-col justify-center items-center gap-4">
+        {loading ? <Loading /> : userRecipes.map((el, i) => {
+          return (
+            <RecipeCard
+              key={`recipeCard${i}`}
+              id={el._id}
+              name={el.name}
+              description={el.description}
+              recipeType={el.recipeType}
+              origin={el.origin}
+              prepTime={el.prepTime}
+              cookTime={el.cookTime}
+              rating={el.rating}
+            />
+          )
+        })}
+      </div>
       <Link
         className="fixed bottom-5 right-5 text-5xl bg-sky-500 shadow-md w-20 h-20
        flex justify-center items-center rounded-full 

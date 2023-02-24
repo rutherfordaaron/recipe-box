@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (req.method) {
     case "GET":
-      const userRecipes = await recipes.find({ owner: user }).project({ name: 1, description: 1, origin: 1, recipeType: 1 }).sort({ name: 1 }).toArray();
+      const userRecipes = await recipes.find({ owner: user }).sort({ name: 1 }).toArray();
       res.status(200).json({ data: userRecipes });
       break;
     default:
