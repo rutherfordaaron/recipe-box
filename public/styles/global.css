@@ -21,6 +21,10 @@
     @apply list-inside list-disc;
   }
 
+  ol {
+    @apply list-inside list-decimal;
+  }
+
   button {
     @apply rounded-md py-1 px-3 border;
   }

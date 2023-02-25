@@ -17,15 +17,19 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
    * Clear the newIngredient and newMeasurement state variable after pushing new ingredient to ingredientArr
    */
   const addIngredient = () => {
-    const ingredient = [newMeasurement, newIngredient];
-    const tempIngredientArr = [...ingredientArr];
-    tempIngredientArr.push(ingredient);
-    setIngredientArr(tempIngredientArr);
-    setNewIngredient("");
-    setNewMeasurement("");
     const error = document.getElementById("error");
-    if (error) {
-      error.innerHTML = "";
+    if (newIngredient && newMeasurement) {
+      const ingredient = [newMeasurement, newIngredient];
+      const tempIngredientArr = [...ingredientArr];
+      tempIngredientArr.push(ingredient);
+      setIngredientArr(tempIngredientArr);
+      setNewIngredient("");
+      setNewMeasurement("");
+      if (error) {
+        error.innerHTML = "";
+      }
+    } else {
+      if (error) error.innerHTML = "Please make sure you have an ingredient and a measurement."
     }
   }
 
@@ -63,7 +67,15 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
           label="Measurement"
           state={newMeasurement}
           valid={true}
-          onChange={e => setNewMeasurement(e.target.value)}
+          onChange={e => {
+            const regex = /[0-9a-zA-Z]/
+            if (regex.test(e.target.value) || e.target.value === "") {
+              setNewMeasurement(e.target.value)
+            } else {
+              const warning = document.getElementById("error");
+              if (warning) warning.innerHTML = "A measurement must conatiner letters or numbers."
+            }
+          }}
         />
         <Input
           id="ingredientInput"
@@ -71,7 +83,15 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
           label="New Ingredient"
           state={newIngredient}
           valid={true}
-          onChange={e => setNewIngredient(e.target.value)}
+          onChange={e => {
+            const regex = /[a-zA-Z]/
+            if (regex.test(e.target.value) || e.target.value === "") {
+              setNewIngredient(e.target.value)
+            } else {
+              const warning = document.getElementById("error");
+              if (warning) warning.innerHTML = "An ingredient must conatiner letters."
+            }
+          }}
         />
 
         <button type="button" onClick={addIngredient}>
@@ -101,7 +121,7 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
         </div>
       </div>
 
-      <p id="error" className="warning"></p>
+      <p id="error" className="text-sm font-bold text-center text-red-400 my-3"></p>
 
       <NavButtons page={2} setState={props.setPage} validate={validatePage} />
     </>
