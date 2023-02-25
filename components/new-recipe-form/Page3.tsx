@@ -13,13 +13,20 @@ const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, se
    * Clear the newDirection state variable after pushing new ingredient to directionArr
    */
   const addDirection = () => {
-    const tempDirectionArr = [...directionArr];
-    tempDirectionArr.push(newDirection);
-    setDirecitonArr(tempDirectionArr);
-    setNewDirection("");
-    const error = document.getElementById("error");
-    if (error) {
-      error.innerHTML = "";
+    if (newDirection) {
+      const tempDirectionArr = [...directionArr];
+      tempDirectionArr.push(newDirection);
+      setDirecitonArr(tempDirectionArr);
+      setNewDirection("");
+      const error = document.getElementById("error");
+      if (error) {
+        error.innerHTML = "";
+      }
+    } else {
+      const error = document.getElementById("error");
+      if (error) {
+        error.innerHTML = "Please type in a direction.";
+      }
     }
   }
 
@@ -57,18 +64,26 @@ const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, se
           label="Direction"
           state={newDirection}
           valid={true}
-          onChange={e => setNewDirection(e.target.value)}
+          onChange={e => {
+            const regex = /[a-zA-Z0-9]/
+            if (regex.test(e.target.value) || e.target.value == "") {
+              setNewDirection(e.target.value)
+            } else {
+              const warning = document.getElementById("error");
+              if (warning) warning.innerHTML = "A direction must contain only letters and numers."
+            }
+          }}
         />
 
         <button type="button" onClick={addDirection}>
-          Add Direction
+          Add Directions
         </button>
 
         <div>
           {/* Map over the directions list to render a visually editable list */}
           {directionArr.map((el, i) => {
             return (
-              <div className="flex justify-between gap-3 my-3">
+              <div className="flex justify-between gap-3 my-3" key={`direction${i}`}>
                 <div className="flex gap-3 items-center">
                   <FontAwesomeIcon
                     icon={faGripLines}
@@ -87,7 +102,7 @@ const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, se
         </div>
       </div>
 
-      <p id="error" className="warning"></p>
+      <p id="error" className="text-sm font-bold text-center text-red-400 my-3"></p>
 
       <NavButtons page={3} setState={props.setPage} validate={validatePage} />
     </>
