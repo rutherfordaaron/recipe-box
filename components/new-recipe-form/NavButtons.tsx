@@ -34,7 +34,7 @@ const NavButtons = (props: { page: number, setState: Function, validate: Functio
       if (data.success) {
         router.push("/profile/my-recipe-box?new-recipe=true");
       } else {
-        router.push("/profile/my-recipe-box?new-recipe=false")
+        router.push(`/profile/my-recipe-box?new-recipe=false&reason=${data.reason}`);
       }
 
     }
