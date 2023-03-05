@@ -1,4 +1,4 @@
-import Recipe from "../../models/recipe";
+import { Recipe } from "../../models/recipe";
 import { useRouter } from "next/router";
 
 const NavButtons = (props: { page: number, setState: Function, validate: Function, recipe?: Record<string, any>, owner?: string }) => {
@@ -7,19 +7,19 @@ const NavButtons = (props: { page: number, setState: Function, validate: Functio
 
   const submitNewRecipe = async (recipe: Record<string, any> | undefined, owner: string | undefined) => {
     if (recipe && owner) {
-      const newRecipe = new Recipe(
-        recipe.name,
-        recipe.description,
-        owner,
-        recipe.origin,
-        recipe.recipeType,
-        recipe.ingredients,
-        recipe.directions,
-        recipe.prepTime,
-        recipe.cookTime,
-        recipe.servingsYield,
-        recipe.rating
-      );
+      const newRecipe: Recipe = {
+        name: recipe.name,
+        description: recipe.description,
+        owner: owner,
+        origin: recipe.origin,
+        recipeType: recipe.recipeType,
+        ingredients: recipe.ingredients,
+        directions: recipe.directions,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        servings: recipe.servingsYield,
+        rating: recipe.rating
+      }
 
       const recipeString = JSON.stringify(newRecipe);
 
@@ -34,7 +34,7 @@ const NavButtons = (props: { page: number, setState: Function, validate: Functio
       if (data.success) {
         router.push("/profile/my-recipe-box?new-recipe=true");
       } else {
-        router.push("/profile/my-recipe-box?new-recipe=false")
+        router.push(`/profile/my-recipe-box?new-recipe=false&reason=${data.reason}`);
       }
 
     }
