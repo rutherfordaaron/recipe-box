@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import clientPromise from "../../../util/db";
+import clientPromise from "../../util/db";
 import jwt from "jsonwebtoken";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,6 +19,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (req.method) {
     case "GET":
+      const userData = req.headers["user-data"];
+
+      let username = "";
+      let password = "";
+
+      if (typeof userData === "string") {
+        username = JSON.parse(userData).username;
+        password = JSON.parse(userData).password;
+      }
       // Get the user according to the provided username
       const user = await users.findOne({ username: username });
       // If the user doesn't exist in the database,

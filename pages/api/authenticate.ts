@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import clientPromise from "../../../util/db";
+import clientPromise from "../../util/db";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Connect to the "recipes" collection on the database

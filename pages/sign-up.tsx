@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react"
+import { useState } from "react"
 import { useRouter } from "next/router";
 import Input from "../components/input/input";
 import Link from "next/link";
@@ -86,7 +86,7 @@ export default function signUp() {
 
   return (
     <>
-      <form action="/api/users/new-user" method="POST" id="form" className="flex flex-col align-middle">
+      <form action="/api/users" method="POST" id="form" className="flex flex-col align-middle">
         <h1 className="text-center mb-3">New User</h1>
         {parsedError ? <p className="text-sm text-red-400 italic text-center mb-4">{parsedError}. Please try again.</p> : ""}
 

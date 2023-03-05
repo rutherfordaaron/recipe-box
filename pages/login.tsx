@@ -27,9 +27,9 @@ const Login = () => {
       // Hash the password before passing it to the API
       let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
 
-      // Use the users/login API endpoint to authenticate the user
+      // Use the users GET API endpoint to authenticate the user
       // Store the response (a JWT) as a cookie on the client
-      fetch("/api/users/login",
+      fetch("/api/login",
         {
           method: "GET",
           headers: {
@@ -65,7 +65,7 @@ const Login = () => {
 
   return (
     <>
-      <form action="/api/users/login" method="POST" className="flex-col flex align-middle">
+      <form className="flex-col flex align-middle">
         <h1 className="text-center">Login</h1>
         {error ? <p className="text-sm text-red-400 italic text-center mb-4">{error}. Please try again.</p> : ""}
         <Input
