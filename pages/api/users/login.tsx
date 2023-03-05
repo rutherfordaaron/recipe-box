@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // If the user doesn't exist in the database,
       // return 401 (unauthorized)
       if (user === null) {
-        res.status(401).json({ error: true, data: "user does not exist" })
+        res.status(401).json({ error: true, data: "User does not exist" })
         break;
       }
 
@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // If the password doesn't match what's on file, 
       // return 401 (unauthorized)
       if (password !== user.password) {
-        res.status(401).json({ error: true, data: "incorrect password" })
+        res.status(401).json({ error: true, data: "Incorrect password" })
         break;
       }
 
