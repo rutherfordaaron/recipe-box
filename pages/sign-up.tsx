@@ -88,7 +88,7 @@ export default function signUp() {
     <>
       <form action="/api/users/new-user" method="POST" id="form" className="flex flex-col align-middle">
         <h1 className="text-center mb-3">New User</h1>
-        {parsedError ? <p className="text-sm text-red-500">{parsedError}. Please try again.</p> : ""}
+        {parsedError ? <p className="text-sm text-red-400 italic text-center mb-4">{parsedError}. Please try again.</p> : ""}
 
         <Input
           id="user"

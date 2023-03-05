@@ -29,25 +29,24 @@ const Login = () => {
 
       // Use the users/login API endpoint to authenticate the user
       // Store the response (a JWT) as a cookie on the client
-      fetch(`/api/users/login?username=${username}&password=${hashPassword}`,
+      fetch("/api/users/login",
         {
           method: "GET",
           headers: {
             "user-data": JSON.stringify({ username: username, password: hashPassword })
-          },
-          redirect: "follow"
+          }
         })
         .then(response => {
           const data = response.json();
           return data;
         })
         .then(data => {
-          if (data.token) {
+          if (!data.error) {
             // Redirect to the main page after successful login
-            createCookie(data.token);
+            createCookie(data.data);
             router.push("/")
           } else {
-            setError(data.error);
+            setError(data.data);
           }
 
         })
@@ -68,7 +67,7 @@ const Login = () => {
     <>
       <form action="/api/users/login" method="POST" className="flex-col flex align-middle">
         <h1 className="text-center">Login</h1>
-        {error ? <p className="">{error}. Please try again.</p> : ""}
+        {error ? <p className="text-sm text-red-400 italic text-center mb-4">{error}. Please try again.</p> : ""}
         <Input
           id="username"
           type="text"
