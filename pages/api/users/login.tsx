@@ -22,19 +22,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Get the user according to the provided username
       const user = await users.findOne({ username: username });
       // If the user doesn't exist in the database,
-      // return 401 (unauthorized) and redirect to /login with error
+      // return 401 (unauthorized)
       if (user === null) {
-        res.status(401).json({ error: "User does not exist" })
+        res.status(401).json({ error: true, data: "user does not exist" })
         break;
       }
 
       // Password is hashed on the client side so no need to do that here.
 
       // If the password doesn't match what's on file, 
-      // return 401 (unauthorized) and redirect to /login with error
+      // return 401 (unauthorized)
       if (password !== user.password) {
-        res.status(401).json({ error: "Password is incorrect" })
-
+        res.status(401).json({ error: true, data: "incorrect password" })
         break;
       }
 
@@ -46,12 +45,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       users.updateOne({ username: username }, { $set: { token: token } });
 
       // Send token to client to be stored in a cookie
-      res.status(200).json({ token: token });
+      res.status(200).json({ error: false, data: token });
       break;
     default:
       // 405: METHOD NOT ALLOWED
       // No methods other than POST allowed at this endpoint
-      res.status(405).redirect("/");
+      res.status(405).json({ error: true, data: "method not allowed" });
   }
 }
 
