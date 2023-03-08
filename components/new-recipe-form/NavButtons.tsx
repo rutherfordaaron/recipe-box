@@ -23,7 +23,7 @@ const NavButtons = (props: { page: number, setState: Function, validate: Functio
 
       const recipeString = JSON.stringify(newRecipe);
 
-      const response = await fetch(`/api/recipes/new-recipe`,
+      const response = await fetch(`/api/recipe`,
         {
           method: "POST",
           headers: {
