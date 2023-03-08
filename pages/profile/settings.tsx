@@ -18,7 +18,7 @@ const Settings: NextPage<PageProps> = (props) => {
   }
 
   const deleteUser = async () => {
-    fetch("/api/users/remove-user", { method: "DELETE" })
+    fetch("/api/users", { method: "DELETE" })
       .then(response => response.json())
       .then(data => {
         if (data.success) {
