@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from "next/types";
+import { GetServerSidePropsContext, NextApiRequest } from "next/types";
 import clientPromise from "./db";
 import parseCookie from "./parseCookie";
 
@@ -13,7 +13,7 @@ const redirect = {
   }
 };
 
-const getUser = async (context: GetServerSidePropsContext) => {
+const getUser = async (context: (GetServerSidePropsContext | { req: NextApiRequest })) => {
   const cookie = context.req.headers.cookie;
   // Ensure there is a cookie header
   if (cookie) {

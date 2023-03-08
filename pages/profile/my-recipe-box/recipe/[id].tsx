@@ -10,11 +10,11 @@ const RecipeDetails: NextPage<GetUserProps> = (props) => {
   const router = useRouter();
   const { id } = router.query
 
-  const [recipe, setRecipe] = useState<Record<string, any> | number>({})
+  const [recipe, setRecipe] = useState<Record<string, any> | string>({})
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/recipes/get-private-recipe", {
+    fetch("/api/recipe", {
       method: "GET",
       headers: {
         "id": String(id),
@@ -33,7 +33,7 @@ const RecipeDetails: NextPage<GetUserProps> = (props) => {
     return (
       <Loading />
     )
-  } else if (typeof recipe !== "number") {
+  } else if (typeof recipe !== "string") {
     return (
       <article>
         <section>
@@ -75,7 +75,7 @@ const RecipeDetails: NextPage<GetUserProps> = (props) => {
   } else {
     return (
       <>
-        <h1>Error {recipe}</h1>
+        <h1>Error: {recipe}</h1>
         <p>Looks like something went wrong! You may not be logged into the right account to access this recipe. Please try logging in to another account.</p>
       </>
     )
