@@ -67,9 +67,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       // If the token exists
       if (token) {
-        const deleted = await users.deleteOne({ token: token });
+        const user = await users.findOne({ token: token });
+        if (!user) {
+          res.status(500).json({ error: true, data: "user not found" })
+          break;
+        }
+
+        const deleted = await users.deleteOne({ _id: user._id });
         if (deleted.deletedCount > 0) {
-          // If the user has been deleted, status 200
+          // If the user has been deleted, delete all owned recipes and send back status 200
+          const recipes = db.collection("recipes");
+          recipes.deleteMany({ owner: user.username });
           res.status(200).json({ success: true });
           break;
         } else {
