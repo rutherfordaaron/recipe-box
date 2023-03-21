@@ -12,8 +12,7 @@ const PageTwo = (props: { recipe: Record<string, any>, setRecipe: Function, setP
   const [ingredients, setIngredients] = useState<Ingredient[]>(props.recipe.ingredients ? [...props.recipe.ingredients] : []);
 
   /**Add ingredients to the ingredientArr variable.
-   * ingredientArr is of type String[][]
-   * Nested array first element is measurment, second element is ingredient name.
+   * ingredientArr is of type { ingredient: string, measurement: string, id: string }
    * This is to set up the ability to create grocery lists. I figured separating names from measurements now would make that easier.
    * Clear the newIngredient and newMeasurement state variable after pushing new ingredient to ingredientArr
    */
