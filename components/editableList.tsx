@@ -16,11 +16,11 @@ const EditableList = (props: { list: Ingredient[] | string[], setList: (newOrder
   }
 
   return (
-    <Reorder.Group values={props.list} onReorder={props.setList}>
+    <Reorder.Group values={props.list} as="ol" onReorder={props.setList}>
       {props.list.map((item, i) => {
         return (
           <Reorder.Item value={item} as="div" key={isIngredient(item) ? item.id : item} className="flex justify-between gap-3 my-3">
-            {isIngredient(item) ? <p>{item.measurement} of {item.ingredient}</p> : <p></p>}
+            {isIngredient(item) ? <p>{item.measurement} of {item.ingredient}</p> : <li>{item}</li>}
             <FontAwesomeIcon
               icon={faXmark}
               className="hover:cursor-pointer"
