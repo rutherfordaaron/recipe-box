@@ -3,6 +3,7 @@ import Input from "../input/input"
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGripLines, faXmark } from "@fortawesome/free-solid-svg-icons"
+import EditableList from "../editableList"
 
 const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {
   // State variables
@@ -28,13 +29,6 @@ const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, se
         error.innerHTML = "Please type in a direction.";
       }
     }
-  }
-
-  /**Remove and item from the directionArr by using .filter() */
-  const removeItem = (item: string) => {
-    const tempDirectionArr = [...directionArr];
-    const newArr = tempDirectionArr.filter(el => el != item);
-    setDirecitonArr(newArr);
   }
 
   /**Set the directions list to the recipe object before moving to the next page.
@@ -79,27 +73,7 @@ const PageThree = (props: { recipe: Record<string, any>, setRecipe: Function, se
           Add Directions
         </button>
 
-        <div>
-          {/* Map over the directions list to render a visually editable list */}
-          {directionArr.map((el, i) => {
-            return (
-              <div className="flex justify-between gap-3 my-3" key={`direction${i}`}>
-                <div className="flex gap-3 items-center">
-                  <FontAwesomeIcon
-                    icon={faGripLines}
-                    className="hover:cursor-move"
-                  />
-                  <p key={`direction${i}`}>{i + 1}. {el}</p>
-                </div>
-                <FontAwesomeIcon
-                  icon={faXmark}
-                  className="hover:cursor-pointer"
-                  onClick={() => removeItem(el)}
-                />
-              </div>
-            )
-          })}
-        </div>
+        <EditableList list={directionArr} setList={setDirecitonArr} />
       </div>
 
       <p id="error" className="text-sm font-bold text-center text-red-400 my-3"></p>
