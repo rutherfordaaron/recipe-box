@@ -2,9 +2,9 @@ import { Reorder } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-type Ingredient = { ingredient: string, measurement: string, id: string }
+export type Ingredient = { ingredient: string, measurement: string, id: string }
 
-function isIngredient(item: any): item is Ingredient {
+export function isIngredient(item: any): item is Ingredient {
   return (item as Ingredient).measurement !== undefined;
 }
 
