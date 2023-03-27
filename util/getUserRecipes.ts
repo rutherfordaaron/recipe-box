@@ -10,9 +10,9 @@ const getUserRecipes = () => {
   let { data, error, isLoading } = useSWR<GetUserRecipesAPIData | null, Error>("/api/user-recipes", fetcher);
 
   return {
-    data,
-    error,
-    isLoading
+    userRecipesData: data,
+    userRecipesError: error,
+    userRecipesIsLoading: isLoading
   }
 }
 

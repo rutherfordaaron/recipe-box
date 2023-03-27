@@ -7,7 +7,7 @@ import getUserRecipes from "../../../util/getUserRecipes";
 
 const MyRecipeBox = () => {
 
-  let { data, error, isLoading } = getUserRecipes();
+  let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
 
   return (
     <>

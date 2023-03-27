@@ -11,9 +11,9 @@ const getUser = () => {
   console.log("getUser called")
 
   return {
-    data,
-    error,
-    isLoading
+    userData: data,
+    userError: error,
+    userIsLoading: isLoading
   }
 }
 
