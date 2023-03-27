@@ -4,9 +4,9 @@ import crypto from "crypto";
 import User from "../../models/user";
 import parseCookie from "../../util/parseCookie";
 
-/* POST - Creates a new user and requires a request body containing an email, password, and username field
+/* GET - Gets/authenticates a user by using the provided authentication token (cookie header)
+ * POST - Creates a new user and requires a request body containing an email, password, and username field
  * DELETE - Deletes the user permanently. Requires the token that should be sent as a cookie
- * There is not GET function. That is handled via the getUser(context) util function
  */
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,25 +15,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = client.db(process.env.DB);
   const users = db.collection("users");
 
-  let username = "";
-  let password = "";
-  let token = "";
+  // Extract authorization token from cookies
+  const cookie = req.headers.cookie || "";
+  const parsedCookies = parseCookie(cookie);
+  let token = parsedCookies.token;
+
+  let username = req.body.user;
+  let password = req.body.pass;
+  let email = req.body.email;
 
   switch (req.method) {
     /* -------------------- GET ------------------------ */
     case "GET":
-      // 405: METHOD NOT ALLOWED
-      res.status(405).redirect("/");
-      /* Getting the user is done via the util function `getUser(context)`
-       to be able to retrieve the user object with Next.js */
+      // If no token, 401: UNAUTHORIZED
+      if (!token) {
+        res.status(401).json({ user: null, message: "No authentication token found" });
+        break;
+      }
+
+      // If user can't be found using provided token, 401: UNAUTHORIZED
+      let user = await users.findOne({ token: token });
+      if (!user) {
+        res.status(401).json({ user: null, message: "Cannot authenticate user with provied token" });
+        break;
+      }
+
+      // If user is found, 200: OK
+      res.status(200).json({ user: user, message: "Success" })
       break;
     /* -------------------- POST ------------------------ */
     // Create new user only if using a POST request
     case "POST":
-      username = req.body.user;
-      const email = req.body.email;
-      password = req.body.pass;
-
       // Check to see if user already exists (username or email)
       const userExists = await users.findOne({ username: username });
       if (userExists) {
@@ -60,10 +72,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       break;
     /* -------------------- DELETE ------------------------ */
     case "DELETE":
-      // Extract authorization token from cookies
-      const cookie = req.headers.cookie || "";
-      const parsedCookies = parseCookie(cookie);
-      token = parsedCookies.token;
 
       // If the token exists
       if (token) {

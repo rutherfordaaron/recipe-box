@@ -1,48 +1,22 @@
-import { GetServerSidePropsContext, NextApiRequest } from "next/types";
-import clientPromise from "./db";
-import parseCookie from "./parseCookie";
+import useSWR from "swr";
+import { GetUserAPIData } from "./types";
 
-export type GetUserProps = {
-  user: string
+const fetcher = async (route: string): Promise<GetUserAPIData> => {
+  console.log("fetcher called")
+  const data = await fetch(route, { method: "GET" }).then(res => res.json());
+  console.log(data);
+  return data;
 }
 
-const redirect = {
-  redirect: {
-    permanent: false,
-    destination: "/login",
-  }
-};
+const getUser = () => {
+  let { data, error, isLoading } = useSWR<GetUserAPIData, Error>(`/api/users`, fetcher);
+  console.log("getUser called")
 
-const getUser = async (context: (GetServerSidePropsContext | { req: NextApiRequest })) => {
-  const cookie = context.req.headers.cookie;
-  // Ensure there is a cookie header
-  if (cookie) {
-    // Parse the cookie as an object
-    const parsedCookie = parseCookie(cookie);
-    // If there is no value for "token" in the cookie, redirect to the login page
-    if (!parsedCookie.token) {
-      return redirect;
-    }
-
-    const token = parsedCookie.token;
-
-    // Connect to the database, users collection
-    const client = await clientPromise;
-    const db = client.db(process.env.DB);
-    const users = db.collection("users");
-
-    // Find and return the user associated with the token
-    // If no user was found, redirect to the login page
-    const user = await users.findOne({ token: token });
-    if (typeof user === "object" && user !== null) {
-      return { props: { user: JSON.stringify(user) } }
-    } else {
-      return redirect
-    }
-  } else {
-    // if no cookie exists, redirect to the login page
-    return redirect;
-  }
+  return ({
+    data: data ? data : undefined,
+    isError: error,
+    isLoading: isLoading
+  })
 }
 
 export default getUser;
