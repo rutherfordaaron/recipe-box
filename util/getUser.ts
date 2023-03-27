@@ -2,9 +2,7 @@ import useSWR from "swr";
 import { GetUserAPIData } from "./types";
 
 const fetcher = async (route: string): Promise<GetUserAPIData> => {
-  console.log("fetcher called")
   const data = await fetch(route, { method: "GET" }).then(res => res.json());
-  console.log(data);
   return data;
 }
 
