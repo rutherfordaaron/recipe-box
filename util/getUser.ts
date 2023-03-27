@@ -8,7 +8,6 @@ const fetcher = async (route: string): Promise<GetUserAPIData> => {
 
 const getUser = () => {
   let { data, error, isLoading } = useSWR<GetUserAPIData, Error>(`/api/users`, fetcher);
-  console.log("getUser called")
 
   return {
     userData: data,
