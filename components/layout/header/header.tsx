@@ -26,6 +26,7 @@ const Header = () => {
 
   const isAuthenticated =
     <Nav>
+      <Link className={linkClass} href="/profile">Profile</Link>
       <Link className={linkClass} href="/profile/my-recipe-box">My Recipe Box</Link>
       {/* <Link className={linkClass} href="/profile/favorites">Favorite Recipes</Link>
       <Link className={linkClass} href="/profile/meal-plan">Meal Plan</Link>
