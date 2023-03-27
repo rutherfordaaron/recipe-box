@@ -3,6 +3,7 @@ import clientPromise from "../../util/db";
 import crypto from "crypto";
 import User from "../../models/user";
 import parseCookie from "../../util/parseCookie";
+import getToken from "../../util/getToken";
 
 /* GET - Gets/authenticates a user by using the provided authentication token (cookie header)
  * POST - Creates a new user and requires a request body containing an email, password, and username field
@@ -15,10 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = client.db(process.env.DB);
   const users = db.collection("users");
 
-  // Extract authorization token from cookies
-  const cookie = req.headers.cookie || "";
-  const parsedCookies = parseCookie(cookie);
-  let token = parsedCookies.token;
+  let token = getToken(req);
 
   let username = req.body.user;
   let password = req.body.pass;
