@@ -1,29 +1,29 @@
 import { useCookies } from "react-cookie";
+import { useState } from "react";
 import Router from "next/router";
 import getUser from "../../util/getUser";
-import { GetServerSideProps, NextPage } from "next";
-import styles from "../../public/styles/profile.module.scss";
+import Loading from "../../components/loading";
 
-type PageProps = {
-  user: string,
-}
-
-const Settings: NextPage<PageProps> = (props) => {
+const Settings = () => {
+  const { userData, userError, userIsLoading } = getUser();
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
-  const user = JSON.parse(props.user);
+  const [loading, setLoading] = useState(false);
 
   const logout = () => {
+    setLoading(true);
     removeCookie("token", { path: "/" });
     Router.push("/login");
   }
 
   const deleteUser = async () => {
+    setLoading(true);
     fetch("/api/users", { method: "DELETE" })
       .then(response => response.json())
       .then(data => {
-        if (data.success) {
+        if (!data.error) {
           logout();
         } else {
+          setLoading(true);
           Router.push("/profile?error=something-went-wrong");
         }
       })
@@ -36,8 +36,15 @@ const Settings: NextPage<PageProps> = (props) => {
       element.classList.toggle("flex");
     }
   }
+
+  if (userIsLoading) return <Loading />
+  if (userError) return <p>Something went wrong! {userError.message}</p>
+  if (userData && userData.user === null) Router.push("/login");
+  if (loading) return <Loading />
   return (
     <>
+      <h1>Hello, {userData && userData.user ? userData.user.username : "unkown user"}</h1>
+      {/* ---------- LOGOOUT BUTTON ---------- */}
       <button
         type="button"
         className="block my-3 border hover:bg-gray-200"
@@ -45,6 +52,7 @@ const Settings: NextPage<PageProps> = (props) => {
       >
         Log out
       </button>
+      {/* ---------- DELETE USER BUTTON ---------- */}
       <button
         type="button"
         className="block my-3 border hover:bg-gray-200"
@@ -52,6 +60,7 @@ const Settings: NextPage<PageProps> = (props) => {
       >
         Delete Profile
       </button>
+      {/* ---------- DELETE USER CONFIRMATION CONTAINER ---------- */}
       <div className="hidden fixed p-4 inset-0 bg-gray-100 top-0 right-0 flex-col justify-center align-middle" id="confirmDelete">
         <div className="text-center">
           <p>Are you sure you want to delete your profile?</p>
@@ -68,24 +77,6 @@ const Settings: NextPage<PageProps> = (props) => {
       </div>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-  const user = await getUser(context);
-  const data: PageProps = {
-    user: JSON.stringify(user)
-  }
-
-  if (typeof user === "object" && user !== null) {
-    return { props: data }
-  } else {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login",
-      }
-    };
-  }
 }
 
 export default Settings;
