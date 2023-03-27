@@ -40,3 +40,8 @@ export type GetUserRecipesAPIData = {
   recipes: Recipe[] | null,
   message: string
 }
+
+export type GetRecipeAPIData = {
+  recipe: Recipe | null,
+  message: string
+}
