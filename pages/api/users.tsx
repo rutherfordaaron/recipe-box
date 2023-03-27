@@ -77,7 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (token) {
         const user = await users.findOne({ token: token });
         if (!user) {
-          res.status(500).json({ error: true, data: "user not found" })
+          res.status(500).json({ data: { error: true }, message: "user not found" })
           break;
         }
 
@@ -86,16 +86,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           // If the user has been deleted, delete all owned recipes and send back status 200
           const recipes = db.collection("recipes");
           recipes.deleteMany({ owner: user.username });
-          res.status(200).json({ success: true });
+          res.status(200).json({ data: { success: true }, message: "user succesfully deleted" });
           break;
         } else {
           // If nothing was deleted, status 500: Internal server error
-          res.status(500).json({ success: false });
+          res.status(500).json({ data: { success: false }, message: "something went wrong while deleting the user" });
           break;
         }
       } else {
         // If no token is found, error 401: Unauthorized
-        res.status(401).json({ sucess: false });
+        res.status(401).json({ data: { sucess: false }, message: "no authentication token found" });
         break;
       }
     default:
