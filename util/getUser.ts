@@ -12,11 +12,11 @@ const getUser = () => {
   let { data, error, isLoading } = useSWR<GetUserAPIData, Error>(`/api/users`, fetcher);
   console.log("getUser called")
 
-  return ({
-    data: data ? data : undefined,
-    isError: error,
-    isLoading: isLoading
-  })
+  return {
+    data,
+    error,
+    isLoading
+  }
 }
 
 export default getUser;
