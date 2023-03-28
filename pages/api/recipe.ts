@@ -56,7 +56,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         // If user exists, and the correct token is given, send the recipe
-        console.log(recipe);
         res.status(200).json({ message: "success", recipe: recipe });
         break;
       }
