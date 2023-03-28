@@ -31,10 +31,16 @@ const NavButtons = (props: { page: number, setState: Function, validate: Functio
           }
         })
       const data = await response.json();
-      if (data.success) {
-        router.push("/profile/my-recipe-box?new-recipe=true");
+      if (!data.error) {
+        router.push({
+          pathname: "/profile/my-recipe-box",
+          query: { message: "New recipe created", good: true }
+        }, "/profile/my-recipe-box")
       } else {
-        router.push(`/profile/my-recipe-box?new-recipe=false&reason=${data.reason}`);
+        router.push({
+          pathname: "/profile/my-recipe-box",
+          query: { message: "Recipe creation failed. Please try again.", good: false }
+        }, "/profile/my-recipe-box")
       }
 
     }
