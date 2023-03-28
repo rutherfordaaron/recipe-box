@@ -9,7 +9,7 @@ const RecipeDetails = () => {
   let { recipeData, recipeError, recipeIsLoading } = getRecipe(id);
 
   if (recipeIsLoading) return <Loading />
-  if (recipeError) return <p>Something went wrong! </p>
+  if (recipeError) return <p>Something went wrong! {recipeError.message}</p>
   if (recipeData && !recipeData.recipe) return <p>Something went wrong! {recipeData.message}</p>
   if (recipeData && recipeData.recipe) {
     const recipe = recipeData.recipe;
