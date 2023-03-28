@@ -10,15 +10,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = client.db(process.env.DB);
   const recipes = db.collection("recipes");
   const token = getToken(req);
+  const id = req.query.id;
 
   switch (req.method) {
     /* -------------------- GET -------------------- */
     // Get a recipe from the database
     case "GET":
       // if id property isn't foud, 400: Bad Request
-      const id = req.query.id;
       if (!id) {
-        res.status(400).json({ recipe: null, message: "missing data to process request" })
+        res.status(400).json({ recipe: null, message: "no recipe id provided" })
         break;
       }
 
@@ -85,8 +85,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).json({ error: true, reason: "wrong data type was submitted" });
       }
       break;
+    case "DELETE":
+      // If no id provided, 400: BAD REQUEST
+      if (!id) {
+        res.status(400).json({ error: true, message: "no recipe id provided" });
+        break;
+      }
+      // convert provided id into objectId data type
+      const deleteId = new ObjectId(id.toString())
+      // if no authentication token provided, 401: UNAUTHORIZED
+      if (!token) {
+        res.status(401).json({ error: true, message: "no authentication token provided" })
+        break;
+      }
+      // look to see if recipe exists in the database
+      const recipeToVerfiy = await recipes.findOne({ _id: deleteId });
+      // If it doesn't, 404: NOT FOUND
+      if (!recipeToVerfiy) {
+        res.status(404).json({ error: true, message: "no recipe found with provided id" })
+        break;
+      }
+
+      // connect ot users database and check to see if owner of recipe and owner of token match up
+      const users = db.collection("users")
+      const username = recipeToVerfiy.owner;
+      const userToVerify = users.findOne({ username: username, token: token });
+      // if not, 401: UNAUTORIZED
+      if (!userToVerify) {
+        res.status(401).json({ error: true, message: "this recipe is not owned by you" })
+        break;
+      }
+      // delete the recipe
+      const result = await recipes.deleteOne({ _id: deleteId });
+      // If it for some reason doesn't get deleted (we already verified that it exists), 500: INTERNAL ERROR
+      if (!(result.deletedCount > 0)) {
+        res.status(500).json({ error: true, message: "internal error, recipe not deleted" })
+        break;
+      }
+      // if deleteion is successful, 200: OK
+      res.status(200).json({ error: false, message: "success" })
+      break;
     default:
-      // If req method isn't GET, error 405: Method not allowed
+      // Any other method, error 405: Method not allowed
       res.status(405).json({ data: 405 });
   }
 }
