@@ -1,14 +1,34 @@
 import { useRouter } from "next/router";
+import { useState } from "react";
 import Loading from "../../../../components/loading";
 import getRecipe from "../../../../util/getRecipe";
 
 const RecipeDetails = () => {
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const id = router.query.id ? router.query.id.toString() : "";
 
   let { recipeData, recipeError, recipeIsLoading } = getRecipe(id);
 
+  const deleteRecipe = async () => {
+    setLoading(true);
+    let response = await fetch(`/api/recipe?id=${id}`, { method: "DELETE" })
+    let data = await response.json();
+    if (data.error) {
+      setError(data.message);
+      setLoading(false);
+    } else {
+      // router.push("/profile/my-recipe-box", { query: { message: "Recipe successfully deleted" } })
+      router.push({
+        pathname: "/profile/my-recipe-box",
+        query: { message: "Recipe successfully deleted", good: true }
+      }, "/profile/my-recipe-box")
+    }
+  }
+
   if (recipeIsLoading) return <Loading />
+  if (loading) return <Loading />
   if (recipeError) return <p>Something went wrong! {recipeError.message}</p>
   if (recipeData && !recipeData.recipe) return <p>Something went wrong! {recipeData.message}</p>
   if (recipeData && recipeData.recipe) {
@@ -48,7 +68,8 @@ const RecipeDetails = () => {
           </ol>
         </section>
         <button type="button">Edit</button>
-        <button type="button">Delete</button>
+        <button type="button" onClick={deleteRecipe}>Delete</button>
+        {error ? <p className="text-red-400 text-center py-5">{error}</p> : <></>}
       </article>
     )
   }
