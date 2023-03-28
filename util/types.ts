@@ -17,19 +17,21 @@ export enum RecipeType {
 }
 
 export type Recipe = {
-  _id: ObjectId,
+  _id?: ObjectId,
   name: string,
   description: string,
   owner: string,
   origin: string,
   recipeType: RecipeType,
-  ingredients: string[][]
+  ingredients: Ingredient[]
   directions: string[],
   prepTime?: number,
   cookTime?: number,
   servings?: number,
   rating?: number[],
 }
+
+export type Ingredient = { ingredient: string, measurement: string, id: string }
 
 export type GetUserAPIData = {
   user: User | null,
