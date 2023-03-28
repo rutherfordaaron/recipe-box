@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useRouter } from "next/router";
-import Input from "../components/input/input";
+import Input from "../components/input";
 import Link from "next/link";
 
 export default function signUp() {

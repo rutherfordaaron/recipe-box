@@ -15,30 +15,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const token = parsedCookies.token;
       // If token is not provided, 400: Bad Request
       if (!token) {
-        res.status(400).json({ error: true, data: "no authentication token found" })
+        res.status(400).json({ recipes: null, message: "no authentication token found" })
       }
 
-      // Extract user name from headers and connect to database users collection
-      const user = req.headers["user"];
+      // Verify user with authentication token
       const users = db.collection("users");
-      // Verify user with username and token
-      const userToValidate = await users.findOne({ username: user });
+      const user = await users.findOne({ token: token });
       // If no user found from provided username, 401: Unauthorized
-      if (!userToValidate) {
-        res.status(401).json({ error: true, data: "no user found" });
-        break;
-      }
-
-      // If user and token don't match up, 401: Unauthorized
-      if (userToValidate.token !== token) {
-        res.status(401).json({ error: true, data: "not authorized" });
+      if (!user) {
+        res.status(401).json({ recipes: null, message: "no user found" });
         break;
       }
 
       // If everything looks good, find all user recipes and send back as array
       const recipes = db.collection("recipes");
-      const userRecipes = await recipes.find({ owner: user }).sort({ name: 1 }).toArray();
-      res.status(200).json({ error: false, data: userRecipes });
+      const userRecipes = await recipes.find({ owner: user.username }).sort({ name: 1 }).toArray();
+      res.status(200).json({ message: "success", recipes: userRecipes });
       break;
     default:
       // If anyother method other than GET, 405: Method not allowed

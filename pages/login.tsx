@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Input from "../components/input/input";
+import Input from "../components/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useCookies } from "react-cookie";

@@ -5,7 +5,7 @@ import { Children, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion"
-import Nav from "./nav/nav";
+import Nav from "./nav";
 
 const Header = () => {
   const [cookie] = useCookies(["token"]);
@@ -26,6 +26,7 @@ const Header = () => {
 
   const isAuthenticated =
     <Nav>
+      <Link className={linkClass} href="/profile">Profile</Link>
       <Link className={linkClass} href="/profile/my-recipe-box">My Recipe Box</Link>
       {/* <Link className={linkClass} href="/profile/favorites">Favorite Recipes</Link>
       <Link className={linkClass} href="/profile/meal-plan">Meal Plan</Link>

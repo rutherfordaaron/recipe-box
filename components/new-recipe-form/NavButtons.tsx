@@ -1,4 +1,4 @@
-import { Recipe } from "../../models/recipe";
+import { Recipe } from "../../util/types";
 import { useRouter } from "next/router";
 
 const NavButtons = (props: { page: number, setState: Function, validate: Function, recipe?: Record<string, any>, owner?: string }) => {
