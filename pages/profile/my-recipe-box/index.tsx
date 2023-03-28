@@ -16,15 +16,8 @@ const MyRecipeBox = () => {
         {isLoading ? <Loading /> : error ? <h1>Error</h1> : data && data.recipes ? data.recipes.map((el, i) => {
           return (
             <RecipeCard
-              key={`recipeCard${i}`}
-              id={el._id}
-              name={el.name}
-              description={el.description}
-              recipeType={el.recipeType}
-              origin={el.origin}
-              prepTime={el.prepTime}
-              cookTime={el.cookTime}
-              rating={el.rating}
+              recipe={el}
+              key={el._id?.toString()}
             />
           )
         }) : <></>}
