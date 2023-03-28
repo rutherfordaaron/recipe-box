@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 import Link from "next/link";
-import { Recipe } from "../../util/types";
+import { Recipe } from "../util/types";
 
 const RecipeCard = (props: { recipe: Recipe }) => {
   const recipe = props.recipe;

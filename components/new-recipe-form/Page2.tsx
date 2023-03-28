@@ -1,5 +1,5 @@
 import NavButtons from "./NavButtons"
-import Input from "../input/input"
+import Input from "../input"
 import { useState } from "react"
 import { uuid } from "uuidv4"
 import EditableList from "../editableList"

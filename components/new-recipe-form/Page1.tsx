@@ -1,7 +1,7 @@
-import Input from "../input/input";
+import Input from "../input";
 import { useState } from "react";
 import { RecipeType } from "../../util/types";
-import RadioButton from "../radio-button/radioButton";
+import RadioButton from "../radioButton";
 import NavButtons from "./NavButtons";
 
 const PageOne = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function }) => {

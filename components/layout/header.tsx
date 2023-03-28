@@ -5,7 +5,7 @@ import { Children, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion"
-import Nav from "./nav/nav";
+import Nav from "./nav";
 
 const Header = () => {
   const [cookie] = useCookies(["token"]);

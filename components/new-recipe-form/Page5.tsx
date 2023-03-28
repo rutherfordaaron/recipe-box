@@ -1,5 +1,5 @@
 import NavButtons from "./NavButtons";
-import Input from "../input/input";
+import Input from "../input";
 import { useState } from "react";
 
 const PageFive = (props: { recipe: Record<string, any>, setRecipe: Function, setPage: Function, owner: string }) => {

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import Loading from "../../../components/loading";
-import RecipeCard from "../../../components/recipe-card/RecipeCard";
+import RecipeCard from "../../../components/RecipeCard";
 import getUserRecipes from "../../../util/getUserRecipes";
 
 const MyRecipeBox = () => {
