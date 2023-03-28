@@ -31,7 +31,7 @@ const RecipeDetails = () => {
           <ul>
             {recipe.ingredients.map((el, i) => {
               return (
-                <li key={`${recipe._id}Ingredient${i}`}>{el[0]} of {el[1]}</li>
+                <li key={`${recipe._id}Ingredient${i}`}>{el.measurement} of {el.ingredient}</li>
               )
             })}
           </ul>

@@ -1,5 +1,6 @@
-import { Recipe } from "../../models/recipe";
+import { Recipe } from "../../util/types";
 import { useRouter } from "next/router";
+import { ObjectId } from "mongodb";
 
 const NavButtons = (props: { page: number, setState: Function, validate: Function, recipe?: Record<string, any>, owner?: string }) => {
 

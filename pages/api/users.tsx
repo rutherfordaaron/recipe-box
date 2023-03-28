@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../util/db";
 import crypto from "crypto";
-import User from "../../models/user";
+import { User } from "../../util/types";
 import parseCookie from "../../util/parseCookie";
 import getToken from "../../util/getToken";
 
@@ -62,7 +62,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
 
       // create a user object and post it to the database
-      const newUser = new User(username, email, hashPassword, new Date());
+      const newUser: User = { username, email, password: hashPassword, created: new Date(), verified: false, token: "" };
+
       users.insertOne(newUser);
 
       // 201: CREATED

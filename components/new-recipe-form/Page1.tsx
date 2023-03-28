@@ -1,6 +1,6 @@
 import Input from "../input/input";
 import { useState } from "react";
-import { RecipeType } from "../../models/recipe";
+import { RecipeType } from "../../util/types";
 import RadioButton from "../radio-button/radioButton";
 import NavButtons from "./NavButtons";
 
