@@ -122,6 +122,23 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
 
   const updateRecipe = () => {
     const ready = validate();
+    if (!ready) return;
+    const newRecipe: Recipe = {
+      name,
+      description,
+      origin,
+      recipeType: typeof recipeType === "string" ? RecipeType.Copied : recipeType,
+      owner: recipe.owner,
+      ingredients,
+      directions: directionArr,
+      prepTime,
+      cookTime,
+      servings: servingsYield,
+      rating
+    }
+    fetch("/api/recipe", { method: "PATCH", headers: { recipe: JSON.stringify(newRecipe) } })
+      .then(res => res.json())
+      .then(data => { console.log(data) });
     // router.push({ pathname: "/profile/my-recipe-box", query: { message: "Recipe updated", good: true } }, "/profile/my-recipe-box");
   }
 
