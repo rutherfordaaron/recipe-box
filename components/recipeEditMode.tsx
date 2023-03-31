@@ -21,6 +21,9 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
   const [newIngredient, setNewIngredient] = useState("");
   const [newMeasurement, setNewMeasurement] = useState("")
   const [ingredients, setIngredients] = useState<Ingredient[]>(props.recipe.ingredients ? [...props.recipe.ingredients] : []);
+  // -------------------- DIRECTIONS STATE VARIABLES --------------------
+  const [newDirection, setNewDirection] = useState("");
+  const [directionArr, setDirecitonArr] = useState<string[]>(props.recipe.directions ? [...props.recipe.directions] : []);
   // -------------------- BASIC INFO EVENT HANDLERS --------------------
   const nameChangeHandler = (value: string) => {
     setName(value);
@@ -44,7 +47,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
     }
   }
 
-  // -------------------- INGREDIENT EVENT HANDLERS --------------------
+  // -------------------- ADD INGREDIENTS --------------------
   /**Add ingredients to the ingredientArr variable.
    * ingredientArr is of type { ingredient: string, measurement: string, id: string }
    * This is to set up the ability to create grocery lists. I figured separating names from measurements now would make that easier.
@@ -66,6 +69,28 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
       if (error) error.innerHTML = "";
     } else {
       if (error) error.innerHTML = "Please make sure you have an ingredient and a measurement."
+    }
+  }
+
+  // -------------------- ADD DIRECTIONS --------------------
+  /**Add directions to the directionArr variable.
+   * Clear the newDirection state variable after pushing new ingredient to directionArr
+   */
+  const addDirection = () => {
+    if (newDirection) {
+      const tempDirectionArr = [...directionArr];
+      tempDirectionArr.push(newDirection);
+      setDirecitonArr(tempDirectionArr);
+      setNewDirection("");
+      const error = document.getElementById("error");
+      if (error) {
+        error.innerHTML = "";
+      }
+    } else {
+      const error = document.getElementById("error");
+      if (error) {
+        error.innerHTML = "Please type in a direction.";
+      }
     }
   }
 
@@ -135,7 +160,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
           />
         </div>
 
-        {/* -------------------- BASIC INFO SECTION ------------------- */}
+        {/* -------------------- INGREDIENTS SECTION ------------------- */}
         <h2>Ingredients</h2>
         <div>
           <Input
@@ -176,6 +201,33 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
           </button>
 
           <EditableList list={ingredients} setList={setIngredients} />
+        </div>
+
+        {/* -------------------- DIRECTIONS SECTION ------------------- */}
+        <h2>Directons</h2>
+        <div>
+          <Input
+            id="directionInput"
+            type="text"
+            label="Direction"
+            state={newDirection}
+            valid={true}
+            onChange={e => {
+              const regex = /[a-zA-Z0-9]/
+              if (regex.test(e.target.value) || e.target.value == "") {
+                setNewDirection(e.target.value)
+              } else {
+                const warning = document.getElementById("error");
+                if (warning) warning.innerHTML = "A direction must contain only letters and numers."
+              }
+            }}
+          />
+
+          <button type="button" onClick={addDirection}>
+            Add Directions
+          </button>
+
+          <EditableList list={directionArr} setList={setDirecitonArr} />
         </div>
 
 
