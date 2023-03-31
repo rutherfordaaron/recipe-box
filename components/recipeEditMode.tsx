@@ -5,11 +5,13 @@ import RadioButton from "./radioButton";
 import EditableList from "./editableList";
 import { useState } from "react";
 import { uuid } from "uuidv4";
+import MessageBanner from "./layout/messageBanner";
 
 const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
   let { recipe, setEditMode } = props;
   const router = useRouter();
 
+  const [error, setError] = useState("");
   // -------------------- BASIC INFO STATE VARIABLES --------------------
   const [name, setName] = useState(recipe.name ? recipe.name : "");
   const [nameValid, setNameValid] = useState(true);
@@ -99,8 +101,28 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
     }
   }
 
+  // -------------------- VALIDATE AND PATCH --------------------
+  const validate = () => {
+    if (!(name && description && origin && recipeType)) {
+      setError("Please fill out name, description, origin, and recipeType");
+      setTimeout(() => {
+        setError("");
+      }, 4000)
+      return false
+    } else if (!(directionArr[0] && ingredients[0])) {
+      setError("Please make sure you have at least one ingredient and one direction");
+      setTimeout(() => {
+        setError("");
+      }, 4000)
+      return false
+    } else {
+      return true;
+    }
+  }
+
   const updateRecipe = () => {
-    router.push({ pathname: "/profile/my-recipe-box", query: { message: "Recipe updated", good: true } }, "/profile/my-recipe-box");
+    const ready = validate();
+    // router.push({ pathname: "/profile/my-recipe-box", query: { message: "Recipe updated", good: true } }, "/profile/my-recipe-box");
   }
 
   const cancelEdit = () => {
@@ -171,7 +193,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
           <Input
             id="measurementInput"
             type="text"
-            label="Measurement"
+            label="New Measurement"
             state={newMeasurement}
             valid={true}
             onChange={e => {
@@ -292,7 +314,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
           range={[1, 10]}
         />
 
-        <p id="error" className="warning"></p>
+        <MessageBanner message={error} ok={false} />
         <button type="button" onClick={updateRecipe}>Save</button>
         <button type="button" onClick={cancelEdit}>Cancel</button>
       </form>
