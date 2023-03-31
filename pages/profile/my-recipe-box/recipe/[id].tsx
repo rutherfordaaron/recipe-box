@@ -2,14 +2,18 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Loading from "../../../../components/loading";
 import getRecipe from "../../../../util/getRecipe";
+import getUser from "../../../../util/getUser";
+import RecipeEditMode from "../../../../components/recipeEditMode";
 
 const RecipeDetails = () => {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const router = useRouter();
   const id = router.query.id ? router.query.id.toString() : "";
 
   let { recipeData, recipeError, recipeIsLoading } = getRecipe(id);
+  let { userData, userError, userIsLoading } = getUser();
 
   const deleteRecipe = async () => {
     setLoading(true);
@@ -26,11 +30,11 @@ const RecipeDetails = () => {
     }
   }
 
-  if (recipeIsLoading) return <Loading />
-  if (loading) return <Loading />
+  if (recipeIsLoading || userIsLoading || loading) return <Loading />
   if (recipeError) return <p>Something went wrong! {recipeError.message}</p>
+  if (userError) return <p>Something went wrong! {userError.message}</p>
   if (recipeData && !recipeData.recipe) return <p>Something went wrong! {recipeData.message}</p>
-  if (recipeData && recipeData.recipe) {
+  if (recipeData && recipeData.recipe && !editMode) {
     const recipe = recipeData.recipe;
     return (
       <article>
@@ -66,11 +70,14 @@ const RecipeDetails = () => {
             })}
           </ol>
         </section>
-        <button type="button">Edit</button>
-        <button type="button" onClick={deleteRecipe}>Delete</button>
+        {recipeData.recipe.owner === userData?.user?.username ? <button type="button" onClick={e => setEditMode(true)}>Edit</button> : <></>}
+        {recipeData.recipe.owner === userData?.user?.username ? <button type="button" onClick={deleteRecipe}>Delete</button> : <></>}
         {error ? <p className="text-red-400 text-center py-5">{error}</p> : <></>}
       </article>
     )
+  }
+  if (editMode && recipeData && recipeData.recipe) {
+    return <RecipeEditMode recipe={recipeData?.recipe} setEditMode={setEditMode} />
   }
 }
 

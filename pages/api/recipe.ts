@@ -9,6 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const client = await clientPromise;
   const db = client.db(process.env.DB);
   const recipes = db.collection("recipes");
+  const users = db.collection("users")
   const token = getToken(req);
   const id = req.query.id;
 
@@ -85,6 +86,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).json({ error: true, reason: "wrong data type was submitted" });
       }
       break;
+    /* -------------------- DELETE -------------------- */
+    // Remove recipe from database
     case "DELETE":
       // If no id provided, 400: BAD REQUEST
       if (!id) {
@@ -107,7 +110,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // connect ot users database and check to see if owner of recipe and owner of token match up
-      const users = db.collection("users")
       const username = recipeToVerfiy.owner;
       const userToVerify = users.findOne({ username: username, token: token });
       // if not, 401: UNAUTORIZED
@@ -124,6 +126,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
       // if deleteion is successful, 200: OK
       res.status(200).json({ error: false, message: "success" })
+      break;
+    /* -------------------- PATCH -------------------- */
+    // Update recipe
+    case "PATCH":
+      // Check if update data was sent via headers. Otherwise, 400: BAD REQUEST
+      const updateData = JSON.parse(req.headers.recipe ? req.headers.recipe.toString() : "");
+      if (!updateData) {
+        res.status(400).json({ error: true, message: "missing update data" });
+        break;
+      }
+
+      // Verify that user owns recipe. Otherwise, 400: UNAUTHORIZED
+      const ownsRecipe = users.find({ username: updateData.owner, token: token });
+      if (!ownsRecipe) {
+        res.status(401).json({ error: true, message: "unauthorized" });
+        break;
+      }
+
+      const idToUpdate = updateData._id;
+      delete updateData._id
+
+      const updateResult = await recipes.updateOne({ _id: new ObjectId(idToUpdate) }, { $set: updateData });
+      console.log(updateResult);
+      if (!updateResult.matchedCount) {
+        res.status(500).json({ error: true, message: "failed to update" });
+        break;
+      }
+
+      res.status(200).json({ error: false, message: "success" });
       break;
     default:
       // Any other method, error 405: Method not allowed
