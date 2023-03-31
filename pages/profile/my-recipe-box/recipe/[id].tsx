@@ -23,7 +23,6 @@ const RecipeDetails = () => {
       setError(data.message);
       setLoading(false);
     } else {
-      // router.push("/profile/my-recipe-box", { query: { message: "Recipe successfully deleted" } })
       router.push({
         pathname: "/profile/my-recipe-box",
         query: { message: "Recipe successfully deleted", good: true }
