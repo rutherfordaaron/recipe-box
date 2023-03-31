@@ -7,7 +7,7 @@ import { useState } from "react";
 import { uuid } from "uuidv4";
 
 const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
-  const { recipe, setEditMode } = props;
+  let { recipe, setEditMode } = props;
   const router = useRouter();
 
   // -------------------- BASIC INFO STATE VARIABLES --------------------
@@ -20,10 +20,15 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
   // -------------------- INGREDIENTS STATE VARIABLES --------------------
   const [newIngredient, setNewIngredient] = useState("");
   const [newMeasurement, setNewMeasurement] = useState("")
-  const [ingredients, setIngredients] = useState<Ingredient[]>(props.recipe.ingredients ? [...props.recipe.ingredients] : []);
+  const [ingredients, setIngredients] = useState<Ingredient[]>(recipe.ingredients ? [...recipe.ingredients] : []);
   // -------------------- DIRECTIONS STATE VARIABLES --------------------
   const [newDirection, setNewDirection] = useState("");
-  const [directionArr, setDirecitonArr] = useState<string[]>(props.recipe.directions ? [...props.recipe.directions] : []);
+  const [directionArr, setDirecitonArr] = useState<string[]>(recipe.directions ? [...recipe.directions] : []);
+  // -------------------- TIME, YIELD, AND RATING STATE VARIABLES --------------------
+  const [prepTime, setPrepTime] = useState(recipe.prepTime ? recipe.prepTime : 0);
+  const [cookTime, setCookTime] = useState(recipe.cookTime ? recipe.cookTime : 0);
+  const [servingsYield, setServingsYield] = useState(recipe.servings ? recipe.servings : 0);
+  const [rating, setRating] = useState(recipe.rating);
   // -------------------- BASIC INFO EVENT HANDLERS --------------------
   const nameChangeHandler = (value: string) => {
     setName(value);
@@ -230,6 +235,62 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
           <EditableList list={directionArr} setList={setDirecitonArr} />
         </div>
 
+        {/* -------------------- TIME, YIELD, AND RATING SECTION ------------------- */}
+
+        <h2>Time, Yield, and Rating</h2>
+        <Input
+          id="prepTime"
+          type="number"
+          label="Prep Time (Minutes)"
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            setPrepTime(value <= 100000 && value > 0 ? value : 0)
+          }} state={prepTime <= 0 || typeof prepTime !== "number" ? "" : prepTime}
+          valid={true}
+          range={[1, 100000]}
+        />
+        <Input
+          id="cookTime"
+          type="number"
+          label="Cook Time (Minutes)"
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            setCookTime(value <= 100000 && value > 0 ? value : 0)
+          }}
+          state={cookTime <= 0 || typeof cookTime !== "number" ? "" : cookTime}
+          valid={true}
+          range={[1, 100000]}
+        />
+        <Input
+          id="servingsYield"
+          type="number"
+          label="Servings Yield"
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            setServingsYield(value <= 100000 && value > 0 ? value : 0)
+          }}
+          state={servingsYield === 0 ? "" : servingsYield}
+          valid={true}
+          range={[1, 100000]}
+        />
+        <Input
+          id="rating"
+          type="number"
+          label="Rating (1-10)"
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            if (rating) {
+              let tempRating = [...rating];
+              tempRating[0] = value <= 10 && value > 0 ? value : 0
+              setRating(tempRating);
+            } else {
+              setRating([value <= 10 && value > 0 ? value : 0])
+            }
+          }}
+          state={rating && rating[0] === 0 ? "" : rating ? rating[0] : ""}
+          valid={true}
+          range={[1, 10]}
+        />
 
         <p id="error" className="warning"></p>
         <button type="button" onClick={updateRecipe}>Save</button>
