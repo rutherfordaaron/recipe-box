@@ -1,3 +1,4 @@
+import MessageBanner from "./messageBanner";
 import Footer from "./footer";
 import Header from "./header";
 
@@ -6,6 +7,7 @@ const Layout = ({ children }: any) => {
     <>
       <Header />
       <main className="px-5 min-h-screen pt-16">{children}</main>
+      <MessageBanner />
       <Footer />
     </>
   )

@@ -15,7 +15,6 @@ const Login = () => {
 
   const router = useRouter();
 
-
   const submit = async () => {
     const form = document.querySelector("form");
     if (form && username && password && usernameValid && passwordValid) {
@@ -44,7 +43,13 @@ const Login = () => {
           if (!data.error) {
             // Redirect to the main page after successful login
             createCookie(data.data);
-            router.push("/")
+            router.push({
+              pathname: router.query.returnTo ? router.query.returnTo.toString() : "/",
+              query: {
+                message: "Successfully logged in!",
+                good: true,
+              }
+            }, router.query.returnTo ? router.query.returnTo.toString() : "/")
           } else {
             setError(data.data);
           }

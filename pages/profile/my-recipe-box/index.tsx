@@ -5,7 +5,6 @@ import Loading from "../../../components/loading";
 import RecipeCard from "../../../components/RecipeCard";
 import getUserRecipes from "../../../util/getUserRecipes";
 import { useRouter } from "next/router";
-import MessageBanner from "../../../components/messageBanner";
 
 const MyRecipeBox = () => {
   const router = useRouter();
@@ -34,7 +33,6 @@ const MyRecipeBox = () => {
       >
         <FontAwesomeIcon icon={faPlus} />
       </Link>
-      <MessageBanner message={router.query.message} good={router.query.good === "true"} />
     </>
   )
 
