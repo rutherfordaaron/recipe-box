@@ -5,14 +5,14 @@ import getUser from "../../util/getUser";
 import Loading from "../../components/loading";
 
 const Settings = () => {
-  const { userData, userError, userIsLoading } = getUser();
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const { userData, userError, userIsLoading } = getUser();
   const [loading, setLoading] = useState(false);
 
   const logout = () => {
     setLoading(true);
     removeCookie("token", { path: "/" });
-    Router.push("/login");
+    Router.push({ pathname: "/login", query: { message: "Successfully logged out", good: true } });
   }
 
   const deleteUser = async () => {
