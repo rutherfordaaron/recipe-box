@@ -1,8 +1,10 @@
-import { Recipe, RecipeType } from "../util/types";
+import { Recipe, RecipeType, Ingredient } from "../util/types";
 import { useRouter } from "next/router";
 import Input from "./input";
 import RadioButton from "./radioButton";
+import EditableList from "./editableList";
 import { useState } from "react";
+import { uuid } from "uuidv4";
 
 const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
   const { recipe, setEditMode } = props;
@@ -15,7 +17,10 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
   const [origin, setOrigin] = useState(recipe.origin ? recipe.origin : "");
   const [originValid, setOriginValid] = useState(true);
   const [recipeType, setRecipeType] = useState<RecipeType | string>(recipe.recipeType ? recipe.recipeType : "");
-
+  // -------------------- INGREDIENTS STATE VARIABLES --------------------
+  const [newIngredient, setNewIngredient] = useState("");
+  const [newMeasurement, setNewMeasurement] = useState("")
+  const [ingredients, setIngredients] = useState<Ingredient[]>(props.recipe.ingredients ? [...props.recipe.ingredients] : []);
   // -------------------- BASIC INFO EVENT HANDLERS --------------------
   const nameChangeHandler = (value: string) => {
     setName(value);
@@ -36,6 +41,31 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
       setOriginValid(false);
     } else {
       setOriginValid(true);
+    }
+  }
+
+  // -------------------- INGREDIENT EVENT HANDLERS --------------------
+  /**Add ingredients to the ingredientArr variable.
+   * ingredientArr is of type { ingredient: string, measurement: string, id: string }
+   * This is to set up the ability to create grocery lists. I figured separating names from measurements now would make that easier.
+   * Clear the newIngredient and newMeasurement state variable after pushing new ingredient to ingredientArr
+   */
+  const addIngredient = () => {
+    const error = document.getElementById("error");
+    if (newIngredient && newMeasurement) {
+      const ingredient = {
+        measurement: newMeasurement,
+        ingredient: newIngredient,
+        id: uuid()
+      };
+      const tempIngredientArr = [...ingredients];
+      tempIngredientArr.push(ingredient);
+      setIngredients(tempIngredientArr);
+      setNewIngredient("");
+      setNewMeasurement("");
+      if (error) error.innerHTML = "";
+    } else {
+      if (error) error.innerHTML = "Please make sure you have an ingredient and a measurement."
     }
   }
 
@@ -104,6 +134,50 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
             checked={recipeType === RecipeType.Original ? true : false}
           />
         </div>
+
+        {/* -------------------- BASIC INFO SECTION ------------------- */}
+        <h2>Ingredients</h2>
+        <div>
+          <Input
+            id="measurementInput"
+            type="text"
+            label="Measurement"
+            state={newMeasurement}
+            valid={true}
+            onChange={e => {
+              const regex = /[0-9a-zA-Z]/
+              if (regex.test(e.target.value) || e.target.value === "") {
+                setNewMeasurement(e.target.value)
+              } else {
+                const warning = document.getElementById("error");
+                if (warning) warning.innerHTML = "A measurement must conatiner letters or numbers."
+              }
+            }}
+          />
+          <Input
+            id="ingredientInput"
+            type="text"
+            label="New Ingredient"
+            state={newIngredient}
+            valid={true}
+            onChange={e => {
+              const regex = /[a-zA-Z]/
+              if (regex.test(e.target.value) || e.target.value === "") {
+                setNewIngredient(e.target.value)
+              } else {
+                const warning = document.getElementById("error");
+                if (warning) warning.innerHTML = "An ingredient must conatiner letters."
+              }
+            }}
+          />
+
+          <button type="button" onClick={addIngredient}>
+            Add Ingredient
+          </button>
+
+          <EditableList list={ingredients} setList={setIngredients} />
+        </div>
+
 
         <p id="error" className="warning"></p>
         <button type="button" onClick={updateRecipe}>Save</button>
