@@ -6,12 +6,14 @@ import EditableList from "./editableList";
 import { useState } from "react";
 import { uuid } from "uuidv4";
 import MessageBanner from "./layout/messageBanner";
+import { Spinner } from "./spinner";
 
 const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
   let { recipe, setEditMode } = props;
   const router = useRouter();
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false)
   // -------------------- BASIC INFO STATE VARIABLES --------------------
   const [name, setName] = useState(recipe.name ? recipe.name : "");
   const [nameValid, setNameValid] = useState(true);
@@ -121,9 +123,11 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
   }
 
   const updateRecipe = () => {
+    setLoading(true);
     const ready = validate();
-    if (!ready) return;
+    if (!ready) { setLoading(false); return };
     const newRecipe: Recipe = {
+      _id: recipe._id,
       name,
       description,
       origin,
@@ -138,8 +142,17 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
     }
     fetch("/api/recipe", { method: "PATCH", headers: { recipe: JSON.stringify(newRecipe) } })
       .then(res => res.json())
-      .then(data => { console.log(data) });
-    // router.push({ pathname: "/profile/my-recipe-box", query: { message: "Recipe updated", good: true } }, "/profile/my-recipe-box");
+      .then(data => {
+        setLoading(false);
+        if (data.error) {
+          setError(`Error: ${data.message}. Please try again or contact support.`);
+          setTimeout(() => {
+            setError("");
+          }, 4000)
+        } else {
+          router.push({ pathname: "/profile/my-recipe-box", query: { message: "Recipe updated", good: true } }, "/profile/my-recipe-box");
+        }
+      });
   }
 
   const cancelEdit = () => {
@@ -332,8 +345,12 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
         />
 
         <MessageBanner message={error} ok={false} />
-        <button type="button" onClick={updateRecipe}>Save</button>
-        <button type="button" onClick={cancelEdit}>Cancel</button>
+        {loading ? <Spinner /> :
+          <div>
+            <button type="button" onClick={updateRecipe}>Save</button>
+            <button type="button" onClick={cancelEdit}>Cancel</button>
+          </div>
+        }
       </form>
     </>
   )
