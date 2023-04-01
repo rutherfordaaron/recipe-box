@@ -15,7 +15,7 @@ const MessageBanner = (props: { message?: string, ok?: boolean }) => {
         setShow(false);
       }, 4000);
     }
-  }, [router.asPath])
+  }, [router.asPath, router.query.message])
 
   useEffect(() => {
     if (props.message) {

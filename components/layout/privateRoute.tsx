@@ -32,8 +32,7 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
       }, "/login");
 
     }
-
-  })
+  }, [router, token, unprotectedRoutes])
 
   return (
     <>
