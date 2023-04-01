@@ -116,7 +116,7 @@ export default function SignUp() {
           valid={emailValid}
         />
 
-        <div className="border rounded shadow-md bg-sky-200 text-sm p-4 w-max max-w-[100%] mx-auto">
+        <div className="rounded shadow-md bg-sky-200 text-sm p-4 w-max max-w-[100%] mx-auto">
           <p className="font-semibold text-center mb-2">Password Requirements:</p>
           <ul>
             <li>At least 6 characters long.</li>
