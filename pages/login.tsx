@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import crypto from "crypto";
 import Loading from "../components/loading";
+import MessageBanner from "../components/layout/messageBanner";
 
 const Login = () => {
   let [cookie, setCookie] = useCookies(["token"])
@@ -77,7 +78,7 @@ const Login = () => {
     <>
       <form className="flex-col flex align-middle">
         <h1 className="text-center">Login</h1>
-        {error ? <p className="text-sm text-red-400 italic text-center mb-4">{error}. Please try again.</p> : ""}
+        {error ? <MessageBanner message={`${error}. Please try again.`} ok={false} /> : <></>}
         <Input
           id="username"
           type="text"
