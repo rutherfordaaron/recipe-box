@@ -10,6 +10,11 @@ const Input = (props: {
   range?: [number, number]
 }) => {
 
+  const preventNonNumericalInput = (e: KeyboardEvent) => {
+    if (!e.code.match(/^[0-9]+$/))
+      e.preventDefault();
+  }
+
   return (
     <div className="relative my-4 transition-all mx-auto">
       <label
@@ -28,6 +33,17 @@ const Input = (props: {
         type={props.type}
         id={props.id}
         name={props.id}
+        onKeyDown={(e) => {
+          console.log(e.key)
+          if (props.type === "number") {
+            if (e.key === "Backspace") {
+              return
+            }
+            if (!e.key.match(/^[0-9]+$/)) {
+              e.preventDefault()
+            }
+          }
+        }}
         onChange={props.onChange}
         className={`
           border-b-2 focus:outline-none focus:border-blue-200 transition-all bg-transparent
