@@ -19,7 +19,7 @@ export enum RecipeType {
 export type Recipe = {
   _id?: ObjectId,
   name: string,
-  description: string,
+  description?: string,
   owner: string,
   origin: string,
   recipeType: RecipeType,
