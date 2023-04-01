@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import Input from "../components/input";
 import Link from "next/link";
 import crypto from "crypto";
-import Loading from "../components/loading";
 import MessageBanner from "../components/layout/messageBanner";
+import { Spinner } from "../components/spinner";
 
 export default function SignUp() {
   // Strength type to make sure strength is always one of these 3 values
@@ -92,7 +92,6 @@ export default function SignUp() {
         })
     }
   }
-  if (loading) return <Loading />
   return (
     <>
       {error ? <MessageBanner message={error} /> : <></>}
@@ -165,15 +164,16 @@ export default function SignUp() {
         />
         <p className="text-sm text-center text-red-400 h-[20px]">{passwordMatch ? "" : "Passwords must match"}</p>
 
-        <button
-          type="button"
-          onClick={validate}
-          className={`
-            ${emailValid && usernameValid && passwordMatch && passwordStrength !== Strength.Weak && email && username && password ? "bg-blue-300 text-black shadow-lg top-[-10px] hover:bg-blue-500"
-              : "bg-slate-200 text-gray-300 hover:cursor-not-allowed top-0 hover:bg-slate-200"} 
-            w-max px-6 py-2 rounded mx-auto font-bold relative transition-all mt-4`}
-        >Submit
-        </button>
+        {loading ? <Spinner /> :
+          <button
+            type="button"
+            onClick={validate}
+            className={`
+      ${emailValid && usernameValid && passwordMatch && passwordStrength !== Strength.Weak && email && username && password ? "bg-blue-300 text-black shadow-lg top-[-10px] hover:bg-blue-500"
+                : "bg-slate-200 text-gray-300 hover:cursor-not-allowed top-0 hover:bg-slate-200"} 
+      w-max px-6 py-2 rounded mx-auto font-bold relative transition-all mt-4`}
+          >Submit
+          </button>}
         <p className="text-sm text-center my-3">Already have an account? <Link className="text-blue-400 underline" href="/login">Login here</Link>.</p>
       </form>
     </>

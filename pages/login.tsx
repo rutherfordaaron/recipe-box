@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 import crypto from "crypto";
 import Loading from "../components/loading";
 import MessageBanner from "../components/layout/messageBanner";
+import { Spinner } from "../components/spinner";
 
 const Login = () => {
   let [cookie, setCookie] = useCookies(["token"])
@@ -73,7 +74,6 @@ const Login = () => {
       sameSite: true
     })
   }
-  if (loading) return <Loading />
   return (
     <>
       <form className="flex-col flex align-middle">
@@ -101,16 +101,17 @@ const Login = () => {
           state={password}
           valid={passwordValid}
         />
-        <button
-          type="button"
-          className={`
-            ${usernameValid && username && password && passwordValid ? "bg-blue-300 text-black shadow-lg top-[-10px] hover:bg-blue-500"
-              : "bg-slate-200 text-gray-300 hover:cursor-not-allowed hover:bg-slate-200 top-0"} 
-            w-max px-6 py-2 rounded mx-auto font-bold relative transition-all mt-4
-          `}
-          onClick={submit}
-        >Submit
-        </button>
+        {loading ? <Spinner /> :
+          <button
+            type="button"
+            className={`
+          ${usernameValid && username && password && passwordValid ? "bg-blue-300 text-black shadow-lg top-[-10px] hover:bg-blue-500"
+                : "bg-slate-200 text-gray-300 hover:cursor-not-allowed hover:bg-slate-200 top-0"} 
+          w-max px-6 py-2 rounded mx-auto font-bold relative transition-all mt-4
+        `}
+            onClick={submit}
+          >Submit
+          </button>}
         <p className="text-sm text-center my-2">New user? <Link href="/sign-up" className="text-blue-400 underline">Sign up</Link> for a free account!</p>
       </form>
     </>
