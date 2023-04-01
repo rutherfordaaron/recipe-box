@@ -2,9 +2,6 @@ import { useState } from "react"
 import { useRouter } from "next/router";
 import Input from "../components/input";
 import Link from "next/link";
-import crypto from "crypto";
-import Loading from "../components/loading";
-import MessageBanner from "../components/layout/messageBanner";
 
 export default function SignUp() {
   // Strength type to make sure strength is always one of these 3 values
@@ -13,9 +10,6 @@ export default function SignUp() {
     Medium = "medium",
     Strong = "strong"
   }
-
-  let [loading, setLoading] = useState(false);
-  let [error, setError] = useState("");
 
   // State for form validation
   let [email, setEmail] = useState("");
@@ -27,7 +21,15 @@ export default function SignUp() {
   let [passwordMatch, setPasswordMatch] = useState(true);
   let [passwordStrength, setPasswordStrength] = useState<null | Strength>(null);
 
+  // get any errors thrown from the API by accessing URL parameters
   const router = useRouter();
+  const { error } = router.query;
+  let parsedError: string;
+  if (error && typeof error === "string") {
+    parsedError = error.split("-").join(" ");
+  } else {
+    parsedError = ""
+  }
 
   // Check to ensure valid email
   const checkEmail = (email: string) => {
@@ -76,31 +78,17 @@ export default function SignUp() {
 
   // if password is not weak and matches, submit the form (attempt to create the new user)
   const validate = () => {
-    setLoading(true);
     const form = document.querySelector("form");
     if (password && passwordMatch && emailValid && usernameValid && form) {
-      let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
-      fetch("/api/users", { method: "POST", headers: { email, password: hashPassword, username } })
-        .then(res => {
-          if (!res.ok) return { error: true, message: `Something went wrong! Error ${res.status}` }
-          return res.json();
-        })
-        .then(data => {
-          if (data.error) {
-            setLoading(false);
-            setError(data.message)
-          } else {
-            router.push({ pathname: "/login", query: { message: "User created successfully", good: true } }, "/profile")
-          }
-        })
+      form.submit();
     }
   }
-  if (loading) return <Loading />
+
   return (
     <>
-      {error ? <MessageBanner message={error} /> : <></>}
       <form action="/api/users" method="POST" id="form" className="flex flex-col align-middle">
         <h1 className="text-center mb-3">New User</h1>
+        {parsedError ? <p className="text-sm text-red-400 italic text-center mb-4">{parsedError}. Please try again.</p> : ""}
 
         <Input
           id="user"
