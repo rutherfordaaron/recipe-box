@@ -21,10 +21,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let token = getToken(req);
 
-  let username = req.body.user;
-  let password = req.body.pass;
-  let email = req.body.email;
-
   switch (req.method) {
     /* -------------------- GET ------------------------ */
     case "GET":
@@ -47,30 +43,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     /* -------------------- POST ------------------------ */
     // Create new user only if using a POST request
     case "POST":
+      let username = req.headers.username;
+      let password = req.headers.password;
+      let email = req.headers.email;
+
+      if (!(username && password && email)) {
+        res.status(400).json({ error: true, message: "Missing required data to process request" });
+        break;
+      }
       // Check to see if user already exists (username or email)
       const userExists = await users.findOne({ username: username });
       if (userExists) {
         // 409: CONFLICT
-        res.status(409).redirect("/sign-up?error=Username-already-in-use");
+        res.status(409).json({ error: true, message: "Username already in use" });
         break;
       }
       const emailExists = await users.findOne({ email: email });
       if (emailExists) {
         // 409: CONFLICT
-        res.status(409).redirect("/sign-up?error=Email-already-in-use");
+        res.status(409).json({ error: true, message: "Email already in use" });
         break;
       }
 
       // Hash the password for storage on the database
-      let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
+      // let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
 
       // create a user object and post it to the database
-      const newUser: User = { username, email, password: hashPassword, created: new Date(), verified: false, token: "" };
+      const newUser: User = { username: username.toString(), email: email.toString(), password: password.toString(), created: new Date(), verified: false, token: "" };
 
       users.insertOne(newUser);
 
       // 201: CREATED
-      res.status(201).redirect("/login");
+      res.status(201).json({ error: false, message: "success" });
       break;
     /* -------------------- DELETE ------------------------ */
     case "DELETE":
