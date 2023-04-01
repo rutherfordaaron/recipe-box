@@ -106,8 +106,8 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
 
   // -------------------- VALIDATE AND PATCH --------------------
   const validate = () => {
-    if (!(name && description && origin && recipeType)) {
-      setError("Please fill out name, description, origin, and recipeType");
+    if (!(name && origin && recipeType)) {
+      setError("Please fill out name, origin, and recipeType");
       setTimeout(() => {
         setError("");
       }, 4000)
