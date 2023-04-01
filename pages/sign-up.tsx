@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Input from "../components/input";
 import Link from "next/link";
 
-export default function signUp() {
+export default function SignUp() {
   // Strength type to make sure strength is always one of these 3 values
   enum Strength {
     Weak = "weak",
