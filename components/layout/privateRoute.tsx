@@ -14,7 +14,7 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
   const unprotectedRoutes = [
     "/",
     "/login",
-    "/signup"
+    "/sign-up"
   ]
 
   useEffect(() => {
