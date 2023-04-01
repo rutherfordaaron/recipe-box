@@ -16,7 +16,8 @@ const EditableList = (props: { list: Ingredient[] | string[], setList: (newOrder
   }
 
   return (
-    <Reorder.Group values={props.list} as="ol" onReorder={props.setList}>
+    <Reorder.Group values={props.list} as="ol" onReorder={props.setList} className="w-[80%]">
+      <p className="text-xs text-slate-300 text-center">Drag and drop items to reorder</p>
       {props.list.map((item, i) => {
         return (
           <Reorder.Item value={item} as="div" key={isIngredient(item) ? item.id : item} className="flex justify-between gap-3 my-3">
