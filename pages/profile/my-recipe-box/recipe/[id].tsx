@@ -59,7 +59,7 @@ const RecipeDetails = () => {
           <ul>
             {recipe.ingredients.map((el, i) => {
               return (
-                <li key={`${recipe._id}Ingredient${i}`}>{el.measurement} of {el.ingredient}</li>
+                <li key={`${recipe._id}Ingredient${i}`}>{el.measurement} {/[a-zA-Z]/.test(el.measurement) ? "of " : ""}{el.ingredient}</li>
               )
             })}
           </ul>

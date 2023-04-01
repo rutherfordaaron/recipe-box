@@ -21,7 +21,7 @@ const EditableList = (props: { list: Ingredient[] | string[], setList: (newOrder
       {props.list.map((item, i) => {
         return (
           <Reorder.Item value={item} as="div" key={isIngredient(item) ? item.id : item} className="flex justify-between gap-3 my-3">
-            {isIngredient(item) ? <p>{item.measurement} of {item.ingredient}</p> : <li>{item}</li>}
+            {isIngredient(item) ? <p>{item.measurement} {/[a-zA-Z]/.test(item.measurement) ? "of " : ""}{item.ingredient}</p> : <li>{item}</li>}
             <FontAwesomeIcon
               icon={faXmark}
               className="hover:cursor-pointer"
