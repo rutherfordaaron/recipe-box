@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import crypto from "crypto";
+import Loading from "../components/loading";
 
 const Login = () => {
   let [cookie, setCookie] = useCookies(["token"])
@@ -12,10 +13,12 @@ const Login = () => {
   let [password, setPassword] = useState("");
   let [passwordValid, setPasswordValid] = useState(true);
   let [error, setError] = useState("");
+  let [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const submit = async () => {
+    setLoading(true);
     const form = document.querySelector("form");
     if (form && username && password && usernameValid && passwordValid) {
       // form.submit();
@@ -51,11 +54,13 @@ const Login = () => {
               }
             }, router.query.returnTo ? router.query.returnTo.toString() : "/")
           } else {
+            setLoading(false)
             setError(data.data);
           }
 
         })
     } else {
+      setLoading(false);
       return false;
     }
   }
@@ -67,7 +72,7 @@ const Login = () => {
       sameSite: true
     })
   }
-
+  if (loading) return <Loading />
   return (
     <>
       <form className="flex-col flex align-middle">

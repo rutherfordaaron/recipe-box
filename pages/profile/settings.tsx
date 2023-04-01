@@ -11,8 +11,8 @@ const Settings = () => {
 
   const logout = () => {
     setLoading(true);
-    removeCookie("token", { path: "/" });
     Router.push({ pathname: "/login", query: { message: "Successfully logged out", good: true } });
+    removeCookie("token", { path: "/" });
   }
 
   const deleteUser = async () => {
@@ -23,7 +23,7 @@ const Settings = () => {
         if (!data.error) {
           logout();
         } else {
-          setLoading(true);
+          setLoading(false);
           Router.push("/profile?error=something-went-wrong");
         }
       })
