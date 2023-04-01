@@ -11,6 +11,9 @@ import getToken from "../../util/getToken";
  */
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  setTimeout(() => {
+    res.status(504).json({ error: true, message: "Something went wrong while trying to contact the database" })
+  }, 10000)
   // Connect to the "users" collection on the database
   const client = await clientPromise;
   const db = client.db(process.env.DB);
