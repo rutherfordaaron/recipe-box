@@ -81,10 +81,7 @@ export default function SignUp() {
     if (password && passwordMatch && emailValid && usernameValid && form) {
       let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
       fetch("/api/users", { method: "POST", headers: { email, password: hashPassword, username } })
-        .then(res => {
-          if (!res.ok) return { error: true, message: `Something went wrong! Error ${res.status}` }
-          return res.json();
-        })
+        .then(res => res.json())
         .then(data => {
           if (data.error) {
             setLoading(false);
