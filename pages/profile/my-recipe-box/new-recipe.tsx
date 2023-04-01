@@ -15,6 +15,7 @@ const NewRecipe = () => {
   // State page variable to track which page of the form should render
   const [page, setPage] = useState(1);
   const [recipe, setRecipe] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -31,7 +32,7 @@ const NewRecipe = () => {
       case 4:
         return <PageFour setRecipe={setRecipe} recipe={recipe} setPage={setPage} />
       default:
-        return <PageFive setRecipe={setRecipe} recipe={recipe} setPage={setPage} owner={owner} />
+        return <PageFive setRecipe={setRecipe} recipe={recipe} setPage={setPage} owner={owner} setLoading={setLoading} />
     }
   }
 

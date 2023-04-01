@@ -1,11 +1,12 @@
 import { Recipe } from "../../util/types";
 import { useRouter } from "next/router";
 
-const NavButtons = (props: { page: number, setState: Function, validate: Function, recipe?: Record<string, any>, owner?: string }) => {
+const NavButtons = (props: { page: number, setState: Function, validate: Function, recipe?: Record<string, any>, owner?: string, setLoading?: Function }) => {
 
   const router = useRouter();
 
   const submitNewRecipe = async (recipe: Record<string, any> | undefined, owner: string | undefined) => {
+    if (props.setLoading) props.setLoading(true);
     if (recipe && owner) {
       const newRecipe: Recipe = {
         name: recipe.name,
