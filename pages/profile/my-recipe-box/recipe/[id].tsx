@@ -4,6 +4,10 @@ import Loading from "../../../../components/loading";
 import getRecipe from "../../../../util/getRecipe";
 import getUser from "../../../../util/getUser";
 import RecipeEditMode from "../../../../components/recipeEditMode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import { BackButton } from "../../../../components/backButton";
 
 const RecipeDetails = () => {
   const [error, setError] = useState("")
@@ -38,6 +42,7 @@ const RecipeDetails = () => {
     const recipe = recipeData.recipe;
     return (
       <article>
+        <BackButton href="/profile/my-recipe-box" />
         <section>
           <h1>{recipe.name}</h1>
           <p>{!recipe.rating ? "" : recipe.rating}</p>
@@ -77,7 +82,7 @@ const RecipeDetails = () => {
     )
   }
   if (editMode && recipeData && recipeData.recipe) {
-    return <RecipeEditMode recipe={recipeData?.recipe} setEditMode={setEditMode} />
+    return <RecipeEditMode recipe={recipeData?.recipe} setEditMode={setEditMode} editMode={true} />
   }
 }
 

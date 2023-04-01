@@ -7,13 +7,14 @@ import { useState } from "react";
 import { uuid } from "uuidv4";
 import MessageBanner from "./layout/messageBanner";
 import { Spinner } from "./spinner";
+import { BackButton } from "./backButton";
 
-const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
-  let { recipe, setEditMode } = props;
+const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMode: boolean }) => {
+  let { recipe, setEditMode, editMode } = props;
   const router = useRouter();
 
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   // -------------------- BASIC INFO STATE VARIABLES --------------------
   const [name, setName] = useState(recipe.name ? recipe.name : "");
   const [nameValid, setNameValid] = useState(true);
@@ -140,7 +141,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
       servings: servingsYield,
       rating
     }
-    fetch("/api/recipe", { method: "PATCH", headers: { recipe: JSON.stringify(newRecipe) } })
+    fetch("/api/recipe", { method: editMode ? "PATCH" : "POST", headers: { recipe: JSON.stringify(newRecipe) } })
       .then(res => res.json())
       .then(data => {
         setLoading(false);
@@ -150,76 +151,79 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
             setError("");
           }, 4000)
         } else {
-          router.push({ pathname: "/profile/my-recipe-box", query: { message: "Recipe updated", good: true } }, "/profile/my-recipe-box");
+          router.push({ pathname: "/profile/my-recipe-box", query: { message: editMode ? "Recipe updated" : "Recipe created successfully", good: true } }, "/profile/my-recipe-box");
         }
       });
   }
 
   const cancelEdit = () => {
-    setEditMode(false);
+    if (setEditMode) setEditMode(false);
   }
 
   return (
     <>
-      <h1>Edit Mode</h1>
-      <form>
+      {editMode ? <></> : <BackButton href="/profile/my-recipe-box" />}
+      <h1>{editMode ? "Edit Mode" : "New Recipe"}</h1>
+      <form className="flex flex-col justify-center items-center gap-6">
         {/* -------------------- BASIC INFO SECTION ------------------- */}
-        <h2>Basic Info</h2>
-        <Input
-          id="name"
-          type="text"
-          label="Name*"
-          onChange={e => { nameChangeHandler(e.target.value); }}
-          state={name}
-          valid={nameValid}
-        />
-
-        <Input
-          id="description"
-          type="text"
-          label="Description"
-          onChange={e => { descriptionChangeHandler(e.target.value) }}
-          state={description}
-          valid={true}
-        />
-
-        <Input
-          id="origin"
-          type="text"
-          label="Origin*"
-          onChange={e => { originChangeHandler(e.target.value) }}
-          state={origin}
-          valid={originValid}
-        />
-
-        <div>
-          <label htmlFor="recipeType">Recipe Type*</label>
-          <RadioButton
-            id="modified"
-            label="Modified"
-            name="recipeType"
-            onClick={e => setRecipeType(RecipeType.Modified)}
-            checked={recipeType === RecipeType.Modified ? true : false}
+        <div className="bg-slate-100 rounded-xl py-2 pb-4 w-[90%] flex flex-col justify-center items-center">
+          <h2>Basic Info</h2>
+          <Input
+            id="name"
+            type="text"
+            label="Name*"
+            onChange={e => { nameChangeHandler(e.target.value); }}
+            state={name}
+            valid={nameValid}
           />
-          <RadioButton
-            id="copied"
-            label="Copied"
-            name="recipeType"
-            onClick={e => setRecipeType(RecipeType.Copied)}
-            checked={recipeType === RecipeType.Copied ? true : false}
+
+          <Input
+            id="description"
+            type="text"
+            label="Description"
+            onChange={e => { descriptionChangeHandler(e.target.value) }}
+            state={description}
+            valid={true}
           />
-          <RadioButton
-            id="original"
-            label="Original"
-            name="recipeType"
-            onClick={e => setRecipeType(RecipeType.Original)}
-            checked={recipeType === RecipeType.Original ? true : false}
+
+          <Input
+            id="origin"
+            type="text"
+            label="Origin*"
+            onChange={e => { originChangeHandler(e.target.value) }}
+            state={origin}
+            valid={originValid}
           />
+
+          <div>
+            <label htmlFor="recipeType">Recipe Type*</label>
+            <RadioButton
+              id="modified"
+              label="Modified"
+              name="recipeType"
+              onClick={e => setRecipeType(RecipeType.Modified)}
+              checked={recipeType === RecipeType.Modified ? true : false}
+            />
+            <RadioButton
+              id="copied"
+              label="Copied"
+              name="recipeType"
+              onClick={e => setRecipeType(RecipeType.Copied)}
+              checked={recipeType === RecipeType.Copied ? true : false}
+            />
+            <RadioButton
+              id="original"
+              label="Original"
+              name="recipeType"
+              onClick={e => setRecipeType(RecipeType.Original)}
+              checked={recipeType === RecipeType.Original ? true : false}
+            />
+          </div>
         </div>
 
         {/* -------------------- INGREDIENTS SECTION ------------------- */}
-        <h2>Ingredients</h2>
-        <div>
+        <div className="bg-slate-100 rounded-xl py-2 pb-4 w-[90%] flex flex-col justify-center items-center">
+          <h2>Ingredients</h2>
           <Input
             id="measurementInput"
             type="text"
@@ -261,8 +265,8 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
         </div>
 
         {/* -------------------- DIRECTIONS SECTION ------------------- */}
-        <h2>Directons</h2>
-        <div>
+        <div className="bg-slate-100 rounded-xl py-2 pb-4 w-[90%] flex flex-col justify-center items-center">
+          <h2>Directons</h2>
           <Input
             id="directionInput"
             type="text"
@@ -288,67 +292,72 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode: Function }) => {
         </div>
 
         {/* -------------------- TIME, YIELD, AND RATING SECTION ------------------- */}
-
-        <h2>Time, Yield, and Rating</h2>
-        <Input
-          id="prepTime"
-          type="number"
-          label="Prep Time (Minutes)"
-          onChange={(e) => {
-            const value = Number(e.target.value);
-            setPrepTime(value <= 100000 && value > 0 ? value : 0)
-          }} state={prepTime <= 0 || typeof prepTime !== "number" ? "" : prepTime}
-          valid={true}
-          range={[1, 100000]}
-        />
-        <Input
-          id="cookTime"
-          type="number"
-          label="Cook Time (Minutes)"
-          onChange={(e) => {
-            const value = Number(e.target.value);
-            setCookTime(value <= 100000 && value > 0 ? value : 0)
-          }}
-          state={cookTime <= 0 || typeof cookTime !== "number" ? "" : cookTime}
-          valid={true}
-          range={[1, 100000]}
-        />
-        <Input
-          id="servingsYield"
-          type="number"
-          label="Servings Yield"
-          onChange={(e) => {
-            const value = Number(e.target.value);
-            setServingsYield(value <= 100000 && value > 0 ? value : 0)
-          }}
-          state={servingsYield === 0 ? "" : servingsYield}
-          valid={true}
-          range={[1, 100000]}
-        />
-        <Input
-          id="rating"
-          type="number"
-          label="Rating (1-10)"
-          onChange={(e) => {
-            const value = Number(e.target.value);
-            if (rating) {
-              let tempRating = [...rating];
-              tempRating[0] = value <= 10 && value > 0 ? value : 0
-              setRating(tempRating);
-            } else {
-              setRating([value <= 10 && value > 0 ? value : 0])
-            }
-          }}
-          state={rating && rating[0] === 0 ? "" : rating ? rating[0] : ""}
-          valid={true}
-          range={[1, 10]}
-        />
+        <div className="bg-slate-100 rounded-xl py-2 pb-4 w-[90%] flex flex-col justify-center items-center">
+          <h2>Time, Yield, and Rating</h2>
+          <Input
+            id="prepTime"
+            type="number"
+            label="Prep Time (Minutes)"
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              setPrepTime(value <= 100000 && value > 0 ? value : 0)
+            }} state={prepTime <= 0 || typeof prepTime !== "number" ? "" : prepTime}
+            valid={true}
+            range={[1, 100000]}
+          />
+          <Input
+            id="cookTime"
+            type="number"
+            label="Cook Time (Minutes)"
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              setCookTime(value <= 100000 && value > 0 ? value : 0)
+            }}
+            state={cookTime <= 0 || typeof cookTime !== "number" ? "" : cookTime}
+            valid={true}
+            range={[1, 100000]}
+          />
+          <Input
+            id="servingsYield"
+            type="number"
+            label="Servings Yield"
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              setServingsYield(value <= 100000 && value > 0 ? value : 0)
+            }}
+            state={servingsYield === 0 ? "" : servingsYield}
+            valid={true}
+            range={[1, 100000]}
+          />
+          <Input
+            id="rating"
+            type="number"
+            label="Rating (1-10)"
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              if (rating) {
+                let tempRating = [...rating];
+                tempRating[0] = value <= 10 && value > 0 ? value : 0
+                setRating(tempRating);
+              } else {
+                setRating([value <= 10 && value > 0 ? value : 0])
+              }
+            }}
+            state={rating && rating[0] === 0 ? "" : rating ? rating[0] : ""}
+            valid={true}
+            range={[1, 10]}
+          />
+        </div>
 
         <MessageBanner message={error} ok={false} />
         {loading ? <Spinner /> :
-          <div>
-            <button type="button" onClick={updateRecipe}>Save</button>
-            <button type="button" onClick={cancelEdit}>Cancel</button>
+          <div className="flex justify-center items-center gap-4">
+            {editMode ?
+              <>
+                <button type="button" onClick={updateRecipe}>Save</button>
+                <button type="button" onClick={cancelEdit}>Cancel</button>
+              </> :
+              <button type="button" onClick={updateRecipe}>Submit</button>}
           </div>
         }
       </form>

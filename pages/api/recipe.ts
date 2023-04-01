@@ -77,13 +77,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const recipeResult = await recipes.insertOne(newRecipe);
         // If recipe fails to insert, 500: Internal Server Error
         if (!recipeResult.insertedId) {
-          res.status(500).json({ error: true, reason: "database error" })
+          res.status(500).json({ error: true, message: "database error" })
         }
         // If recipe inserts successfully, 200!!
-        res.status(200).json({ error: false });
+        res.status(200).json({ error: false, message: "success" });
       } else {
         // If recipe header is somehow not a string, 500: Internal Server Error
-        res.status(500).json({ error: true, reason: "wrong data type was submitted" });
+        res.status(500).json({ error: true, message: "wrong data type was submitted" });
       }
       break;
     /* -------------------- DELETE -------------------- */
