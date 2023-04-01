@@ -35,7 +35,7 @@ const MessageBanner = (props: { message?: string, ok?: boolean }) => {
           initial={{ y: 300 }}
           animate={{ y: 0 }}
           exit={{ y: 300 }}
-          className={`transition-all fixed flex justify-center items-center gap-4 bottom-12 ${props.ok ? props.ok : router.query.good && router.query.good !== "false" ? good : bad} p-4 w-[80vw] text-center rounded-md shadow-lg right-[10vw]`}
+          className={`transition-all fixed flex justify-center items-center gap-4 bottom-12 ${props.ok ? good : router.query.good && router.query.good !== "false" ? good : bad} p-4 w-[80vw] text-center rounded-md shadow-lg right-[10vw]`}
         >
           <p>{props.message ? props.message : router.query.message?.toString()}</p>
         </motion.div>}
