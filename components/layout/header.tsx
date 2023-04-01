@@ -14,7 +14,7 @@ const Header = () => {
 
   useEffect(() => {
     setAuthenticated(Boolean(cookie.token));
-  }, cookie.token)
+  }, [cookie.token])
 
   const linkClass = "hover:text-sky-800 hover:scale-110 my-2 transition-all"
 

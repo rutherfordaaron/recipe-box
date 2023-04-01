@@ -11,13 +11,15 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
   const [cookies] = useCookies(["token"]);
   const token = cookies.token;
 
-  const unprotectedRoutes = [
-    "/",
-    "/login",
-    "/sign-up"
-  ]
+
 
   useEffect(() => {
+    const unprotectedRoutes = [
+      "/",
+      "/login",
+      "/sign-up"
+    ]
+
     setLoading(false);
     setPath(router.pathname);
     if (!token && !unprotectedRoutes.find(e => e == router.pathname)) {
@@ -32,7 +34,7 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
       }, "/login");
 
     }
-  }, [router, token, unprotectedRoutes])
+  }, [router, token])
 
   return (
     <>
