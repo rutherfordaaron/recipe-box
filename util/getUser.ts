@@ -2,7 +2,11 @@ import useSWR from "swr";
 import { GetUserAPIData } from "./types";
 
 const fetcher = async (route: string): Promise<GetUserAPIData> => {
-  const data = await fetch(route, { method: "GET" }).then(res => res.json());
+  const data = await fetch(route, { method: "GET" })
+    .then(res => {
+      if (!res.ok) return { user: null, message: `Something went wrong! Error ${res.status}` }
+      return res.json();
+    });
   return data;
 }
 

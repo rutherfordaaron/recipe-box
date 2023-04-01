@@ -39,9 +39,9 @@ const Login = () => {
             "user-data": JSON.stringify({ username: username, password: hashPassword })
           }
         })
-        .then(response => {
-          const data = response.json();
-          return data;
+        .then(res => {
+          if (!res.ok) return { error: true, message: `Something went wrong! Error ${res.status}` }
+          return res.json();
         })
         .then(data => {
           if (!data.error) {

@@ -2,7 +2,11 @@ import useSWR from "swr";
 import { GetRecipeAPIData } from "./types";
 
 const fetcher = async (route: string, id: string): Promise<GetRecipeAPIData> => {
-  const data = await fetch(route, { method: "GET" }).then(res => res.json());
+  const data = await fetch(route, { method: "GET" })
+    .then(res => {
+      if (!res.ok) return { recipe: null, message: `Something went wrong! Error ${res.status}` }
+      return res.json();
+    });
   return data;
 }
 
