@@ -116,14 +116,15 @@ export default function SignUp() {
           valid={emailValid}
         />
 
-        <div className="border rounded shadow-md bg-sky-200 text-sm p-4 w-max mx-auto">
+        <div className="border rounded shadow-md bg-sky-200 text-sm p-4 w-max max-w-[100%] mx-auto">
           <p className="font-semibold text-center mb-2">Password Requirements:</p>
           <ul>
             <li>At least 6 characters long.</li>
             <li>At least one uppercase letter</li>
             <li>At least one lowercase letter</li>
             <li>At least one digit (0-9)</li>
-            <li>At least one special character</li>
+            <li>
+              At least one special character <span className="text-xs text-sky-600 block mt-2">Allowed special characters: !@#$%^&*()\-_+.</span> </li>
           </ul>
         </div>
 

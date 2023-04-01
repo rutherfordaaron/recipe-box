@@ -37,6 +37,9 @@ const Input = (props: {
               e.preventDefault()
             }
           }
+          if (props.id === "pass" || props.id === "confrim-pass") {
+            if (!e.key.match(/[a-zA-Z0-9!@#$%^&*()\_+.-]/)) e.preventDefault();
+          }
         }}
         onChange={props.onChange}
         className={`
