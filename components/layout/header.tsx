@@ -1,20 +1,30 @@
-// import styles from "./header.module.scss";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
-import { Children, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion"
 import Nav from "./nav";
+import getUser from "../../util/getUser";
+import { Spinner } from "../spinner";
 
 const Header = () => {
   const [cookie] = useCookies(["token"]);
-  const [authenticated, setAuthenticated] = useState(Boolean(cookie.token));
+  const { userData, userError, userIsLoading } = getUser();
   const [listener, setListener] = useState(false);
+  const [authenticated, setAuthenticated] = useState<boolean | null>(false);
 
   useEffect(() => {
-    setAuthenticated(Boolean(cookie.token));
-  }, [cookie.token])
+    if (userIsLoading) {
+      setAuthenticated(null);
+    } else if (!cookie.token) {
+      setAuthenticated(false)
+    } else if (userData && userData.user) {
+      setAuthenticated(true)
+    } else {
+      setAuthenticated(false)
+    };
+  }, [listener, userData, userError, userIsLoading, cookie])
 
   const linkClass = "hover:text-sky-800 hover:scale-110 my-2 transition-all"
 
@@ -31,8 +41,7 @@ const Header = () => {
       {/* <Link className={linkClass} href="/profile/favorites">Favorite Recipes</Link>
       <Link className={linkClass} href="/profile/meal-plan">Meal Plan</Link>
       <Link className={linkClass} href="/profile/grocery-list">Grocery List</Link>
-      <Link className={linkClass} href="/profile/friends">Friends</Link>
-      <Link className={linkClass} href="/profile">Profile</Link> */}
+      <Link className={linkClass} href="/profile/friends">Friends</Link> */}
       <Link className={linkClass} href="/profile/settings">Settings</Link>
     </Nav>
 
@@ -68,7 +77,7 @@ const Header = () => {
         <FontAwesomeIcon icon={faBars} className="hover:cursor-pointer" onClick={toggleNav} />
       </motion.button>
 
-      {authenticated ? isAuthenticated : notAuthenticated}
+      {authenticated === null ? <Spinner /> : authenticated ? isAuthenticated : notAuthenticated}
     </header>
   )
 }
