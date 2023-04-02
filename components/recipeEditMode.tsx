@@ -64,8 +64,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
    * Clear the newIngredient and newMeasurement state variable after pushing new ingredient to ingredientArr
    */
   const addIngredient = () => {
-    const error = document.getElementById("error");
-    if (newIngredient && newMeasurement) {
+    if (newIngredient) {
       const ingredient = {
         measurement: newMeasurement,
         ingredient: newIngredient,
@@ -76,9 +75,8 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
       setIngredients(tempIngredientArr);
       setNewIngredient("");
       setNewMeasurement("");
-      if (error) error.innerHTML = "";
     } else {
-      if (error) error.innerHTML = "Please make sure you have an ingredient and a measurement."
+      setError("Must have an ingredient name")
     }
   }
 
@@ -179,7 +177,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
 
           <Input
             id="description"
-            type="text"
+            type="textarea"
             label="Description"
             onChange={e => { descriptionChangeHandler(e.target.value) }}
             state={description}
@@ -269,7 +267,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
           <h2>Directons</h2>
           <Input
             id="directionInput"
-            type="text"
+            type="textarea"
             label="Direction"
             state={newDirection}
             valid={true}
@@ -285,7 +283,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
           />
 
           <button type="button" onClick={addDirection}>
-            Add Directions
+            Add Direction
           </button>
 
           <EditableList list={directionArr} setList={setDirecitonArr} />

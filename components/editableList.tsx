@@ -20,11 +20,11 @@ const EditableList = (props: { list: Ingredient[] | string[], setList: (newOrder
       <p className="text-xs text-slate-300 text-center">Drag and drop items to reorder</p>
       {props.list.map((item, i) => {
         return (
-          <Reorder.Item value={item} as="div" key={isIngredient(item) ? item.id : item} className="flex justify-between gap-3 my-3">
-            {isIngredient(item) ? <p>{item.measurement} of {item.ingredient}</p> : <li>{item}</li>}
+          <Reorder.Item value={item} as="div" key={isIngredient(item) ? item.id : item} className="flex justify-between items-center gap-3 my-3 hover:cursor-grab">
+            {isIngredient(item) ? <p>{item.measurement} {/[a-zA-Z]/.test(item.measurement) ? "of " : ""}{item.ingredient}</p> : <li>{item}</li>}
             <FontAwesomeIcon
               icon={faXmark}
-              className="hover:cursor-pointer"
+              className="hover:cursor-pointer hover:scale-110 transition-all"
               onClick={() => removeItem(item)}
             />
           </Reorder.Item>

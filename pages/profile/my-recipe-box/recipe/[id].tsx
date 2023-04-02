@@ -4,15 +4,13 @@ import Loading from "../../../../components/loading";
 import getRecipe from "../../../../util/getRecipe";
 import getUser from "../../../../util/getUser";
 import RecipeEditMode from "../../../../components/recipeEditMode";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 import { BackButton } from "../../../../components/backButton";
 
 const RecipeDetails = () => {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [confrimDelete, setConfirmDelete] = useState(false);
   const router = useRouter();
   const id = router.query.id ? router.query.id.toString() : "";
 
@@ -43,31 +41,39 @@ const RecipeDetails = () => {
     return (
       <article>
         <BackButton href="/profile/my-recipe-box" />
-        <section>
+        {!confrimDelete ? <></> :
+          <div className="fixed inset-0 bg-translucent z-[5] flex flex-col justify-center items-center p-12 text-center">
+            <p className="text-xl drop-shadow">Are you sure you want to delete this recipe? This <span className="italic">cannot</span> be undone.</p>
+            <div className="flex gap-4 mt-4">
+              <button className="bg-rose-100 text-rose-900 border-none hover:bg-rose-500 hover:text-black shadow-lg" onClick={deleteRecipe}>Yes, I&apos;m sure</button>
+              <button className="bg-emerald-100 text-emerald-900 hover:bg-emerald-500 hover:text-black border-none shadow-lg" onClick={e => setConfirmDelete(false)}>No, nevermind</button>
+            </div>
+          </div>}
+        <section className="relative">
           <h1>{recipe.name}</h1>
-          <p>{!recipe.rating ? "" : recipe.rating}</p>
-          <p>{recipe.description}</p>
-          <div>
-            <p>Prep Time: {!recipe.prepTime ? "unknown" : recipe.prepTime}</p>
-            <p>Cook Time: {!recipe.cookTime ? "unknown" : recipe.cookTime}</p>
+          {recipe.rating ? <p className="absolute top-0 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
+          {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
+          <div className="flex flex-col text-sm text-gray-400">
+            {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
+            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime}</p> : <></>}
+            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime}</p> : <></>}
           </div>
-          <p>Servings: {!recipe.servings ? "unknown" : recipe.servings}</p>
         </section>
 
         <section>
-          <h2>Ingredients</h2>
+          <h2 className="border-b-2 border-sky-900">Ingredients</h2>
           <ul>
             {recipe.ingredients.map((el, i) => {
               return (
-                <li key={`${recipe._id}Ingredient${i}`}>{el.measurement} of {el.ingredient}</li>
+                <li key={`${recipe._id}Ingredient${i}`}>{el.measurement} {/[a-zA-Z]/.test(el.measurement) ? "of " : ""}{el.ingredient}</li>
               )
             })}
           </ul>
         </section>
 
         <section>
-          <h2>Directions</h2>
-          <ol>
+          <h2 className="border-b-2 border-sky-900">Directions</h2>
+          <ol className="flex flex-col gap-3">
             {recipe.directions.map((el, i) => {
               return (
                 <li key={`${recipe._id}Direction${i}`}>{el}</li>
@@ -75,8 +81,10 @@ const RecipeDetails = () => {
             })}
           </ol>
         </section>
-        {recipeData.recipe.owner === userData?.user?.username ? <button type="button" onClick={e => setEditMode(true)}>Edit</button> : <></>}
-        {recipeData.recipe.owner === userData?.user?.username ? <button type="button" onClick={deleteRecipe}>Delete</button> : <></>}
+        <div className="flex justify-around items-center py-4">
+          {recipeData.recipe.owner === userData?.user?.username ? <button className="border-b-2 border-t-0 border-l-0 border-r-0 rounded-none hover:bg-transparent text-slate-300 border-slate-200 py-0 hover:text-black hover:border-black transition-all" type="button" onClick={e => setEditMode(true)}>Edit</button> : <></>}
+          {recipeData.recipe.owner === userData?.user?.username ? <button className="border-b-2 border-t-0 border-l-0 border-r-0 rounded-none hover:bg-transparent text-slate-300 border-slate-200 py-0 hover:text-rose-400 hover:border-rose-500 transition-all" type="button" onClick={e => setConfirmDelete(true)}>Delete</button> : <></>}
+        </div>
         {error ? <p className="text-red-400 text-center py-5">{error}</p> : <></>}
       </article>
     )
