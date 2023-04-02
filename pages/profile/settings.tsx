@@ -13,7 +13,7 @@ const Settings = () => {
 
   const logout = (remove?: boolean) => {
     setLoading(true);
-    Router.push({ pathname: "/login", query: { message: !remove ? "Successfully logged out" : "User successfully deleted", good: true } });
+    Router.push({ pathname: !remove ? "/login" : "/", query: { message: !remove ? "Successfully logged out" : "User successfully deleted", good: true } }, !remove ? "/login" : "/");
     removeCookie("token", { path: "/" });
   }
 
@@ -26,7 +26,7 @@ const Settings = () => {
           logout(true);
         } else {
           setLoading(false);
-          Router.push("/profile?error=something-went-wrong");
+          Router.push({ pathname: "/login", query: { message: `Error: ${data.message}. Please try again.` } });
         }
       })
   }
