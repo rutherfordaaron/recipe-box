@@ -51,7 +51,7 @@ const RecipeDetails = () => {
           </div>}
         <section className="relative">
           <h1>{recipe.name}</h1>
-          {recipe.rating ? <p className="absolute top-0 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
+          {recipe.rating ? <p className="absolute -top-8 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
           <div className="flex flex-col text-sm text-gray-400">
             {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
