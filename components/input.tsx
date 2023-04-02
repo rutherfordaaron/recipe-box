@@ -41,7 +41,7 @@ const Input = (props: {
         }}
         onChange={props.onChange}
         className={`
-          border-2 h-[75px] rounded focus:outline-none focus:border-blue-200 transition-all bg-transparent
+          border-2 h-[75px] px-1 rounded focus:outline-none focus:border-blue-200 transition-all bg-transparent
           ${!props.valid && props.state ? "border-red-400" : props.state ? "border-blue-400" : "border-slate-300"}
         `}
         value={props.state}
