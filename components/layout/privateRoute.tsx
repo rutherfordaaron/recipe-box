@@ -7,7 +7,6 @@ import getUser from "../../util/getUser";
 export const PrivateRoute = (props: { children: JSX.Element }) => {
   const router = useRouter();
   const { userData, userError, userIsLoading } = getUser();
-  const [loading, setLoading] = useState(true);
   const [cookies] = useCookies(["token"]);
 
   const redirect = () => {
@@ -28,17 +27,11 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
       "/sign-up"
     ]
 
-    setLoading(false);
-    if (((userData && !userData.user) || !cookies.token) && !unprotectedRoutes.find(e => e == router.pathname)) {
+    if (((userData && !userData.user && !userIsLoading) || !cookies.token) && !unprotectedRoutes.find(e => e == router.pathname)) {
       redirect();
-      setLoading(true);
     }
-  }, [router.pathname, cookies.token, userData, userIsLoading])
+  }, [cookies.token, userData?.user?.token, userIsLoading])
 
   if (userIsLoading) return <Loading />
-  return (
-    <>
-      {loading ? <Loading /> : props.children}
-    </>
-  )
+  return props.children
 }
