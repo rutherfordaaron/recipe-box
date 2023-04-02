@@ -45,7 +45,7 @@ const RecipeDetails = () => {
           <div className="fixed inset-0 bg-translucent z-[5] flex flex-col justify-center items-center p-12 text-center">
             <p className="text-xl drop-shadow">Are you sure you want to delete this recipe? This <span className="italic">cannot</span> be undone.</p>
             <div className="flex gap-4 mt-4">
-              <button className="bg-rose-100 text-rose-900 border-none hover:bg-rose-500 hover:text-black shadow-lg" onClick={deleteRecipe}>Yes, I'm sure</button>
+              <button className="bg-rose-100 text-rose-900 border-none hover:bg-rose-500 hover:text-black shadow-lg" onClick={deleteRecipe}>Yes, I&apos;m sure</button>
               <button className="bg-emerald-100 text-emerald-900 hover:bg-emerald-500 hover:text-black border-none shadow-lg" onClick={e => setConfirmDelete(false)}>No, nevermind</button>
             </div>
           </div>}
