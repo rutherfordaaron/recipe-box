@@ -179,7 +179,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
 
           <Input
             id="description"
-            type="text"
+            type="textarea"
             label="Description"
             onChange={e => { descriptionChangeHandler(e.target.value) }}
             state={description}
@@ -269,7 +269,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
           <h2>Directons</h2>
           <Input
             id="directionInput"
-            type="text"
+            type="textarea"
             label="Direction"
             state={newDirection}
             valid={true}
@@ -285,7 +285,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
           />
 
           <button type="button" onClick={addDirection}>
-            Add Directions
+            Add Direction
           </button>
 
           <EditableList list={directionArr} setList={setDirecitonArr} />
