@@ -16,12 +16,16 @@ const Header = () => {
 
   useEffect(() => {
     if (userIsLoading) {
+      console.log("getting user data")
       setAuthenticated(null);
     } else if (!cookie.token) {
+      console.log("no cookie!")
       setAuthenticated(false)
     } else if (userData && userData.user) {
+      console.log("User found!")
       setAuthenticated(true)
     } else {
+      console.log("Not authenticated :(")
       setAuthenticated(false)
     };
   }, [listener, userData, userError, userIsLoading, cookie])
