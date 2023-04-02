@@ -53,12 +53,11 @@ const RecipeDetails = () => {
           <h1>{recipe.name}</h1>
           {recipe.rating ? <p className="absolute top-0 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
-          <div>
-
+          <div className="flex flex-col text-sm text-gray-400">
+            {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
             {recipe.prepTime ? <p>Prep Time: {recipe.prepTime}</p> : <></>}
             {recipe.cookTime ? <p>Cook Time: {recipe.cookTime}</p> : <></>}
           </div>
-          {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
         </section>
 
         <section>
