@@ -54,7 +54,8 @@ const Login = () => {
                 message: "Successfully logged in!",
                 good: true,
               }
-            }, router.query.returnTo ? router.query.returnTo.toString() : "/")
+            }, router.query.returnTo ? router.query.returnTo.toString() : "/");
+            router.reload();
           } else {
             setLoading(false)
             setError(data.data);
