@@ -7,9 +7,11 @@ import { motion } from "framer-motion"
 import Nav from "./nav";
 import getUser from "../../util/getUser";
 import { Spinner } from "../spinner";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [cookie] = useCookies(["token"]);
+  const router = useRouter();
   const { userData, userError, userIsLoading } = getUser();
   const [listener, setListener] = useState(false);
   const [authenticated, setAuthenticated] = useState<boolean | null>(false);
@@ -28,7 +30,7 @@ const Header = () => {
       console.log("Not authenticated :(")
       setAuthenticated(false)
     };
-  }, [listener, userData, userError, userIsLoading, cookie])
+  }, [router.pathname, userData, userError, userIsLoading, cookie])
 
   const linkClass = "hover:text-sky-800 hover:scale-110 my-2 transition-all"
 
