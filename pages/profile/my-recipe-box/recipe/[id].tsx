@@ -5,6 +5,7 @@ import getRecipe from "../../../../util/getRecipe";
 import getUser from "../../../../util/getUser";
 import RecipeEditMode from "../../../../components/recipeEditMode";
 import { BackButton } from "../../../../components/backButton";
+import { DestructiveAction } from "../../../../components/destructiveAction";
 
 const RecipeDetails = () => {
   const [error, setError] = useState("")
@@ -42,13 +43,8 @@ const RecipeDetails = () => {
       <article>
         <BackButton href="/profile/my-recipe-box" />
         {!confrimDelete ? <></> :
-          <div className="fixed inset-0 bg-translucent z-[5] flex flex-col justify-center items-center p-12 text-center">
-            <p className="text-xl drop-shadow">Are you sure you want to delete this recipe? This <span className="italic">cannot</span> be undone.</p>
-            <div className="flex gap-4 mt-4">
-              <button className="bg-rose-100 text-rose-900 border-none hover:bg-rose-500 hover:text-black shadow-lg" onClick={deleteRecipe}>Yes, I&apos;m sure</button>
-              <button className="bg-emerald-100 text-emerald-900 hover:bg-emerald-500 hover:text-black border-none shadow-lg" onClick={e => setConfirmDelete(false)}>No, nevermind</button>
-            </div>
-          </div>}
+          <DestructiveAction message="Are you sure you want to delete this recipe?" destroyMessage="Yes, I'm sure" cancelMessage="No, nevermind" setVisible={setConfirmDelete} destructiveAction={deleteRecipe} />
+        }
         <section className="relative">
           <h1>{recipe.name}</h1>
           {recipe.rating ? <p className="absolute -top-8 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
