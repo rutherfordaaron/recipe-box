@@ -64,8 +64,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
    * Clear the newIngredient and newMeasurement state variable after pushing new ingredient to ingredientArr
    */
   const addIngredient = () => {
-    const error = document.getElementById("error");
-    if (newIngredient && newMeasurement) {
+    if (newIngredient) {
       const ingredient = {
         measurement: newMeasurement,
         ingredient: newIngredient,
@@ -76,9 +75,8 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
       setIngredients(tempIngredientArr);
       setNewIngredient("");
       setNewMeasurement("");
-      if (error) error.innerHTML = "";
     } else {
-      if (error) error.innerHTML = "Please make sure you have an ingredient and a measurement."
+      setError("Must have an ingredient name")
     }
   }
 
