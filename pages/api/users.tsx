@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // create a user object and post it to the database
-      const newUser: User = { username: username.toString(), email: email.toString(), password: password.toString(), created: new Date(), verified: false, token: "", tags: ["breakfast, lunch, dinner, dessert, snack, other, gluten free, vegetarian, lactose free, drinks"] };
+      const newUser: User = { username: username.toString(), email: email.toString(), password: password.toString(), created: new Date(), verified: false, token: "", tags: ["breakfast", "lunch", "dinner", "dessert", "snack", "other", "gluten free", "vegetarian", "lactose free", "drinks"] };
 
       users.insertOne(newUser);
 
