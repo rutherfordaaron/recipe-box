@@ -1,4 +1,4 @@
-import { Recipe, RecipeType, Ingredient } from "../util/types";
+import { Recipe, RecipeType, Ingredient, User } from "../util/types";
 import { useRouter } from "next/router";
 import Input from "./input";
 import RadioButton from "./radioButton";
@@ -9,7 +9,7 @@ import MessageBanner from "./layout/messageBanner";
 import { Spinner } from "./spinner";
 import { BackButton } from "./backButton";
 
-const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMode: boolean }) => {
+const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMode: boolean, user?: User }) => {
   let { recipe, setEditMode, editMode } = props;
   const router = useRouter();
 
@@ -22,6 +22,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   const [origin, setOrigin] = useState(recipe.origin ? recipe.origin : "");
   const [originValid, setOriginValid] = useState(true);
   const [recipeType, setRecipeType] = useState<RecipeType | string>(recipe.recipeType ? recipe.recipeType : "");
+  const [activeTags, setActiveTags] = useState<string[]>(recipe.tags ? recipe.tags : [])
   // -------------------- INGREDIENTS STATE VARIABLES --------------------
   const [newIngredient, setNewIngredient] = useState("");
   const [newMeasurement, setNewMeasurement] = useState("")
@@ -102,6 +103,20 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
     }
   }
 
+  // -------------------- ADD TAG --------------------
+  const addTag = (value: string) => {
+    let tags = [...activeTags];
+    tags.push(value);
+    setActiveTags(tags);
+  }
+  // -------------------- REMOVE TAG --------------------
+  const removeTag = (value: string) => {
+    let tags = [...activeTags];
+    setActiveTags(tags.filter(el => el !== value))
+  }
+  // -------------------- CREATE TAG --------------------
+
+
   // -------------------- VALIDATE AND PATCH --------------------
   const validate = () => {
     if (!(name && origin && recipeType)) {
@@ -137,7 +152,10 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
       prepTime,
       cookTime,
       servings: servingsYield,
-      rating
+      rating,
+      created: recipe.created,
+      updated: editMode ? new Date() : undefined,
+      tags: activeTags
     }
     fetch("/api/recipe", { method: editMode ? "PATCH" : "POST", headers: { recipe: JSON.stringify(newRecipe) } })
       .then(res => res.json())
@@ -217,6 +235,20 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
               checked={recipeType === RecipeType.Original ? true : false}
             />
           </div>
+
+          {/* -------------------- TAGS ------------------- */}
+          {!props.user ? <Spinner /> :
+            <div>
+              <p className="text-lg pl-4 pt-4 pb-2">Tags:</p>
+              <div>
+                {props.user.tags?.map((el, i) => {
+                  if (activeTags.find(item => item === el)) {
+                    return <button type="button" onClick={e => removeTag(el)} key={`tag${i}`} className="bg-sky-200">{el}</button>
+                  }
+                  return <button type="button" onClick={e => addTag(el)} key={`tag${i}`} className="bg-white">{el}</button>
+                })}
+              </div>
+            </div>}
         </div>
 
         {/* -------------------- INGREDIENTS SECTION ------------------- */}
