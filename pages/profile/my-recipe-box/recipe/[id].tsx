@@ -39,6 +39,22 @@ const RecipeDetails = () => {
   if (recipeData && !recipeData.recipe) return <p>Something went wrong! {recipeData.message}</p>
   if (recipeData && recipeData.recipe && !editMode) {
     const recipe = recipeData.recipe;
+
+    const getTags = () => {
+      if (recipe.tags) {
+        return (
+          recipe.tags.map((el, i) => {
+            return (
+              <div className="whitespace-nowrap">
+                <p key={`${recipe._id}tag${i}`}>#{el}</p>
+              </div>
+            )
+          })
+        )
+      }
+      return <></>
+    }
+
     return (
       <article>
         <BackButton href="/profile/my-recipe-box" />
@@ -53,6 +69,9 @@ const RecipeDetails = () => {
             {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
             {recipe.prepTime ? <p>Prep Time: {recipe.prepTime}</p> : <></>}
             {recipe.cookTime ? <p>Cook Time: {recipe.cookTime}</p> : <></>}
+          </div>
+          <div className="text-sm w-full text-sky-400 flex gap-2 flex-wrap">
+            {getTags()}
           </div>
         </section>
 
@@ -78,15 +97,15 @@ const RecipeDetails = () => {
           </ol>
         </section>
         <div className="flex justify-around items-center py-4">
-          {recipeData.recipe.owner === userData?.user?.username ? <button className="border-b-2 border-t-0 border-l-0 border-r-0 rounded-none hover:bg-transparent text-slate-300 border-slate-200 py-0 hover:text-black hover:border-black transition-all" type="button" onClick={e => setEditMode(true)}>Edit</button> : <></>}
-          {recipeData.recipe.owner === userData?.user?.username ? <button className="border-b-2 border-t-0 border-l-0 border-r-0 rounded-none hover:bg-transparent text-slate-300 border-slate-200 py-0 hover:text-rose-400 hover:border-rose-500 transition-all" type="button" onClick={e => setConfirmDelete(true)}>Delete</button> : <></>}
+          {recipeData.recipe.owner === userData?.user?.username ? <button className="border-b-2 border-t-0 border-l-0 border-r-0 rounded-none hover:bg-transparent text-slate-300 border-slate-200 py-0 hover:text-black hover:border-black transition-all shadow-none" type="button" onClick={e => setEditMode(true)}>Edit</button> : <></>}
+          {recipeData.recipe.owner === userData?.user?.username ? <button className="border-b-2 border-t-0 border-l-0 border-r-0 rounded-none hover:bg-transparent text-slate-300 border-slate-200 py-0 hover:text-rose-400 hover:border-rose-500 transition-all shadow-none" type="button" onClick={e => setConfirmDelete(true)}>Delete</button> : <></>}
         </div>
         {error ? <p className="text-red-400 text-center py-5">{error}</p> : <></>}
       </article>
     )
   }
   if (editMode && recipeData && recipeData.recipe) {
-    return <RecipeEditMode recipe={recipeData?.recipe} setEditMode={setEditMode} editMode={true} />
+    return <RecipeEditMode recipe={recipeData?.recipe} setEditMode={setEditMode} editMode={true} user={userData && userData.user ? userData.user : undefined} />
   }
 }
 
