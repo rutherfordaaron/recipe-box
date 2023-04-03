@@ -4,26 +4,37 @@ import Link from "next/link";
 import Loading from "../../../components/loading";
 import RecipeCard from "../../../components/RecipeCard";
 import getUserRecipes from "../../../util/getUserRecipes";
-import { useRouter } from "next/router";
+import { useState } from "react";
+import Input from "../../../components/input";
 
 const MyRecipeBox = () => {
-  const router = useRouter();
-
+  let [searchQuery, setSearchQuery] = useState("")
   let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
 
   return (
     <>
       <div className="max-w-[1000px] mx-auto">
+        <div className="flex justify-center items-center">
+          <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
+        </div>
         <h1 className="text-center">My Recipe Box</h1>
         <div className="flex flex-col md:grid lg:grid-cols-2 justify-center items-center gap-4">
-          {isLoading ? <Loading /> : error ? <h1>Error</h1> : data && data.recipes ? data.recipes.map((el, i) => {
+          {isLoading ? <Loading /> : error ? <h1>Error</h1> : data && data.recipes && searchQuery ? data.recipes.filter(item => new RegExp(searchQuery, "i").test(item.name)).map((el, i) => {
             return (
               <RecipeCard
                 recipe={el}
                 key={el._id?.toString()}
               />
             )
-          }) : <></>}
+          }) : data && data.recipes ?
+            data.recipes.map((el, i) => {
+              return (
+                <RecipeCard
+                  recipe={el}
+                  key={el._id?.toString()}
+                />
+              )
+            }) : <></>}
         </div>
         <Link
           className="fixed bottom-5 right-5 text-5xl bg-sky-200 shadow-md w-20 h-20
