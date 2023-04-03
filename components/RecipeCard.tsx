@@ -19,8 +19,8 @@ const RecipeCard = (props: { recipe: Recipe }) => {
       return (
         recipe.tags.map((el, i) => {
           return (
-            <div className="whitespace-nowrap">
-              <p key={`${recipe._id}tag${i}`}>#{el}</p>
+            <div key={`${recipe._id}tag${i}`} className="whitespace-nowrap">
+              <p>#{el}</p>
             </div>
           )
         })
