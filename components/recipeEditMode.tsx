@@ -237,18 +237,20 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
           </div>
 
           {/* -------------------- TAGS ------------------- */}
-          {!props.user ? <Spinner /> :
-            <div>
-              <p className="text-lg pl-4 pt-4 pb-2">Tags:</p>
+          <div className="w-full">
+            <p className="text-lg pl-4 pt-4 pb-2">Tags:</p>
+            {!props.user ? <Spinner /> :
               <div>
-                {props.user.tags?.map((el, i) => {
-                  if (activeTags.find(item => item === el)) {
-                    return <button type="button" onClick={e => removeTag(el)} key={`tag${i}`} className="bg-sky-200">{el}</button>
-                  }
-                  return <button type="button" onClick={e => addTag(el)} key={`tag${i}`} className="bg-white">{el}</button>
-                })}
-              </div>
-            </div>}
+                <div>
+                  {props.user.tags?.map((el, i) => {
+                    if (activeTags.find(item => item === el)) {
+                      return <button type="button" onClick={e => removeTag(el)} key={`tag${i}`} className="bg-sky-200 m-1 border-none shadow-sm">{el}</button>
+                    }
+                    return <button type="button" onClick={e => addTag(el)} key={`tag${i}`} className="bg-white m-1 border-none shadow-sm">{el}</button>
+                  })}
+                </div>
+              </div>}
+          </div>
         </div>
 
         {/* -------------------- INGREDIENTS SECTION ------------------- */}
@@ -287,7 +289,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
             }}
           />
 
-          <button type="button" onClick={addIngredient}>
+          <button type="button" onClick={addIngredient} className="bg-white">
             Add Ingredient
           </button>
 
@@ -314,7 +316,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
             }}
           />
 
-          <button type="button" onClick={addDirection}>
+          <button type="button" onClick={addDirection} className="bg-white">
             Add Direction
           </button>
 
@@ -384,10 +386,10 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
           <div className="flex justify-center items-center gap-4">
             {editMode ?
               <>
-                <button type="button" onClick={updateRecipe}>Save</button>
-                <button type="button" onClick={cancelEdit}>Cancel</button>
+                <button type="button" onClick={updateRecipe} className="border">Save</button>
+                <button type="button" onClick={cancelEdit} className="border">Cancel</button>
               </> :
-              <button type="button" onClick={updateRecipe}>Submit</button>}
+              <button type="button" onClick={updateRecipe} className="border">Submit</button>}
           </div>
         }
       </form>
