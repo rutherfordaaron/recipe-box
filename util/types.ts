@@ -7,7 +7,9 @@ export type User = {
   password: string,
   created: Date,
   token: string,
-  verified: boolean
+  verified: boolean,
+  tags?: string[],
+  updated?: Date
 }
 
 export enum RecipeType {
@@ -29,6 +31,9 @@ export type Recipe = {
   cookTime?: number,
   servings?: number,
   rating?: number[],
+  tags?: string[],
+  created: Date,
+  updated?: Date
 }
 
 export type Ingredient = { ingredient: string, measurement: string, id: string }
@@ -46,4 +51,13 @@ export type GetUserRecipesAPIData = {
 export type GetRecipeAPIData = {
   recipe: Recipe | null,
   message: string
+}
+
+export enum SortParameter {
+  Ascending = "Ascending",
+  Descending = "Descending",
+  RecentlyCreated = "Recently Created",
+  RecentlyUpdated = "Recently Updated",
+  OldestCreated = "Oldest Created",
+  OldestUpdated = "Oldest Updated"
 }

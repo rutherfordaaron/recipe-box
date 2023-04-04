@@ -16,7 +16,8 @@ const NewRecipe = () => {
     origin: "",
     recipeType: RecipeType.Copied,
     ingredients: [],
-    directions: []
+    directions: [],
+    created: new Date()
   }
   // State page variable to track which page of the form should render
   const [page, setPage] = useState(1);
@@ -32,7 +33,7 @@ const NewRecipe = () => {
   return (
     <>
       {/* {getFormPage(page)} */}
-      <RecipeEditMode editMode={false} recipe={emptyRecipe} />
+      <RecipeEditMode editMode={false} recipe={emptyRecipe} user={userData && userData.user ? userData.user : undefined} />
     </>
   )
 }

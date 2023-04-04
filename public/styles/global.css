@@ -26,11 +26,11 @@
   }
 
   button {
-    @apply rounded-md py-1 px-3 border bg-transparent;
+    @apply rounded-md py-1 px-3 bg-transparent shadow-sm;
   }
 
   button:hover {
-    @apply bg-gray-200;
+    @apply bg-sky-200;
   }
 
   .bg-translucent {

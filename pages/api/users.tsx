@@ -62,11 +62,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       }
 
-      // Hash the password for storage on the database
-      // let hashPassword = crypto.createHash("sha256").update(password).digest("hex");
-
       // create a user object and post it to the database
-      const newUser: User = { username: username.toString(), email: email.toString(), password: password.toString(), created: new Date(), verified: false, token: "" };
+      const newUser: User = { username: username.toString(), email: email.toString(), password: password.toString(), created: new Date(), verified: false, token: "", tags: ["breakfast", "lunch", "dinner", "dessert", "snack", "other", "gluten free", "vegetarian", "lactose free", "drinks"] };
 
       users.insertOne(newUser);
 

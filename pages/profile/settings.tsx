@@ -3,15 +3,17 @@ import { useState } from "react";
 import Router from "next/router";
 import getUser from "../../util/getUser";
 import Loading from "../../components/loading";
+import { DestructiveAction } from "../../components/destructiveAction";
 
 const Settings = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const { userData, userError, userIsLoading } = getUser();
   const [loading, setLoading] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
-  const logout = () => {
+  const logout = (remove?: boolean) => {
     setLoading(true);
-    Router.push({ pathname: "/login", query: { message: "Successfully logged out", good: true } });
+    Router.push({ pathname: !remove ? "/login" : "/", query: { message: !remove ? "Successfully logged out" : "User successfully deleted", good: true } }, !remove ? "/login" : "/");
     removeCookie("token", { path: "/" });
   }
 
@@ -21,20 +23,12 @@ const Settings = () => {
       .then(response => response.json())
       .then(data => {
         if (!data.error) {
-          logout();
+          logout(true);
         } else {
           setLoading(false);
-          Router.push("/profile?error=something-went-wrong");
+          Router.push({ pathname: "/login", query: { message: `Error: ${data.message}. Please try again.` } });
         }
       })
-  }
-
-  const toggleConfirmation = () => {
-    const element = document.getElementById("confirmDelete");
-    if (element) {
-      element.classList.toggle("hidden");
-      element.classList.toggle("flex");
-    }
   }
 
   if (userIsLoading) return <Loading />
@@ -48,7 +42,7 @@ const Settings = () => {
       <button
         type="button"
         className="block my-3 border hover:bg-gray-200"
-        onClick={logout}
+        onClick={e => logout()}
       >
         Log out
       </button>
@@ -56,25 +50,13 @@ const Settings = () => {
       <button
         type="button"
         className="block my-3 border hover:bg-gray-200"
-        onClick={toggleConfirmation}
+        onClick={e => setDeleteConfirmation(true)}
       >
         Delete Profile
       </button>
       {/* ---------- DELETE USER CONFIRMATION CONTAINER ---------- */}
-      <div className="hidden fixed p-4 inset-0 bg-gray-100 top-0 right-0 flex-col justify-center align-middle" id="confirmDelete">
-        <div className="text-center">
-          <p>Are you sure you want to delete your profile?</p>
-          <p className="text-sm text-red-400 text-center my-2">This cannot be undone.</p>
-          <div className="flex justify-center gap-3 my-2" >
-            <button
-              className="text-red-400 border hover:bg-rose-200" type="button" onClick={deleteUser}
-            >
-              Yes, delete my profile
-            </button>
-            <button type="button" className="border hover:bg-gray-200" onClick={toggleConfirmation}>No, I changed my mind</button>
-          </div>
-        </div>
-      </div>
+      {!deleteConfirmation ? <></> : <DestructiveAction message="Are you sure you want to delete your profile and all recipes associated with it?" destroyMessage="Yes, delete my profile" cancelMessage="No, nevermind" setVisible={setDeleteConfirmation} destructiveAction={deleteUser} />
+      }
     </>
   )
 }
