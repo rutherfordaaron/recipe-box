@@ -79,7 +79,7 @@ const Header = () => {
         <FontAwesomeIcon icon={faBars} className="hover:cursor-pointer" onClick={toggleNav} />
       </motion.button>
 
-      {authenticated === null ? <Spinner /> : authenticated ? isAuthenticated : notAuthenticated}
+      {authenticated === null ? <></> : authenticated ? isAuthenticated : notAuthenticated}
     </header>
   )
 }
