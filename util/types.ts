@@ -52,3 +52,12 @@ export type GetRecipeAPIData = {
   recipe: Recipe | null,
   message: string
 }
+
+export enum SortParameter {
+  Ascending = "Ascending",
+  Descending = "Descending",
+  RecentlyCreated = "Recently Created",
+  RecentlyUpdated = "Recently Updated",
+  OldestCreated = "Oldest Created",
+  OldestUpdated = "Oldest Updated"
+}
