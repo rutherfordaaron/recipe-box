@@ -37,9 +37,9 @@ const RecipeCard = (props: { recipe: Recipe }) => {
       <div className="flex justify-between h-[20px]">
         {recipe.prepTime ? <p className="text-sm"><span className="font-bold">Prep Time:</span> {recipe.prepTime} min.</p> : ""}
         {recipe.cookTime ? <p className="text-sm"><span className="font-bold">Cook Time:</span> {recipe.cookTime} min.</p> : ""}
-        <div className="text-sm w-full text-sky-400 overflow-x-scroll flex h-6 pb-2 gap-2">
-          {getTags()}
-        </div>
+      </div>
+      <div className="text-sm w-full text-sky-400 overflow-x-scroll flex h-6 pb-2 gap-2">
+        {getTags()}
       </div>
       <p className="absolute top-2 right-2 text-sm">{rating ? rating + "/10" : ""}</p>
     </Link>
