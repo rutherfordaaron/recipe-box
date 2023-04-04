@@ -48,16 +48,13 @@ const Login = () => {
           if (!data.error) {
             // Redirect to the main page after successful login
             createCookie(data.data);
-            router.reload();
-            setTimeout(() => {
-              router.push({
-                pathname: router.query.returnTo ? router.query.returnTo.toString() : "/",
-                query: {
-                  message: "Successfully logged in!",
-                  good: true,
-                }
-              }, router.query.returnTo ? router.query.returnTo.toString() : "/");
-            }, 100)
+            router.push({
+              pathname: router.query.returnTo ? router.query.returnTo.toString() : "/",
+              query: {
+                message: "Successfully logged in!",
+                good: true,
+              }
+            }, router.query.returnTo ? router.query.returnTo.toString() : "/");
           } else {
             setLoading(false)
             setError(data.data);
