@@ -48,6 +48,7 @@ const Login = () => {
           if (!data.error) {
             // Redirect to the main page after successful login
             createCookie(data.data);
+            router.reload();
             router.push({
               pathname: router.query.returnTo ? router.query.returnTo.toString() : "/",
               query: {
@@ -55,7 +56,6 @@ const Login = () => {
                 good: true,
               }
             }, router.query.returnTo ? router.query.returnTo.toString() : "/");
-            router.reload();
           } else {
             setLoading(false)
             setError(data.data);
