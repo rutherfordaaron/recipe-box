@@ -9,12 +9,13 @@ import Input from "../../../components/input";
 import { Recipe, SortParameter } from "../../../util/types";
 import { faSort, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { SortMenu } from "../../../components/sortMenu";
+import { FilterMenu } from "../../../components/filterMenu";
 
 const MyRecipeBox = () => {
   let [searchQuery, setSearchQuery] = useState("");
   let [sort, setSort] = useState<SortParameter>(SortParameter.Ascending);
   let [showSortMenu, setShowSortMenu] = useState(false);
-  let [filter, setFilter] = useState<string[]>([]);
+  let [tagFilter, setTagFilter] = useState<string[]>([]);
   let [showFilterMenu, setShowFilterMenu] = useState(false);
 
   let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
@@ -65,7 +66,8 @@ const MyRecipeBox = () => {
           </button>
           <SortMenu setSort={setSort} activeSortParameter={sort} visible={showSortMenu} setVisible={setShowSortMenu} />
           <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
-          <button type="button" className="shadow-none">
+          <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} />
+          <button type="button" className="shadow-none" onClick={(e => setShowFilterMenu(!showFilterMenu))}>
             <FontAwesomeIcon icon={faFilter} />
           </button>
         </div>
