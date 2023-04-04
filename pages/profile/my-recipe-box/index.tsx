@@ -21,7 +21,15 @@ const MyRecipeBox = () => {
   let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
 
   const filterSearchQuery = () => {
-    if (data && data.recipes) return data.recipes.filter(item => new RegExp(searchQuery, "i").test(item.name));
+    if (data && data.recipes) {
+      const searchFiltered = data.recipes.filter(item => new RegExp(searchQuery, "i").test(item.name));
+      let filtered = [...searchFiltered];
+      for (let i = 0; i < tagFilter.length; i++) {
+        filtered = filtered.filter(item => item.tags?.find(item => item == tagFilter[i]));
+      }
+
+      return filtered;
+    }
     return [];
   }
 
