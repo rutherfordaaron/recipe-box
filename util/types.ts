@@ -33,7 +33,8 @@ export type Recipe = {
   rating?: number[],
   tags?: string[],
   created: Date,
-  updated?: Date
+  updated?: Date,
+  public?: boolean
 }
 
 export type Ingredient = { ingredient: string, measurement: string, id: string }

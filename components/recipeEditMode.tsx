@@ -8,6 +8,7 @@ import { uuid } from "uuidv4";
 import MessageBanner from "./layout/messageBanner";
 import { Spinner } from "./spinner";
 import { BackButton } from "./backButton";
+import { AnimatePresence, motion } from "framer-motion";
 
 const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMode: boolean, user?: User }) => {
   let { recipe, setEditMode, editMode } = props;
@@ -16,6 +17,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   // -------------------- BASIC INFO STATE VARIABLES --------------------
+  const [recipePublic, setRecipePublic] = useState(false)
   const [name, setName] = useState(recipe.name ? recipe.name : "");
   const [nameValid, setNameValid] = useState(true);
   const [description, setDescription] = useState(recipe.description ? recipe.description : "");
@@ -155,7 +157,8 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
       rating,
       created: recipe.created,
       updated: editMode ? new Date() : undefined,
-      tags: activeTags
+      tags: activeTags,
+      public: recipePublic
     }
     fetch("/api/recipe", { method: editMode ? "PATCH" : "POST", headers: { recipe: JSON.stringify(newRecipe) } })
       .then(res => res.json())
@@ -180,10 +183,38 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
     <div className="max-w-[500px] mx-auto">
       {editMode ? <></> : <BackButton href="/profile/my-recipe-box" />}
       <h1 className="text-center underline mb-8">{editMode ? "Edit Mode" : "New Recipe"}</h1>
+
       <form className="flex flex-col justify-center items-center gap-6 ">
         {/* -------------------- BASIC INFO SECTION ------------------- */}
         <div className="bg-slate-100 rounded-xl p-2 pb-4 w-[90%] flex flex-col justify-center items-center">
           <h2>Basic Info</h2>
+          {/* -------------------- PUBLIC TOGGLE SWITCH ------------------- */}
+          <button onClick={e => setRecipePublic(!recipePublic)} type="button" className={`rounded-full w-24 h-8 shadow-lg ${!recipePublic ? "bg-white" : "bg-sky-800 text-sky-100"} flex items-center relative`}>
+            <div className={`w-6 h-6 rounded-full  absolute duration-500 z-30 ${recipePublic ? "right-1 bg-sky-300" : "right-16 bg-slate-300"} transition-all`} />
+            <AnimatePresence>
+              {recipePublic ?
+                <motion.p
+                  key="public"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: .5 }}
+                  className="absolute left-2"
+                >
+                  Public
+                </motion.p> :
+                <motion.p
+                  key="private"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: .5 }}
+                  className="absolute right-2"
+                >
+                  Private
+                </motion.p>}
+            </AnimatePresence>
+          </button>
           <Input
             id="name"
             type="text"
