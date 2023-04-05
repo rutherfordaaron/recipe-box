@@ -67,8 +67,8 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   const addIngredient = () => {
     if (newIngredient) {
       const ingredient = {
-        measurement: newMeasurement,
-        ingredient: newIngredient,
+        measurement: newMeasurement.trim(),
+        ingredient: newIngredient.trim(),
         id: uuid()
       };
       const tempIngredientArr = [...ingredients];
@@ -88,7 +88,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   const addDirection = () => {
     if (newDirection) {
       const tempDirectionArr = [...directionArr];
-      tempDirectionArr.push(newDirection);
+      tempDirectionArr.push(newDirection.trim());
       setDirecitonArr(tempDirectionArr);
       setNewDirection("");
       const error = document.getElementById("error");
@@ -142,9 +142,9 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
     if (!ready) { setLoading(false); return };
     const newRecipe: Recipe = {
       _id: recipe._id,
-      name,
-      description,
-      origin,
+      name: name.trim(),
+      description: description.trim(),
+      origin: origin.trim(),
       recipeType,
       owner: recipe.owner,
       ingredients,

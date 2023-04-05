@@ -84,7 +84,7 @@ const Login = () => {
           type="text"
           label="Username"
           onChange={(e) => {
-            setUsername(e.target.value);
+            setUsername(e.target.value.trim());
             e.target.value ? setUsernameValid(true) : setUsernameValid(false)
           }}
           state={username}
@@ -95,7 +95,7 @@ const Login = () => {
           type="password"
           label="Password"
           onChange={(e) => {
-            setPassword(e.target.value)
+            setPassword(e.target.value.trim())
             e.target.value ? setPasswordValid(true) : setPasswordValid(false)
           }}
           state={password}

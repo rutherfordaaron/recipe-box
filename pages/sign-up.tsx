@@ -102,7 +102,7 @@ export default function SignUp() {
           id="user"
           type="text"
           label="Username"
-          onChange={(e) => checkUsername(e.target.value)}
+          onChange={(e) => checkUsername(e.target.value.trim())}
           state={username}
           valid={usernameValid}
         />
@@ -111,7 +111,7 @@ export default function SignUp() {
           id="email"
           type="email"
           label="Email"
-          onChange={(e) => checkEmail(e.target.value)}
+          onChange={(e) => checkEmail(e.target.value.trim())}
           state={email}
           valid={emailValid}
         />
@@ -134,8 +134,8 @@ export default function SignUp() {
           type="password"
           label="Password"
           onChange={(e: any) => {
-            checkStrength(e.target.value);
-            checkMatch(confirmPassword, e.target.value)
+            checkStrength(e.target.value.trim());
+            checkMatch(confirmPassword, e.target.value.trim())
           }}
           state={password}
           valid={passwordStrength === Strength.Weak && password !== "" ? false : true}
@@ -157,8 +157,8 @@ export default function SignUp() {
           type="password"
           label="Confirm Password"
           onChange={(e: any) => {
-            setConfirmPassword(e.target.value);
-            checkMatch(e.target.value);
+            setConfirmPassword(e.target.value.trim());
+            checkMatch(e.target.value.trim());
           }}
           state={confirmPassword}
           valid={passwordMatch}
