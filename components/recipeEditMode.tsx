@@ -137,7 +137,6 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   }
 
   const updateRecipe = () => {
-    console.log(recipeType);
     setLoading(true);
     const ready = validate();
     if (!ready) { setLoading(false); return };
