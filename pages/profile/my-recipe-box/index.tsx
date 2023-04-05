@@ -68,16 +68,16 @@ const MyRecipeBox = () => {
       <div className="max-w-[1000px] mx-auto">
 
         {/* ---------- SEARCH, FILTER, AND SORT ---------- */}
-        <div className="flex justify-center items-center relative">
-          <button type="button" className="shadow-none" onClick={e => setShowSortMenu(!showSortMenu)}>
+        <div className="flex justify-center items-center relative max-w-[350px] mx-auto">
+          <button type="button" className="shadow-none transition-all" onClick={(e => setShowFilterMenu(!showFilterMenu))}>
+            <FontAwesomeIcon icon={faFilter} />
+          </button>
+          <button type="button" className="shadow-none transition-all" onClick={e => setShowSortMenu(!showSortMenu)}>
             <FontAwesomeIcon icon={faSort} />
           </button>
           <SortMenu setSort={setSort} activeSortParameter={sort} visible={showSortMenu} setVisible={setShowSortMenu} />
           <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
           <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} />
-          <button type="button" className="shadow-none" onClick={(e => setShowFilterMenu(!showFilterMenu))}>
-            <FontAwesomeIcon icon={faFilter} />
-          </button>
         </div>
 
         {/* ---------- RECIPE GRID ---------- */}
