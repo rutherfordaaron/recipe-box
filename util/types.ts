@@ -13,9 +13,9 @@ export type User = {
 }
 
 export enum RecipeType {
-  Modified = "MODIFIED",
-  Copied = "COPIED",
-  Original = "ORIGINAL"
+  Modified = "Modified",
+  Copied = "Copied",
+  Original = "Original"
 }
 
 export type Recipe = {

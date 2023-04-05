@@ -21,7 +21,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   const [description, setDescription] = useState(recipe.description ? recipe.description : "");
   const [origin, setOrigin] = useState(recipe.origin ? recipe.origin : "");
   const [originValid, setOriginValid] = useState(true);
-  const [recipeType, setRecipeType] = useState<RecipeType | string>(recipe.recipeType ? recipe.recipeType : "");
+  const [recipeType, setRecipeType] = useState<RecipeType>(recipe.recipeType);
   const [activeTags, setActiveTags] = useState<string[]>(recipe.tags ? recipe.tags : [])
   // -------------------- INGREDIENTS STATE VARIABLES --------------------
   const [newIngredient, setNewIngredient] = useState("");
@@ -137,6 +137,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   }
 
   const updateRecipe = () => {
+    console.log(recipeType);
     setLoading(true);
     const ready = validate();
     if (!ready) { setLoading(false); return };
@@ -145,7 +146,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
       name,
       description,
       origin,
-      recipeType: typeof recipeType === "string" ? RecipeType.Copied : recipeType,
+      recipeType,
       owner: recipe.owner,
       ingredients,
       directions: directionArr,
@@ -177,12 +178,12 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   }
 
   return (
-    <>
+    <div className="max-w-[500px] mx-auto">
       {editMode ? <></> : <BackButton href="/profile/my-recipe-box" />}
-      <h1>{editMode ? "Edit Mode" : "New Recipe"}</h1>
-      <form className="flex flex-col justify-center items-center gap-6">
+      <h1 className="text-center underline mb-8">{editMode ? "Edit Mode" : "New Recipe"}</h1>
+      <form className="flex flex-col justify-center items-center gap-6 ">
         {/* -------------------- BASIC INFO SECTION ------------------- */}
-        <div className="bg-slate-100 rounded-xl py-2 pb-4 w-[90%] flex flex-col justify-center items-center">
+        <div className="bg-slate-100 rounded-xl p-2 pb-4 w-[90%] flex flex-col justify-center items-center">
           <h2>Basic Info</h2>
           <Input
             id="name"
@@ -393,7 +394,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
           </div>
         }
       </form>
-    </>
+    </div>
   )
 }
 
