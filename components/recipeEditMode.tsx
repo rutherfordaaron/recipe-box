@@ -17,7 +17,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   // -------------------- BASIC INFO STATE VARIABLES --------------------
-  const [recipePublic, setRecipePublic] = useState(false)
+  const [recipePublic, setRecipePublic] = useState(recipe.public)
   const [name, setName] = useState(recipe.name ? recipe.name : "");
   const [nameValid, setNameValid] = useState(true);
   const [description, setDescription] = useState(recipe.description ? recipe.description : "");
