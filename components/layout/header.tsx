@@ -26,7 +26,7 @@ const Header = () => {
     } else {
       setAuthenticated(false)
     };
-  }, [router.pathname, userData, userError, userIsLoading, cookie.token])
+  }, [router.pathname, userData?.user?.token, userError, userIsLoading, cookie.token])
 
   const linkClass = "hover:text-sky-800 hover:scale-110 my-2 transition-all"
 
