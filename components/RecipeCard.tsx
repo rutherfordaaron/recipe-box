@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Recipe } from "../util/types";
 
-const RecipeCard = (props: { recipe: Recipe }) => {
+const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const [tagsVisible, setTagsVisible] = useState(false);
   const recipe = props.recipe;
   let rating: undefined | number = undefined;
@@ -30,8 +30,12 @@ const RecipeCard = (props: { recipe: Recipe }) => {
   }
 
   return (
-    <Link href={`/profile/my-recipe-box/recipe/${String(recipe._id)}`} className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all">
-      <h2>{recipe.name}</h2>
+    <Link
+      href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipe/${String(recipe._id)}`}
+      className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
+    >
+      <h2 className="mb-0">{recipe.name}</h2>
+      {props.forPublic ? <p>Owner: {recipe.owner}</p> : <></>}
       <p className="line-clamp-4 h-12">{recipe.description}</p>
       <p className="my-3">{recipe.recipeType} from {recipe.origin}</p>
       <div className="flex justify-between h-[20px]">

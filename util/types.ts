@@ -62,3 +62,8 @@ export enum SortParameter {
   OldestCreated = "Oldest Created",
   OldestUpdated = "Oldest Updated"
 }
+
+export type GetPublicRecipesAPIData = {
+  recipes: Recipe[] | null,
+  message: string
+}
