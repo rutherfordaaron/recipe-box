@@ -33,7 +33,7 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
 
   return (
     <Link
-      href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipe/${String(recipe._id)}`}
+      href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipes/${String(recipe._id)}`}
       className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
     >
       <h2 className="mb-0">{recipe.name}</h2>
