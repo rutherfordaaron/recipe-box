@@ -24,10 +24,10 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
     const unprotectedRoutes = [
       "/",
       "/login",
-      "/sign-up"
+      "/sign-up",
     ]
 
-    if (((userData && !userData.user && !userIsLoading) || !cookies.token) && !unprotectedRoutes.find(e => e == router.pathname)) {
+    if (((userData && !userData.user && !userIsLoading) || !cookies.token) && (/public/.test(router.pathname) || !unprotectedRoutes.find(e => e == router.pathname))) {
       redirect();
     }
   }, [cookies.token, userData?.user?.token, userIsLoading])

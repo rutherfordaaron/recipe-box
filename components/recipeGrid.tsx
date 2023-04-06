@@ -1,11 +1,11 @@
 import { Recipe } from "../util/types";
 import { Spinner } from "./spinner";
 import RecipeCard from "./RecipeCard";
+import { useRouter } from "next/router";
 
 export const RecipeGrid = (props: { recipes: Recipe[], isLoading: boolean }) => {
   const { recipes, isLoading } = props;
-
-
+  const router = useRouter();
 
   const mapRecipeCards = (arr: Recipe[]) => {
     return arr.map((el, i) => {
@@ -13,6 +13,7 @@ export const RecipeGrid = (props: { recipes: Recipe[], isLoading: boolean }) => 
         <RecipeCard
           recipe={el}
           key={el._id?.toString()}
+          forPublic={router.pathname === "/public-recipes"}
         />
       )
     })
