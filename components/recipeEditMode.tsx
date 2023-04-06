@@ -189,7 +189,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
         <div className="bg-slate-100 rounded-xl p-2 pb-4 w-[90%] flex flex-col justify-center items-center">
           <h2>Basic Info</h2>
           {/* -------------------- PUBLIC TOGGLE SWITCH ------------------- */}
-          <button onClick={e => setRecipePublic(!recipePublic)} type="button" className={`rounded-full w-24 h-8 shadow-lg ${!recipePublic ? "bg-white" : "bg-sky-800 text-sky-100"} flex items-center relative`}>
+          <button onClick={e => setRecipePublic(!recipePublic)} type="button" className={`rounded-full w-24 h-8 shadow-lg ${!recipePublic ? "bg-white" : "bg-sky-800 text-sky-100"} flex items-center relative hover:text-black transition-all`}>
             <div className={`w-6 h-6 rounded-full  absolute duration-500 z-30 ${recipePublic ? "right-1 bg-sky-300" : "right-16 bg-slate-300"} transition-all`} />
             <AnimatePresence>
               {recipePublic ?
