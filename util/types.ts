@@ -33,7 +33,8 @@ export type Recipe = {
   rating?: number[],
   tags?: string[],
   created: Date,
-  updated?: Date
+  updated?: Date,
+  public?: boolean
 }
 
 export type Ingredient = { ingredient: string, measurement: string, id: string }
@@ -54,10 +55,16 @@ export type GetRecipeAPIData = {
 }
 
 export enum SortParameter {
+  Unsorted = "Unsorted",
   Ascending = "Ascending",
   Descending = "Descending",
   RecentlyCreated = "Recently Created",
   RecentlyUpdated = "Recently Updated",
   OldestCreated = "Oldest Created",
   OldestUpdated = "Oldest Updated"
+}
+
+export type GetPublicRecipesAPIData = {
+  recipes: Recipe[] | null,
+  message: string
 }

@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       // If everything looks good, find all user recipes and send back as array
       const recipes = db.collection("recipes");
-      const userRecipes = await recipes.find({ owner: user.username }).sort({ name: 1 }).toArray();
+      const userRecipes = await recipes.find({ owner: user.username }).toArray();
       res.status(200).json({ message: "success", recipes: userRecipes });
       break;
     default:

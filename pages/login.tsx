@@ -49,12 +49,12 @@ const Login = () => {
             // Redirect to the main page after successful login
             createCookie(data.data);
             router.push({
-              pathname: router.query.returnTo ? router.query.returnTo.toString() : "/",
+              pathname: router.query.returnTo ? router.query.returnTo.toString() : "/profile/my-recipe-box",
               query: {
                 message: "Successfully logged in!",
                 good: true,
               }
-            }, router.query.returnTo ? router.query.returnTo.toString() : "/");
+            }, router.query.returnTo ? router.query.returnTo.toString() : "/profile/my-recipe-box");
           } else {
             setLoading(false)
             setError(data.data);

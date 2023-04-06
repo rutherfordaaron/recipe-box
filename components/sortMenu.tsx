@@ -3,7 +3,7 @@ import { SortParameter } from "../util/types";
 
 export const SortMenu = (props: { setSort: Function, activeSortParameter: SortParameter, visible: boolean, setVisible: Function }) => {
   const { setSort, activeSortParameter, visible, setVisible } = props;
-  const sortArr = [SortParameter.Ascending, SortParameter.Descending, SortParameter.RecentlyCreated, SortParameter.RecentlyUpdated, SortParameter.OldestCreated, SortParameter.OldestUpdated]
+  const sortArr = [SortParameter.Unsorted, SortParameter.Ascending, SortParameter.Descending, SortParameter.RecentlyCreated, SortParameter.RecentlyUpdated, SortParameter.OldestCreated, SortParameter.OldestUpdated]
   return (
     <AnimatePresence>
       {visible ?
