@@ -55,6 +55,7 @@ export type GetRecipeAPIData = {
 }
 
 export enum SortParameter {
+  Unsorted = "Unsorted",
   Ascending = "Ascending",
   Descending = "Descending",
   RecentlyCreated = "Recently Created",

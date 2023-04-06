@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (req.method) {
     case "GET":
-      const publicRecipes = recipes.find({ public: true }).sort({ ownder: 1 }).toArray();
+      const publicRecipes = recipes.find({ public: true }).toArray();
       if (!publicRecipes) {
         res.status(404).json({ recipes: null, message: "No public recipes found" });
         break;
