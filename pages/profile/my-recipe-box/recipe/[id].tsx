@@ -67,8 +67,8 @@ const RecipeDetails = () => {
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
           <div className="flex flex-col text-sm text-gray-400">
             {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
-            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime}</p> : <></>}
-            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime}</p> : <></>}
+            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime} minutes</p> : <></>}
+            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime} minutes</p> : <></>}
           </div>
           <div className="text-sm w-full text-sky-400 flex gap-2 flex-wrap">
             {getTags()}
