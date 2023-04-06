@@ -23,6 +23,8 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
     setTagFilter([]);
   }
 
+  const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "vegetarian", "gluten free", "lactose free", "other"];
+
   return (
     <AnimatePresence>
       {showFilterMenu ?
@@ -61,7 +63,29 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
                     {el}
                   </button>
                 )
-              }) : <></>}
+              }) :
+                defaultTags.map((el, i) => {
+                  // Active Tag Filters
+                  if (tagFilter.find(item => item === el)) return (
+                    <button
+                      key={`tagFilter${i}`}
+                      className={`bg-sky-300 shadow`}
+                      onClick={e => removeFilterTag(el)}
+                    >
+                      {el}
+                    </button>
+                  )
+                  // Inactive Tag Filters
+                  return (
+                    <button
+                      key={`tagFilter${i}`}
+                      className={`bg-sky-100 shadow`}
+                      onClick={e => addFilterTag(el)}
+                    >
+                      {el}
+                    </button>
+                  )
+                })}
             </div>
             : <></>}
           <button type="button" className="mx-auto" onClick={resetFilters}>Reset filters</button>
