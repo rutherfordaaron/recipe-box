@@ -32,12 +32,14 @@ const Header = () => {
 
   const notAuthenticated =
     <Nav>
+      <Link className={linkClass} href="/public-recipes">Public Recipes</Link>
       <Link className={linkClass} href="/login">Login</Link>
       <Link className={linkClass} href="/sign-up">Sign Up</Link>
     </Nav>
 
   const isAuthenticated =
     <Nav>
+      <Link className={linkClass} href="/public-recipes">Public Recipes</Link>
       <Link className={linkClass} href="/profile">Profile</Link>
       <Link className={linkClass} href="/profile/my-recipe-box">My Recipe Box</Link>
       {/* <Link className={linkClass} href="/profile/favorites">Favorite Recipes</Link>
