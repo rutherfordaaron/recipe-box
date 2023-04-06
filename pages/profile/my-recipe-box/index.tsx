@@ -8,22 +8,11 @@ import { useState } from "react";
 import { Recipe } from "../../../util/types";
 import Search from "../../../components/search";
 import { Spinner } from "../../../components/spinner";
+import { RecipeGrid } from "../../../components/recipeGrid";
 
 const MyRecipeBox = () => {
   let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
   let [recipes, setRecipes] = useState([]);
-
-  const mapRecipeCards = (arr: Recipe[]) => {
-    return arr.map((el, i) => {
-      return (
-        <RecipeCard
-          recipe={el}
-          key={el._id?.toString()}
-        />
-      )
-    })
-  }
-
   if (isLoading) return <Loading />
   if (error) return <p>Error: {error.message}</p>
   return (
@@ -32,9 +21,7 @@ const MyRecipeBox = () => {
         <Search recipeData={data?.recipes} recipes={recipes} setRecipes={setRecipes} />
         {/* ---------- RECIPE GRID ---------- */}
         <h1 className="text-center">My Recipe Box</h1>
-        <div className="flex flex-col md:grid lg:grid-cols-2 justify-center items-center gap-4">
-          {isLoading ? <Spinner /> : recipes ? mapRecipeCards(recipes) : <></>}
-        </div>
+        <RecipeGrid recipes={recipes} isLoading={isLoading} />
 
         {/* ---------- NEW RECIPE BUTTON ---------- */}
         <Link
