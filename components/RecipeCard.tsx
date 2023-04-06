@@ -47,8 +47,8 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       </div>
 
       <div className="text-xs text-sky-300 grid grid-cols-2">
-        <p>Created: {created.getDate()}/{created.getMonth()}/{created.getFullYear()}</p>
-        {updated ? <p className="text-right">Updated: {updated.getDate()}/{updated.getMonth()}/{updated.getFullYear()}</p> : <p></p>}
+        <p>Created: {created.getMonth()}/{created.getDate()}/{created.getFullYear()}</p>
+        {updated ? <p className="text-right">Updated: {updated.getMonth()}/{updated.getDate()}/{updated.getFullYear()}</p> : <p></p>}
         <p className="line-clamp-1">{recipe.recipeType} from {recipe.origin}</p>
         {props.forPublic ? <p className="text-right">Owner: {recipe.owner}</p> : <p className="text-right">{recipe.public ? "Public" : "Private"} Recipe</p>}
       </div>
