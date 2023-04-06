@@ -3,14 +3,16 @@ import Link from "next/link";
 import { Recipe } from "../util/types";
 
 const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
-  const [tagsVisible, setTagsVisible] = useState(false);
   const recipe = props.recipe;
+  const created = new Date(props.recipe.created);
+  const updated = recipe.updated ? new Date(recipe.updated) : undefined;
+
   let rating: undefined | number = undefined;
   if (recipe.rating) {
     let sum = 0
-    recipe.rating.map((el, i) => {
-      sum += el;
-    });
+    for (let i = 0; i < recipe.rating.length; i++) {
+      sum += recipe.rating[i]
+    }
     rating = sum / recipe.rating.length;
   }
 
@@ -35,15 +37,20 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
     >
       <h2 className="mb-0">{recipe.name}</h2>
-      {props.forPublic ? <p>Owner: {recipe.owner}</p> : <></>}
-      <p className="line-clamp-4 h-12">{recipe.description}</p>
-      <p className="my-3">{recipe.recipeType} from {recipe.origin}</p>
-      <div className="flex justify-between h-[20px]">
-        {recipe.prepTime ? <p className="text-sm"><span className="font-bold">Prep Time:</span> {recipe.prepTime} min.</p> : ""}
-        {recipe.cookTime ? <p className="text-sm"><span className="font-bold">Cook Time:</span> {recipe.cookTime} min.</p> : ""}
-      </div>
-      <div className="text-sm w-full text-sky-400 overflow-x-scroll flex h-6 pb-2 gap-2">
+      <p className="line-clamp-4 h-24 text-sky-700 mb-4">{recipe.description}</p>
+      <div className="text-sm w-full text-sky-500 overflow-x-scroll flex h-6 pb-2 gap-2 font-bold">
         {getTags()}
+      </div>
+      <div className="flex justify-between h-[20px] text-sky-500">
+        {recipe.prepTime ? <p className="text-sm">Prep Time: {recipe.prepTime} min.</p> : ""}
+        {recipe.cookTime ? <p className="text-sm">Cook Time: {recipe.cookTime} min.</p> : ""}
+      </div>
+
+      <div className="text-xs text-sky-300 grid grid-cols-2">
+        <p>Created: {created.getDate()}/{created.getMonth()}/{created.getFullYear()}</p>
+        {updated ? <p className="text-right">Updated: {updated.getDate()}/{updated.getMonth()}/{updated.getFullYear()}</p> : <p></p>}
+        <p className="line-clamp-1">{recipe.recipeType} from {recipe.origin}</p>
+        {props.forPublic ? <p className="text-right">Owner: {recipe.owner}</p> : <p className="text-right">{recipe.public ? "Public" : "Private"} Recipe</p>}
       </div>
       <p className="absolute top-2 right-2 text-sm">{rating ? rating + "/10" : ""}</p>
     </Link>
