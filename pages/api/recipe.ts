@@ -71,6 +71,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const recipeData = req.headers["recipe"];
       if (typeof recipeData === "string") {
         const newRecipe = JSON.parse(recipeData);
+        newRecipe.created = new Date(newRecipe.created);
+        newRecipe.updated = new Date(newRecipe.updated);
 
         // Insert new recipe
         const recipes = db.collection("recipes");
@@ -146,9 +148,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const idToUpdate = updateData._id;
       delete updateData._id
+      updateData.created = new Date(updateData.created);
+      updateData.updated = new Date();
 
       const updateResult = await recipes.updateOne({ _id: new ObjectId(idToUpdate) }, { $set: updateData });
-      console.log(updateResult);
       if (!updateResult.matchedCount) {
         res.status(500).json({ error: true, message: "failed to update" });
         break;
