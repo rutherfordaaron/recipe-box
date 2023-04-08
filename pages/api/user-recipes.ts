@@ -15,7 +15,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const token = parsedCookies.token;
       // If token is not provided, 400: Bad Request
       if (!token) {
-        res.status(400).json({ recipes: null, message: "no authentication token found" })
+        res.status(400).json({ recipes: null, message: "no authentication token found" });
+        break;
       }
 
       // Verify user with authentication token
