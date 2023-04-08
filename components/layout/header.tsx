@@ -70,18 +70,20 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-sky-200 flex justify-between items-center p-3 shadow-md text-xl font-bold fixed inset-x-0 top-0 z-10">
-      <Link href={authenticated ? "/public-recipes" : "/"} className="">Recipe Box</Link>
+    <header className="bg-sky-200 shadow-md fixed inset-x-0 top-0 z-10">
+      <div className="bg-sky-200 flex justify-between items-center p-3 text-xl font-bold max-w-[1000px] mx-auto">
+        <Link href={authenticated ? "/public-recipes" : "/"} className="">Recipe Box</Link>
 
-      <motion.button
-        className="hover:cursor-pointer z-20 border-none shadow-none hover:bg-transparent"
-        whileHover={{ scale: 1.2 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <FontAwesomeIcon icon={faBars} className="hover:cursor-pointer" onClick={toggleNav} />
-      </motion.button>
+        <motion.button
+          className="hover:cursor-pointer z-20 border-none shadow-none hover:bg-transparent"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <FontAwesomeIcon icon={faBars} className="hover:cursor-pointer" onClick={toggleNav} />
+        </motion.button>
 
-      {authenticated === null ? <></> : authenticated ? isAuthenticated : notAuthenticated}
+        {authenticated === null ? <></> : authenticated ? isAuthenticated : notAuthenticated}
+      </div>
     </header>
   )
 }
