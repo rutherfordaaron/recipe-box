@@ -6,6 +6,7 @@ import getUserRecipes from "../../../util/getUserRecipes";
 import { useState } from "react";
 import Search from "../../../components/search";
 import { RecipeGrid } from "../../../components/recipeGrid";
+import SearchAndGridWrapper from "../../../components/searchAndGridWrapper";
 
 const MyRecipeBox = () => {
   let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
@@ -14,10 +15,11 @@ const MyRecipeBox = () => {
   if (error) return <p>Error: {error.message}</p>
   return (
     <>
-      <Search recipeData={data?.recipes} recipes={recipes} setRecipes={setRecipes} />
-      {/* ---------- RECIPE GRID ---------- */}
       <h1 className="text-center">My Recipe Box</h1>
-      <RecipeGrid recipes={recipes} isLoading={isLoading} />
+      <SearchAndGridWrapper>
+        <Search recipeData={data?.recipes} recipes={recipes} setRecipes={setRecipes} />
+        <RecipeGrid recipes={recipes} isLoading={isLoading} />
+      </SearchAndGridWrapper>
 
       {/* ---------- NEW RECIPE BUTTON ---------- */}
       <Link
