@@ -51,6 +51,8 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
 
   return (
     <div className="flex justify-center items-center relative max-w-[350px] mx-auto gap-2">
+      <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
+
       <button type="button" className={`hover:bg-sky-200 shadow-none transition-all ${!tagFilter[0] ? "" : "bg-sky-100"}`} onClick={(e => setShowFilterMenu(!showFilterMenu))}>
         <FontAwesomeIcon icon={faFilter} />
       </button>
@@ -60,8 +62,6 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
         <FontAwesomeIcon icon={faSort} />
       </button>
       <SortMenu setSort={setSort} activeSortParameter={sort} visible={showSortMenu} setVisible={setShowSortMenu} />
-
-      <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
     </div>
   )
 }
