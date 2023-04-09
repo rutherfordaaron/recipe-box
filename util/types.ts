@@ -68,3 +68,5 @@ export type GetPublicRecipesAPIData = {
   recipes: Recipe[] | null,
   message: string
 }
+
+export const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "sides", "drinks", "vegetarian", "gluten free", "lactose free", "vegan", "other"]

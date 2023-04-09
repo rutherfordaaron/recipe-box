@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../util/db";
 import crypto from "crypto";
-import { User } from "../../util/types";
+import { User, defaultTags } from "../../util/types";
 import parseCookie from "../../util/parseCookie";
 import getToken from "../../util/getToken";
 
@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // create a user object and post it to the database
-      const newUser: User = { username: username.toString(), email: email.toString(), password: password.toString(), created: new Date(), verified: false, token: "", tags: ["breakfast", "lunch", "dinner", "dessert", "snack", "other", "gluten free", "vegetarian", "lactose free", "drinks"] };
+      const newUser: User = { username: username.toString(), email: email.toString(), password: password.toString(), created: new Date(), verified: false, token: "", tags: defaultTags };
 
       users.insertOne(newUser);
 

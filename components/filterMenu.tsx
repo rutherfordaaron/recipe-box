@@ -4,6 +4,7 @@ import { Spinner } from "./spinner";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
+import { defaultTags } from "../util/types";
 
 export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function }) => {
   const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter } = props;
@@ -30,7 +31,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
     }
   })
 
-  const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "vegetarian", "gluten free", "lactose free", "other"];
+  console.log(data?.user?.tags)
 
   return (
     <AnimatePresence>
@@ -47,9 +48,9 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
             <FontAwesomeIcon icon={faX} />
           </button>
           <p>Filter by tag:</p>
-          {loading ? <Spinner /> : error ? <p>Error: {error.message}</p> : data && data.user ?
+          {loading ? <Spinner /> : error ? <p>Error: {error.message}</p> :
             <div className="grid grid-cols-2 gap-2 w-full mx-auto">
-              {data.user.tags ? data.user.tags.map((el, i) => {
+              {data && data.user && data.user.tags ? data.user.tags.map((el, i) => {
                 // Active Tag Filters
                 if (tagFilter.find(item => item === el)) return (
                   <button
@@ -72,6 +73,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
                 )
               }) :
                 defaultTags.map((el, i) => {
+                  console.log("mapping default tags");
                   // Active Tag Filters
                   if (tagFilter.find(item => item === el)) return (
                     <button
@@ -93,8 +95,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
                     </button>
                   )
                 })}
-            </div>
-            : <></>}
+            </div>}
           <button type="button" className="mx-auto" onClick={resetFilters}>Reset filters</button>
         </motion.div> : <></>}
     </AnimatePresence>
