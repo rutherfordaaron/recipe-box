@@ -50,18 +50,20 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   }
 
   return (
-    <div className="flex justify-center items-center relative max-w-[350px] mx-auto gap-2">
-      <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
+    <div className="flex flex-col relative mx-auto gap-2">
+      <div className="flex justify-center items-center relative max-w-[350px] mx-auto gap-2">
+        <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
 
-      <button type="button" className={`hover:bg-sky-200 shadow-none transition-all ${!tagFilter[0] ? "" : "bg-sky-100"}`} onClick={(e => setShowFilterMenu(!showFilterMenu))}>
-        <FontAwesomeIcon icon={faFilter} />
-      </button>
+        <button type="button" className={`hover:bg-sky-200 shadow-none transition-all ${sort === SortParameter.Unsorted ? "" : "bg-sky-100"}`} onClick={e => setShowSortMenu(!showSortMenu)}>
+          <FontAwesomeIcon icon={faSort} />
+        </button>
+        <SortMenu setSort={setSort} activeSortParameter={sort} visible={showSortMenu} setVisible={setShowSortMenu} />
+
+        <button type="button" className={`hover:bg-sky-200 md:hidden shadow-none transition-all ${!tagFilter[0] ? "" : "bg-sky-100"}`} onClick={(e => setShowFilterMenu(!showFilterMenu))}>
+          <FontAwesomeIcon icon={faFilter} />
+        </button>
+      </div>
       <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} />
-
-      <button type="button" className={`hover:bg-sky-200 shadow-none transition-all ${sort === SortParameter.Unsorted ? "" : "bg-sky-100"}`} onClick={e => setShowSortMenu(!showSortMenu)}>
-        <FontAwesomeIcon icon={faSort} />
-      </button>
-      <SortMenu setSort={setSort} activeSortParameter={sort} visible={showSortMenu} setVisible={setShowSortMenu} />
     </div>
   )
 }

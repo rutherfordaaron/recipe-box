@@ -1,9 +1,9 @@
-import RecipeCard from "../../components/RecipeCard";
 import getPublicRecipes from "../../util/getPublicRecieps";
 import Loading from "../../components/loading";
 import { useState } from "react";
 import { RecipeGrid } from "../../components/recipeGrid";
 import Search from "../../components/search";
+import SearchAndGridWrapper from "../../components/searchAndGridWrapper";
 
 export default function PublicRecipes() {
   const { publicRecipesData: data, publicRecipesError: error, publicRecipesIsLoading: loading } = getPublicRecipes();
@@ -13,9 +13,11 @@ export default function PublicRecipes() {
 
   return (
     <>
-      <Search recipeData={data?.recipes} recipes={recipes} setRecipes={setRecipes} />
-      <h1>Public Recipes</h1>
-      <RecipeGrid isLoading={loading} recipes={recipes} />
+      <h1 className="text-center">Public Recipes</h1>
+      <SearchAndGridWrapper>
+        <Search recipeData={data?.recipes} recipes={recipes} setRecipes={setRecipes} />
+        <RecipeGrid isLoading={loading} recipes={recipes} />
+      </SearchAndGridWrapper>
     </>
   )
 }

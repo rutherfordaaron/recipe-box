@@ -56,7 +56,7 @@ const RecipeDetails = () => {
     }
 
     return (
-      <article className="max-w-[750px] mx-auto">
+      <article>
         <BackButton href="/profile/my-recipe-box" />
         {!confrimDelete ? <></> :
           <DestructiveAction message="Are you sure you want to delete this recipe?" destroyMessage="Yes, I'm sure" cancelMessage="No, nevermind" setVisible={setConfirmDelete} destructiveAction={deleteRecipe} />

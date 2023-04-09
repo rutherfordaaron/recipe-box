@@ -3,6 +3,7 @@ import getUser from "../util/getUser"
 import { Spinner } from "./spinner";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 
 export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function }) => {
   const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter } = props;
@@ -23,6 +24,12 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
     setTagFilter([]);
   }
 
+  useEffect(() => {
+    if (window.screen.width >= 768) {
+      setShowFilterMenu(true);
+    }
+  })
+
   const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "vegetarian", "gluten free", "lactose free", "other"];
 
   return (
@@ -30,13 +37,13 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
       {showFilterMenu ?
         <motion.div
           key="filterMenu"
-          className={`fixed top-5 bottom-5 rounded-l right-0 bg-sky-50 z-50 flex flex-col gap-4 w-3/4 md:w-1/2 max-w-[500px] px-4 pt-16 shadow-2xl`}
+          className={`fixed top-5 bottom-5 rounded-l right-0 bg-sky-50 flex flex-col gap-4 w-3/4 max-w-[500px] px-4 pt-16 md:py-4 max-sm:shadow-2xl md:relative md:w-full md:rounded shadow z-40`}
           initial={{ opacity: 0, x: 500 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 500, opacity: 0 }}
           transition={{ spring: 0 }}
         >
-          <button onClick={e => setShowFilterMenu(false)} type="button" className="shadow-none absolute top-5 right-5 ">
+          <button onClick={e => setShowFilterMenu(false)} type="button" className="shadow-none absolute top-5 right-5 md:hidden">
             <FontAwesomeIcon icon={faX} />
           </button>
           <p>Filter by tag:</p>

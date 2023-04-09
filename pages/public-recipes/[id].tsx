@@ -31,7 +31,7 @@ const PublicRecipeDetails = () => {
     }
 
     return (
-      <article className="max-w-[750px] mx-auto">
+      <article>
         <BackButton href="/public-recipes" />
         <section className="relative">
           <h1>{recipe.name}</h1>
