@@ -33,9 +33,9 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   const sortRecipes = () => {
     switch (sort) {
       case SortParameter.Descending:
-        return filterSearchQuery().sort().reverse()
+        return filterSearchQuery().sort((a, b) => b.name.localeCompare(a.name)).reverse()
       case SortParameter.Ascending:
-        return filterSearchQuery().sort()
+        return filterSearchQuery().sort((a, b) => b.name.localeCompare(a.name))
       case SortParameter.RecentlyCreated:
         return filterSearchQuery().sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
       case SortParameter.OldestCreated:
