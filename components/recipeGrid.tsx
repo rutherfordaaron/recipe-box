@@ -20,7 +20,7 @@ export const RecipeGrid = (props: { recipes: Recipe[], isLoading: boolean }) => 
   }
 
   return (
-    <div className="flex flex-col md:grid lg:grid-cols-2 justify-center items-center gap-4 max-h-[73vh] md:max-h-[75vh] max-sm:pt-60 py-4 pr-2 overflow-y-scroll">
+    <div className="flex flex-col md:grid lg:grid-cols-2 items-center gap-4 max-h-[73vh] md:max-h-[75vh] py-4 pr-2 overflow-y-scroll">
       {isLoading ? <Spinner /> : recipes ? mapRecipeCards(recipes) : <></>}
     </div>
   )
