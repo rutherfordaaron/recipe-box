@@ -31,8 +31,6 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
     }
   })
 
-  console.log(data?.user?.tags)
-
   return (
     <AnimatePresence>
       {showFilterMenu ?
