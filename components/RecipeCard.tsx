@@ -31,6 +31,13 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
     return <></>
   }
 
+  const getCookTime = () => {
+    let cookTime = 0;
+    if (recipe.cookTime) cookTime += recipe.cookTime;
+    if (recipe.prepTime) cookTime += recipe.prepTime;
+    return cookTime;
+  }
+
   return (
     <Link
       href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipes/${String(recipe._id)}`}
@@ -42,8 +49,7 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
         {getTags()}
       </div>
       <div className="flex justify-between h-[20px] text-sky-400">
-        {recipe.prepTime ? <p className="text-sm">Prep: {recipe.prepTime >= 60 ? `${Math.floor(recipe.prepTime / 60)} hrs. ${recipe.prepTime % 60} min.` : `${recipe.prepTime} min.`}</p> : ""}
-        {recipe.cookTime ? <p className="text-sm">Cook: {recipe.cookTime >= 60 ? `${Math.floor(recipe.cookTime / 60)} hrs. ${recipe.cookTime % 60} min.` : `${recipe.cookTime} min.`}</p> : ""}
+        {getCookTime() ? <p className="text-sm">Total time: {getCookTime() >= 60 ? `${Math.floor(getCookTime() / 60)} hrs. ${getCookTime() % 60} min.` : `${getCookTime()} min.`}</p> : <></>}
       </div>
 
       <div className="text-xs text-sky-300 grid grid-cols-2">
