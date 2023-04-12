@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Recipe } from "../util/types";
+import { Rating } from "./rating";
 
 const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const recipe = props.recipe;
@@ -17,18 +18,13 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   }
 
   const getTags = () => {
+    let tags = "";
     if (recipe.tags) {
-      return (
-        recipe.tags.map((el, i) => {
-          return (
-            <div key={`${recipe._id}tag${i}`} className="whitespace-nowrap">
-              <p>#{el}</p>
-            </div>
-          )
-        })
-      )
+      recipe.tags.map((el, i) => {
+        tags += `#${el}  `
+      })
     }
-    return <></>
+    return tags
   }
 
   const getCookTime = () => {
@@ -43,11 +39,10 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipes/${String(recipe._id)}`}
       className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
     >
-      <h2 className="mb-0">{recipe.name}</h2>
+      <Rating rating={recipe.rating ? recipe.rating : []} />
+      <h2 className="my-0 line-clamp-1">{recipe.name}</h2>
       <p className="line-clamp-4 h-24 text-sky-700 mb-4">{recipe.description}</p>
-      <div className="text-sm w-full text-sky-500 overflow-x-scroll flex h-6 pb-2 gap-2 font-bold">
-        {getTags()}
-      </div>
+      <p className="text-sm text-sky-500 line-clamp-1 font-bold">{getTags()}</p>
       <div className="flex justify-between h-[20px] text-sky-400">
         {getCookTime() ? <p className="text-sm">Total time: {getCookTime() >= 60 ? `${Math.floor(getCookTime() / 60)} hrs. ${getCookTime() % 60} min.` : `${getCookTime()} min.`}</p> : <></>}
       </div>
@@ -58,7 +53,6 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
         <p className="line-clamp-1">{recipe.recipeType} from {recipe.origin}</p>
         {props.forPublic ? <p className="text-right">Owner: {recipe.owner}</p> : <p className="text-right">{recipe.public ? "Public" : "Private"} Recipe</p>}
       </div>
-      <p className="absolute top-2 right-2 text-sm">{rating ? rating + "/10" : ""}</p>
     </Link>
   )
 }

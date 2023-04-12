@@ -6,6 +6,7 @@ import getUser from "../../../../util/getUser";
 import RecipeEditMode from "../../../../components/recipeEditMode";
 import { BackButton } from "../../../../components/backButton";
 import { DestructiveAction } from "../../../../components/destructiveAction";
+import { Rating } from "../../../../components/rating";
 
 const RecipeDetails = () => {
   const [error, setError] = useState("")
@@ -62,9 +63,9 @@ const RecipeDetails = () => {
           <DestructiveAction message="Are you sure you want to delete this recipe?" destroyMessage="Yes, I'm sure" cancelMessage="No, nevermind" setVisible={setConfirmDelete} destructiveAction={deleteRecipe} />
         }
         <section className="relative">
+          <Rating rating={recipe.rating ? recipe.rating : []} />
           <h1>{recipe.name}</h1>
           <p>{recipe.recipeType} from {recipe.origin}</p>
-          {recipe.rating ? <p className="absolute -top-8 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
           <div className="flex flex-col text-sm text-gray-400">
             {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}

@@ -1,16 +1,20 @@
 import { useRouter } from "next/router";
 import Loading from "../../components/loading";
 import getRecipe from "../../util/getRecipe";
+import getUser from "../../util/getUser";
 import { BackButton } from "../../components/backButton";
+import { Rating } from "../../components/rating";
 
 const PublicRecipeDetails = () => {
   const router = useRouter();
   const id = router.query.id ? router.query.id.toString() : "";
 
   let { recipeData, recipeError, recipeIsLoading } = getRecipe(id);
+  let { userData, userError, userIsLoading } = getUser();
 
-  if (recipeIsLoading) return <Loading />
+  if (recipeIsLoading || userIsLoading) return <Loading />
   if (recipeError) return <p>Something went wrong! {recipeError.message}</p>
+  if (userError) return <p>Soemthing went wrong! {userError.message}</p>
   if (recipeData && !recipeData.recipe) return <p>Something went wrong! {recipeData.message}</p>
   if (recipeData && recipeData.recipe) {
     const recipe = recipeData.recipe;
@@ -34,10 +38,10 @@ const PublicRecipeDetails = () => {
       <article>
         <BackButton href="/public-recipes" />
         <section className="relative">
+          <Rating rating={recipe.rating ? recipe.rating : []} />
           <h1>{recipe.name}</h1>
           <p>{recipe.recipeType} from {recipe.origin}</p>
           <p>Owned by {recipe.owner}</p>
-          {recipe.rating ? <p className="absolute -top-8 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
           <div className="flex flex-col text-sm text-gray-400">
             {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
