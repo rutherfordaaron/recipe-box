@@ -4,8 +4,13 @@ import getRecipe from "../../util/getRecipe";
 import getUser from "../../util/getUser";
 import { BackButton } from "../../components/backButton";
 import { Rating } from "../../components/rating";
+import { useState } from "react";
+import MessageBanner from "../../components/layout/messageBanner";
+import RatingInput from "../../components/ratingInput";
 
 const PublicRecipeDetails = () => {
+  const [showRatingInput, setShowRatingInput] = useState(false);
+  const [error, setError] = useState("")
   const router = useRouter();
   const id = router.query.id ? router.query.id.toString() : "";
 
@@ -34,9 +39,20 @@ const PublicRecipeDetails = () => {
       return <></>
     }
 
+    const rateRecipe = () => {
+      if (!(userData && userData.user)) {
+        setError("Please log in to rate recipes")
+      } else if (userData.user.username === recipe.owner) {
+        setError("You cannot rate your own recipe from here")
+      } else {
+        setShowRatingInput(true);
+      }
+    }
+
     return (
       <article>
         <BackButton href="/public-recipes" />
+
         <section className="relative">
           <Rating rating={recipe.rating ? recipe.rating : []} />
           <h1>{recipe.name}</h1>
@@ -74,6 +90,15 @@ const PublicRecipeDetails = () => {
             })}
           </ol>
         </section>
+
+        {showRatingInput ?
+          <div>
+            <RatingInput />
+            <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" >Confrim</button>
+          </div> :
+          <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={rateRecipe}>Rate this recipe</button>
+        }
+        <MessageBanner message={error} ok={false} />
       </article>
     )
   }
