@@ -35,13 +35,14 @@ const PublicRecipeDetails = () => {
         <BackButton href="/public-recipes" />
         <section className="relative">
           <h1>{recipe.name}</h1>
+          <p>{recipe.recipeType} from {recipe.origin}</p>
           <p>Owned by {recipe.owner}</p>
           {recipe.rating ? <p className="absolute -top-8 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
           <div className="flex flex-col text-sm text-gray-400">
             {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
-            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime} minutes</p> : <></>}
-            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime} minutes</p> : <></>}
+            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime >= 60 ? `${Math.floor(recipe.prepTime / 60)} hrs. ${recipe.prepTime % 60} min.` : `${recipe.prepTime} min.`}</p> : <></>}
+            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime >= 60 ? `${Math.floor(recipe.cookTime / 60)} hrs. ${recipe.cookTime % 60} min.` : `${recipe.cookTime} min.`}</p> : <></>}
           </div>
           <div className="text-sm w-full text-sky-400 flex gap-2 flex-wrap">
             {getTags()}

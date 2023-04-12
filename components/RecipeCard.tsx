@@ -41,9 +41,9 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       <div className="text-sm w-full text-sky-500 overflow-x-scroll flex h-6 pb-2 gap-2 font-bold">
         {getTags()}
       </div>
-      <div className="flex justify-between h-[20px] text-sky-500">
-        {recipe.prepTime ? <p className="text-sm">Prep Time: {recipe.prepTime} min.</p> : ""}
-        {recipe.cookTime ? <p className="text-sm">Cook Time: {recipe.cookTime} min.</p> : ""}
+      <div className="flex justify-between h-[20px] text-sky-400">
+        {recipe.prepTime ? <p className="text-sm">Prep: {recipe.prepTime >= 60 ? `${Math.floor(recipe.prepTime / 60)} hrs. ${recipe.prepTime % 60} min.` : `${recipe.prepTime} min.`}</p> : ""}
+        {recipe.cookTime ? <p className="text-sm">Cook: {recipe.cookTime >= 60 ? `${Math.floor(recipe.cookTime / 60)} hrs. ${recipe.cookTime % 60} min.` : `${recipe.cookTime} min.`}</p> : ""}
       </div>
 
       <div className="text-xs text-sky-300 grid grid-cols-2">
