@@ -34,7 +34,8 @@ export type Recipe = {
   tags?: string[],
   created: Date,
   updated?: Date,
-  public?: boolean
+  public?: boolean,
+  comments?: Comment[]
 }
 
 export type Ingredient = { ingredient: string, measurement: string, id: string }
@@ -68,5 +69,7 @@ export type GetPublicRecipesAPIData = {
   recipes: Recipe[] | null,
   message: string
 }
+
+export type Comment = { id: number, user: string, body: string, comments?: Comment[] }
 
 export const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "sides", "drinks", "vegetarian", "gluten free", "lactose free", "vegan", "other"]
