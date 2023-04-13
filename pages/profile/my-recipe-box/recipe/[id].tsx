@@ -6,6 +6,7 @@ import getUser from "../../../../util/getUser";
 import RecipeEditMode from "../../../../components/recipeEditMode";
 import { BackButton } from "../../../../components/backButton";
 import { DestructiveAction } from "../../../../components/destructiveAction";
+import { Rating } from "../../../../components/rating";
 
 const RecipeDetails = () => {
   const [error, setError] = useState("")
@@ -62,13 +63,14 @@ const RecipeDetails = () => {
           <DestructiveAction message="Are you sure you want to delete this recipe?" destroyMessage="Yes, I'm sure" cancelMessage="No, nevermind" setVisible={setConfirmDelete} destructiveAction={deleteRecipe} />
         }
         <section className="relative">
+          <Rating ratings={recipe.ratings ? recipe.ratings : []} />
           <h1>{recipe.name}</h1>
-          {recipe.rating ? <p className="absolute -top-8 right-0 text-sm text-slate-400">{recipe.rating}/10</p> : <></>}
+          <p>{recipe.recipeType} from {recipe.origin}</p>
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
           <div className="flex flex-col text-sm text-gray-400">
             {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
-            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime} minutes</p> : <></>}
-            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime} minutes</p> : <></>}
+            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime >= 60 ? `${Math.floor(recipe.prepTime / 60)} hrs. ${recipe.prepTime % 60} min.` : `${recipe.prepTime} min.`}</p> : <></>}
+            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime >= 60 ? `${Math.floor(recipe.cookTime / 60)} hrs. ${recipe.cookTime % 60} min.` : `${recipe.cookTime} min.`}</p> : <></>}
           </div>
           <div className="text-sm w-full text-sky-400 flex gap-2 flex-wrap">
             {getTags()}

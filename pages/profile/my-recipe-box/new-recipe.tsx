@@ -14,6 +14,7 @@ const NewRecipe = () => {
     name: "",
     owner,
     origin: "",
+    ratings: [{ user: owner, rating: 5 }],
     recipeType: RecipeType.Copied,
     ingredients: [],
     directions: [],

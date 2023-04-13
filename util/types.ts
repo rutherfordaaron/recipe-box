@@ -30,7 +30,7 @@ export type Recipe = {
   prepTime?: number,
   cookTime?: number,
   servings?: number,
-  rating?: number[],
+  ratings: { user: string, rating: number }[],
   tags?: string[],
   created: Date,
   updated?: Date,

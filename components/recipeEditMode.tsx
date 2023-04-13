@@ -36,7 +36,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
   const [prepTime, setPrepTime] = useState(recipe.prepTime ? recipe.prepTime : 0);
   const [cookTime, setCookTime] = useState(recipe.cookTime ? recipe.cookTime : 0);
   const [servingsYield, setServingsYield] = useState(recipe.servings ? recipe.servings : 0);
-  const [rating, setRating] = useState(recipe.rating);
+  const [ratings, setRatings] = useState(recipe.ratings);
   // -------------------- BASIC INFO EVENT HANDLERS --------------------
   const nameChangeHandler = (value: string) => {
     setName(value);
@@ -154,7 +154,7 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
       prepTime,
       cookTime,
       servings: servingsYield,
-      rating,
+      ratings,
       created: recipe.created,
       updated: editMode ? new Date() : undefined,
       tags: activeTags,
@@ -398,15 +398,11 @@ const RecipeEditMode = (props: { recipe: Recipe, setEditMode?: Function, editMod
             label="Rating (1-10)"
             onChange={(e) => {
               const value = Number(e.target.value);
-              if (rating) {
-                let tempRating = [...rating];
-                tempRating[0] = value <= 10 && value > 0 ? value : 0
-                setRating(tempRating);
-              } else {
-                setRating([value <= 10 && value > 0 ? value : 0])
-              }
+              let tempRating = [...ratings];
+              tempRating[0].rating = value <= 10 && value > 0 ? value : 0
+              setRatings(tempRating);
             }}
-            state={rating && rating[0] === 0 ? "" : rating ? rating[0] : ""}
+            state={ratings && ratings[0].rating === 0 ? "" : ratings[0].rating}
             valid={true}
             range={[1, 10]}
           />
