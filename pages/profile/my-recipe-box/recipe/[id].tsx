@@ -63,7 +63,7 @@ const RecipeDetails = () => {
           <DestructiveAction message="Are you sure you want to delete this recipe?" destroyMessage="Yes, I'm sure" cancelMessage="No, nevermind" setVisible={setConfirmDelete} destructiveAction={deleteRecipe} />
         }
         <section className="relative">
-          <Rating rating={recipe.rating ? recipe.rating : []} />
+          <Rating ratings={recipe.ratings ? recipe.ratings : []} />
           <h1>{recipe.name}</h1>
           <p>{recipe.recipeType} from {recipe.origin}</p>
           {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}

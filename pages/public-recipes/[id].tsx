@@ -11,6 +11,8 @@ import RatingInput from "../../components/ratingInput";
 const PublicRecipeDetails = () => {
   const [showRatingInput, setShowRatingInput] = useState(false);
   const [error, setError] = useState("")
+  const [ok, setOk] = useState(false);
+  const [newRating, setNewRating] = useState(0);
   const router = useRouter();
   const id = router.query.id ? router.query.id.toString() : "";
 
@@ -41,11 +43,33 @@ const PublicRecipeDetails = () => {
 
     const rateRecipe = () => {
       if (!(userData && userData.user)) {
+        setOk(false);
         setError("Please log in to rate recipes")
       } else if (userData.user.username === recipe.owner) {
         setError("You cannot rate your own recipe from here")
+        setOk(false);
       } else {
         setShowRatingInput(true);
+      }
+    }
+
+    const addRating = () => {
+      setShowRatingInput(false);
+      if (!(userData && userData.user)) {
+        setError("Please log in to rate recipes");
+        setOk(false);
+      } else {
+        fetch("/api/addRating", { method: "POST", headers: { "recipe-id": String(recipe._id), "new-rating": newRating.toString(), "user": userData?.user?.username } })
+          .then(res => res.json())
+          .then(data => {
+            if (!data.success) {
+              setError(data.message);
+              setOk(false);
+            } else {
+              setError(data.message)
+              setOk(true)
+            }
+          })
       }
     }
 
@@ -54,7 +78,7 @@ const PublicRecipeDetails = () => {
         <BackButton href="/public-recipes" />
 
         <section className="relative">
-          <Rating rating={recipe.rating ? recipe.rating : []} />
+          <Rating ratings={recipe.ratings ? recipe.ratings : []} />
           <h1>{recipe.name}</h1>
           <p>{recipe.recipeType} from {recipe.origin}</p>
           <p>Owned by {recipe.owner}</p>
@@ -93,12 +117,12 @@ const PublicRecipeDetails = () => {
 
         {showRatingInput ?
           <div>
-            <RatingInput />
-            <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" >Confrim</button>
+            <RatingInput rating={newRating} setRating={setNewRating} />
+            <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={addRating}>Confrim</button>
           </div> :
           <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={rateRecipe}>Rate this recipe</button>
         }
-        <MessageBanner message={error} ok={false} />
+        <MessageBanner message={error} ok={ok} />
       </article>
     )
   }

@@ -8,15 +8,6 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const created = new Date(props.recipe.created);
   const updated = recipe.updated ? new Date(recipe.updated) : undefined;
 
-  let rating: undefined | number = undefined;
-  if (recipe.rating) {
-    let sum = 0
-    for (let i = 0; i < recipe.rating.length; i++) {
-      sum += recipe.rating[i]
-    }
-    rating = sum / recipe.rating.length;
-  }
-
   const getTags = () => {
     let tags = "";
     if (recipe.tags) {
@@ -39,7 +30,7 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipes/${String(recipe._id)}`}
       className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
     >
-      <Rating rating={recipe.rating ? recipe.rating : []} />
+      <Rating ratings={recipe.ratings ? recipe.ratings : []} />
       <h2 className="my-0 line-clamp-1">{recipe.name}</h2>
       <p className="line-clamp-4 h-24 text-sky-700 mb-4">{recipe.description}</p>
       <p className="text-sm text-sky-500 line-clamp-1 font-bold">{getTags()}</p>
