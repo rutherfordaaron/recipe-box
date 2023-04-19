@@ -6,6 +6,7 @@ export const getCommentCount = (arr: Comment[]) => {
     sum += arr.length;
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].comments) {
+        //@ts-ignore
         iterate(arr[i].comments);
       }
     }
