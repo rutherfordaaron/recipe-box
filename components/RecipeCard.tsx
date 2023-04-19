@@ -1,7 +1,8 @@
-import { useState } from "react";
 import Link from "next/link";
-import { Recipe } from "../util/types";
+import { Comment, Recipe } from "../util/types";
 import { Rating } from "./rating";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
 
 const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const recipe = props.recipe;
@@ -25,12 +26,33 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
     return cookTime;
   }
 
+  const getCommentCount = () => {
+    if (!recipe.comments) return 0;
+    let sum = 0;
+    const iterate = (arr: Comment[]) => {
+      sum += arr.length;
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].comments) {
+          iterate(arr[i].comments);
+        }
+      }
+    }
+    iterate(recipe.comments);
+    return sum;
+  }
+
   return (
     <Link
       href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipes/${String(recipe._id)}`}
       className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
     >
-      <Rating ratings={recipe.ratings ? recipe.ratings : []} />
+      <div className="flex justify-between items-center">
+        <div className="text-sky-300 flex gap-1 items-center">
+          <FontAwesomeIcon icon={faComment} />
+          <p>{getCommentCount()}</p>
+        </div>
+        <Rating ratings={recipe.ratings ? recipe.ratings : []} />
+      </div>
       <h2 className="my-0 line-clamp-1">{recipe.name}</h2>
       <p className="line-clamp-4 h-24 text-sky-700 mb-4">{recipe.description}</p>
       <p className="text-sm text-sky-500 line-clamp-1 font-bold">{getTags()}</p>
