@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { Comment, Recipe } from "../util/types";
+import { Recipe } from "../util/types";
 import { Rating } from "./rating";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
 import { getCommentCount } from "../util/getCommentCount";
+import CommentPreview from "./commentPreview";
 
 const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const recipe = props.recipe;
@@ -27,18 +26,13 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
     return cookTime;
   }
 
-
-
   return (
     <Link
       href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipes/${String(recipe._id)}`}
       className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
     >
       <div className="flex justify-between items-center">
-        <div className="text-sky-300 flex gap-1 items-center">
-          <FontAwesomeIcon icon={faComment} />
-          <p>{getCommentCount(recipe.comments ? recipe.comments : [])}</p>
-        </div>
+        <CommentPreview count={getCommentCount(recipe.comments ? recipe.comments : [])} />
         <Rating ratings={recipe.ratings ? recipe.ratings : []} />
       </div>
       <h2 className="my-0 line-clamp-1">{recipe.name}</h2>

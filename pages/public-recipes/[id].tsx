@@ -8,6 +8,8 @@ import { useState } from "react";
 import MessageBanner from "../../components/layout/messageBanner";
 import RatingInput from "../../components/ratingInput";
 import Comments from "../../components/comments";
+import CommentPreview from "../../components/commentPreview";
+import { getCommentCount } from "../../util/getCommentCount";
 
 const PublicRecipeDetails = () => {
   const [showRatingInput, setShowRatingInput] = useState(false);
@@ -79,7 +81,10 @@ const PublicRecipeDetails = () => {
         <BackButton href="/public-recipes" />
 
         <section className="relative">
-          <Rating ratings={recipe.ratings ? recipe.ratings : []} />
+          <div className="flex gap-6 justify-end">
+            <CommentPreview count={!recipe.comments ? 0 : getCommentCount(recipe.comments)} />
+            <Rating ratings={recipe.ratings ? recipe.ratings : []} />
+          </div>
           <h1>{recipe.name}</h1>
           <p>{recipe.recipeType} from {recipe.origin}</p>
           <p>Owned by {recipe.owner}</p>
@@ -123,7 +128,9 @@ const PublicRecipeDetails = () => {
           </div> :
           <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={rateRecipe}>Rate this recipe</button>
         }
-        <Comments comments={recipe.comments ? recipe.comments : []} />
+        <div className="mt-20">
+          <Comments comments={recipe.comments ? recipe.comments : []} />
+        </div>
         <MessageBanner message={error} ok={ok} />
       </article>
     )
