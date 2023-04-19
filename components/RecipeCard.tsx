@@ -3,6 +3,7 @@ import { Comment, Recipe } from "../util/types";
 import { Rating } from "./rating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
+import { getCommentCount } from "../util/getCommentCount";
 
 const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const recipe = props.recipe;
@@ -26,20 +27,7 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
     return cookTime;
   }
 
-  const getCommentCount = () => {
-    if (!recipe.comments) return 0;
-    let sum = 0;
-    const iterate = (arr: Comment[]) => {
-      sum += arr.length;
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].comments) {
-          iterate(arr[i].comments);
-        }
-      }
-    }
-    iterate(recipe.comments);
-    return sum;
-  }
+
 
   return (
     <Link
@@ -49,7 +37,7 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       <div className="flex justify-between items-center">
         <div className="text-sky-300 flex gap-1 items-center">
           <FontAwesomeIcon icon={faComment} />
-          <p>{getCommentCount()}</p>
+          <p>{getCommentCount(recipe.comments ? recipe.comments : [])}</p>
         </div>
         <Rating ratings={recipe.ratings ? recipe.ratings : []} />
       </div>

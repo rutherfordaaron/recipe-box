@@ -7,6 +7,7 @@ import { Rating } from "../../components/rating";
 import { useState } from "react";
 import MessageBanner from "../../components/layout/messageBanner";
 import RatingInput from "../../components/ratingInput";
+import Comments from "../../components/comments";
 
 const PublicRecipeDetails = () => {
   const [showRatingInput, setShowRatingInput] = useState(false);
@@ -122,6 +123,7 @@ const PublicRecipeDetails = () => {
           </div> :
           <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={rateRecipe}>Rate this recipe</button>
         }
+        <Comments comments={recipe.comments ? recipe.comments : []} />
         <MessageBanner message={error} ok={ok} />
       </article>
     )
