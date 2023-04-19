@@ -70,6 +70,6 @@ export type GetPublicRecipesAPIData = {
   message: string
 }
 
-export type Comment = { id: number, user: string, body: string, comments?: Comment[] }
+export type Comment = { _id: ObjectId, user: string, body: string, likes?: string[], comments?: Comment[] }
 
 export const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "sides", "drinks", "vegetarian", "gluten free", "lactose free", "vegan", "other"]
