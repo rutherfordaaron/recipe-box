@@ -10,8 +10,14 @@ import RatingInput from "../../components/ratingInput";
 import Comments from "../../components/comments";
 import CommentPreview from "../../components/commentPreview";
 import { getCommentCount } from "../../util/getCommentCount";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment, faHeart, faStar } from "@fortawesome/free-regular-svg-icons";
+import Input from "../../components/input";
+import { ObjectId } from "mongodb";
 
 const PublicRecipeDetails = () => {
+  const [newComment, setNewComment] = useState("");
+  const [showCommentInput, setShowCommentInput] = useState(false);
   const [showRatingInput, setShowRatingInput] = useState(false);
   const [error, setError] = useState("")
   const [ok, setOk] = useState(false);
@@ -44,7 +50,47 @@ const PublicRecipeDetails = () => {
       return <></>
     }
 
+    const startComment = () => {
+      setShowRatingInput(false);
+      if (!(userData && userData.user)) {
+        setOk(false);
+        setError("Please log in to rate recipes")
+      } else {
+        setShowCommentInput(true);
+      }
+    }
+
+    const submitNewComment = () => {
+      const comment = newComment.trim();
+      if (comment) {
+        fetch("/api/comment", {
+          method: "POST",
+          headers:
+          {
+            "depth": "0",
+            "recipe-id": recipe._id ? recipe._id.toString() : "",
+            "user": userData && userData.user ? userData.user.username : "",
+            "new-comment": comment
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              setError(data.message);
+              setOk(true);
+            } else {
+              setOk(false);
+              setError(data.message);
+            }
+          })
+          .catch((err: Error) => setError(err.message))
+      } else {
+        setError("Please fill out comment input")
+      }
+    }
+
     const rateRecipe = () => {
+      setShowCommentInput(false);
       if (!(userData && userData.user)) {
         setOk(false);
         setError("Please log in to rate recipes")
@@ -121,14 +167,25 @@ const PublicRecipeDetails = () => {
           </ol>
         </section>
 
+        <div className="flex justify-center items-center gap-6 text-[24px] text-sky-400 my-12">
+          <button type="button" onClick={rateRecipe} className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faStar} /></button>
+          <button type="button" onClick={startComment} className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faComment} /></button>
+          <button className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faHeart} /></button>
+        </div>
+
+        {showCommentInput ?
+          <div className="flex justify-center items-center flex-col relative bottom-10">
+            <Input id="comment" type="text" label="Your Comment" onChange={e => setNewComment(e.target.value)} state={newComment} valid={Boolean(newComment)} />
+            <button type="button" className="bg-sky-200 shadow-lg text-lg px-5 py-2 hover:bg-sky-400 transition-all mt-2" onClick={submitNewComment}>Submit</button>
+          </div> : <></>}
+
         {showRatingInput ?
           <div>
             <RatingInput rating={newRating} setRating={setNewRating} />
             <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={addRating}>Confrim</button>
-          </div> :
-          <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={rateRecipe}>Rate this recipe</button>
+          </div> : <></>
         }
-        <div className="mt-20">
+        <div>
           <Comments comments={recipe.comments ? recipe.comments : []} />
         </div>
         <MessageBanner message={error} ok={ok} />
