@@ -54,7 +54,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         // Push comment to database using constructed indexString from indexMap
         const result = await recipes.updateOne({ _id: new ObjectId(recipeId?.toString()) }, { "$push": { [indexString]: commentToInsert } });
-        console.log("db result:", result)
         if (result.matchedCount > 0) {
           res.status(200).json({ success: true, message: "Comment added successfuly" });
           break;
@@ -63,6 +62,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           break;
         }
       }
+    case "DELETE":
+      if (!(commentId && recipeId && user && indexMap)) {
+        res.status(400).json({ success: false, message: "Missing required data" });
+        break;
+      }
+
+      const mapData = JSON.parse(indexMap.toString());
+      let indexString = ""
+      for (let i = 0; i < mapData.length; i++) {
+        if (i == 0) {
+          indexString += `comments.${mapData[i]}`
+        } else {
+          indexString += `.comments.${mapData[i]}`
+        }
+      }
+
+      const bodyProperty = indexString + ".body";
+      const userProperty = indexString + ".user"
+
+      const result = await recipes.updateOne({ _id: new ObjectId(recipeId.toString()) }, { "$set": { [bodyProperty]: "[removed]", [userProperty]: "[removed]" } });
+      if (result.matchedCount > 0) {
+        res.status(200).json({ success: true, message: "Comment added successfuly" });
+        break;
+      } else {
+        res.status(500).json({ success: false, message: "Recipe was not added successfuly" });
+        break;
+      }
+
+      break;
     default:
       res.status(401).json({ success: false, message: "Bad method" })
   }

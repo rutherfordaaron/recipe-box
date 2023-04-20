@@ -47,24 +47,48 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
             // push with unsuccessful url param
             console.log("fail")
           }
-          setLoading(false);
-          setReply("");
-          setShowReplyInput(false);
         })
         .catch((err: Error) => {
           // push with error
-          setLoading(false);
-          setReply("");
-          setShowReplyInput(false);
           console.log("fail")
         })
     } else {
       // push with error
-      setLoading(false);
-      setReply("");
-      setShowReplyInput(false);
       console.log("fail")
     }
+    setLoading(false)
+    setReply("");
+    setShowReplyInput(false);
+  }
+
+  const deleteComment = () => {
+    setLoading(true);
+    fetch("/api/comment", {
+      method: "DELETE",
+      headers:
+      {
+        "recipe-id": recipeId,
+        "user": userData && userData.user ? userData.user.username : "",
+        "comment-id": el._id.toString(),
+        "index-map": JSON.stringify(map),
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          mutate(`/api/recipe?id=${recipeId}`);
+          // push with succes url param
+          console.log("success")
+        } else {
+          // push with unsuccessful url param
+          console.log("fail")
+        }
+      })
+      .catch((err: Error) => {
+        // push with error
+        console.log("fail")
+      })
+    setLoading(false);
   }
 
   return (
@@ -78,18 +102,19 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
       <p className="text-sky-300 text-sm">{el.user}</p>
       <p className="pl-6 my-2 text-sm text-gray-600">{el.body}</p>
       <div className="flex pb-2 items-center text-sky-300">
-        <button
-          onClick={e => {
-            if (userData && userData.user) {
-              setShowReplyInput(!showReplyInput)
-            } else {
-              // push url with ereror
-            }
-          }}
-          className={`${buttonStyle} text-xs`}
-        >
-          <FontAwesomeIcon icon={faReply} />
-        </button>
+        {el.body === "[removed]" ? <></> :
+          <button
+            onClick={e => {
+              if (userData && userData.user) {
+                setShowReplyInput(!showReplyInput)
+              } else {
+                // push url with ereror
+              }
+            }}
+            className={`${buttonStyle} text-xs`}
+          >
+            <FontAwesomeIcon icon={faReply} />
+          </button>}
 
         {el.comments ?
           <button onClick={e => setShowComments(!showComments)} className={`flex gap-1 text-sm items-center justify-center ${buttonStyle}`}>
@@ -98,8 +123,9 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
           </button> : <></>}
 
         {userData && userData.user && userData.user.username == el.user ?
-          <button className={`${buttonStyle} text-xs`}>
+          <button onClick={deleteComment} className={`${buttonStyle} text-xs flex justify-center items-center gap-2`}>
             <FontAwesomeIcon icon={faTrash} />
+            {loading ? <Spinner /> : <></>}
           </button> : <></>}
       </div>
 
