@@ -76,7 +76,8 @@ const PublicRecipeDetails = () => {
             "depth": "0",
             "recipe-id": id,
             "user": userData && userData.user ? userData.user.username : "",
-            "new-comment": comment
+            "new-comment": comment,
+            "index-map": JSON.stringify([recipe.comments ? recipe.comments.length : 0])
           }
         })
           .then(res => res.json())
@@ -204,7 +205,7 @@ const PublicRecipeDetails = () => {
           </div> : <></>
         }
         <div>
-          <Comments comments={recipe.comments ? recipe.comments : []} />
+          <Comments comments={recipe.comments ? recipe.comments : []} recipeId={id} />
         </div>
         <MessageBanner message={error} ok={ok} />
       </article>
