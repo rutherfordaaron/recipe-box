@@ -3,7 +3,7 @@ import { useState } from "react";
 import CommentPreview from "./commentPreview";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownLeftAndUpRightToCenter, faReply, faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
+import { faDownLeftAndUpRightToCenter, faReply, faTrash, faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
 import getUser from "../util/getUser";
 import Input from "./input";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
@@ -78,7 +78,16 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
       <p className="text-sky-300 text-sm">{el.user}</p>
       <p className="pl-6 my-2 text-sm text-gray-600">{el.body}</p>
       <div className="flex pb-2 items-center text-sky-300">
-        <button onClick={e => setShowReplyInput(!showReplyInput)} className={`${buttonStyle} text-xs`}>
+        <button
+          onClick={e => {
+            if (userData && userData.user) {
+              setShowReplyInput(!showReplyInput)
+            } else {
+              // push url with ereror
+            }
+          }}
+          className={`${buttonStyle} text-xs`}
+        >
           <FontAwesomeIcon icon={faReply} />
         </button>
 
@@ -86,6 +95,11 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
           <button onClick={e => setShowComments(!showComments)} className={`flex gap-1 text-sm items-center justify-center ${buttonStyle}`}>
             {showComments ? <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} /> : <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />}
             <p className="text-xs">{el.comments.length}</p>
+          </button> : <></>}
+
+        {userData && userData.user && userData.user.username == el.user ?
+          <button className={`${buttonStyle} text-xs`}>
+            <FontAwesomeIcon icon={faTrash} />
           </button> : <></>}
       </div>
 

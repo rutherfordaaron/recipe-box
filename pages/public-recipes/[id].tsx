@@ -59,7 +59,7 @@ const PublicRecipeDetails = () => {
       setShowRatingInput(false);
       if (!(userData && userData.user)) {
         setOk(false);
-        setError("Please log in to rate recipes")
+        setError("Please log in to comment on recipes")
       } else {
         setShowCommentInput(true);
       }
