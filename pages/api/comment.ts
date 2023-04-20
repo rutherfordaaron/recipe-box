@@ -15,21 +15,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const recipes = db.collection("recipes");
 
 
-  if (!(depth && recipeId && newComment && user && indexMap)) {
-    return res.status(400).json({ success: false, message: "Missing required data" });
-  } else if (Number(depth?.toString) > 0 && !commentId) {
-    return res.status(400).json({ success: false, message: "Missing required data" });
-  }
-
-  const commentToInsert: Comment = {
-    _id: new ObjectId(),
-    user: user.toString(),
-    body: newComment.toString(),
-    indexMap: JSON.parse(indexMap.toString())
-  }
-
   switch (req.method) {
     case "POST":
+      // Ensure required data exists
+      if (!(depth && recipeId && newComment && user && indexMap)) {
+        return res.status(400).json({ success: false, message: "Missing required data" });
+      } else if (Number(depth?.toString) > 0 && !commentId) {
+        return res.status(400).json({ success: false, message: "Missing required data" });
+      }
+
+      // Construct the new comment object
+      const commentToInsert: Comment = {
+        _id: new ObjectId(),
+        user: user.toString(),
+        body: newComment.toString(),
+        indexMap: JSON.parse(indexMap.toString())
+      }
+
+      // If depth is 0, insert comment to top level comment array
       if (depth.toString() == "0") {
         const result = await recipes.updateOne({ _id: new ObjectId(recipeId?.toString()) }, { "$push": { "comments": commentToInsert } });
         if (result.matchedCount > 0) {
@@ -40,16 +43,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           break;
         }
       } else {
+        // if comment is deeper than index 0, construct an indexString from the given indexMap
+        // to easily target where the comment should be added
         const mapData = typeof indexMap == "string" ? JSON.parse(indexMap) : "";
         let indexString = "";
         for (let i = 0; i < mapData.length; i++) {
           indexString += `comments.${mapData[i]}.`
         }
-        indexString += "comments"
+        indexString += "comments";
 
-        console.log("index string:", indexString);
-        console.log("index map:", mapData)
-
+        // Push comment to database using constructed indexString from indexMap
         const result = await recipes.updateOne({ _id: new ObjectId(recipeId?.toString()) }, { "$push": { [indexString]: commentToInsert } });
         console.log("db result:", result)
         if (result.matchedCount > 0) {
@@ -60,8 +63,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           break;
         }
       }
-      res.status(200).json({ success: true, message: "API successfully reached" });
-      break;
     default:
       res.status(401).json({ success: false, message: "Bad method" })
   }
