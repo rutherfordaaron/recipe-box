@@ -13,15 +13,20 @@ import { getCommentCount } from "../../util/getCommentCount";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faHeart, faStar } from "@fortawesome/free-regular-svg-icons";
 import Input from "../../components/input";
-import { ObjectId } from "mongodb";
+import { Spinner } from "../../components/spinner";
+import { useSWRConfig } from "swr";
 
 const PublicRecipeDetails = () => {
   const [newComment, setNewComment] = useState("");
   const [showCommentInput, setShowCommentInput] = useState(false);
+  const [commentLoading, setCommentLoading] = useState(false);
   const [showRatingInput, setShowRatingInput] = useState(false);
   const [error, setError] = useState("")
   const [ok, setOk] = useState(false);
   const [newRating, setNewRating] = useState(0);
+
+  const { mutate } = useSWRConfig();
+
   const router = useRouter();
   const id = router.query.id ? router.query.id.toString() : "";
 
@@ -61,6 +66,7 @@ const PublicRecipeDetails = () => {
     }
 
     const submitNewComment = () => {
+      setCommentLoading(true);
       const comment = newComment.trim();
       if (comment) {
         fetch("/api/comment", {
@@ -68,7 +74,7 @@ const PublicRecipeDetails = () => {
           headers:
           {
             "depth": "0",
-            "recipe-id": recipe._id ? recipe._id.toString() : "",
+            "recipe-id": id,
             "user": userData && userData.user ? userData.user.username : "",
             "new-comment": comment
           }
@@ -78,12 +84,21 @@ const PublicRecipeDetails = () => {
             if (data.success) {
               setError(data.message);
               setOk(true);
+              mutate(`/api/recipe?id=${id}`)
             } else {
               setOk(false);
               setError(data.message);
             }
+            setCommentLoading(false);
+            setNewComment("");
+            setShowCommentInput(false);
           })
-          .catch((err: Error) => setError(err.message))
+          .catch((err: Error) => {
+            setError(err.message)
+            setCommentLoading(false);
+            setNewComment("");
+            setShowCommentInput(false);
+          })
       } else {
         setError("Please fill out comment input")
       }
@@ -170,13 +185,16 @@ const PublicRecipeDetails = () => {
         <div className="flex justify-center items-center gap-6 text-[24px] text-sky-400 my-12">
           <button type="button" onClick={rateRecipe} className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faStar} /></button>
           <button type="button" onClick={startComment} className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faComment} /></button>
-          <button className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faHeart} /></button>
+          {/* <button className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faHeart} /></button> */}
         </div>
 
         {showCommentInput ?
           <div className="flex justify-center items-center flex-col relative bottom-10">
-            <Input id="comment" type="text" label="Your Comment" onChange={e => setNewComment(e.target.value)} state={newComment} valid={Boolean(newComment)} />
-            <button type="button" className="bg-sky-200 shadow-lg text-lg px-5 py-2 hover:bg-sky-400 transition-all mt-2" onClick={submitNewComment}>Submit</button>
+            <Input id="comment" type="textarea" label="Your Comment" onChange={e => setNewComment(e.target.value)} state={newComment} valid={Boolean(newComment)} />
+            <button disabled={!newComment} type="button" className="bg-sky-200 shadow-lg text-lg px-5 py-2 hover:bg-sky-400 transition-all mt-2 flex justify-center items-center gap-4 disabled:bg-sky-100 disabled:text-sky-200 disabled:shadow-none" onClick={submitNewComment}>
+              Submit
+              {commentLoading ? <Spinner /> : <></>}
+            </button>
           </div> : <></>}
 
         {showRatingInput ?
