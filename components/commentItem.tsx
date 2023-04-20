@@ -3,7 +3,7 @@ import { useState } from "react";
 import CommentPreview from "./commentPreview";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faReply } from "@fortawesome/free-solid-svg-icons";
+import { faDownLeftAndUpRightToCenter, faReply, faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
 import getUser from "../util/getUser";
 import Input from "./input";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
@@ -77,16 +77,16 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
       <div className="absolute left-0 h-[calc(100%-20px)] top-[10px] border border-sky-100" />
       <p className="text-sky-300 text-sm">{el.user}</p>
       <p className="pl-6 my-2 text-sm text-gray-600">{el.body}</p>
-      <p>Depth: {depth}</p>
-      <p>Map: {JSON.stringify(map)}</p>
-      <div className="flex gap-2 items-center text-sky-300">
+      <div className="flex pb-2 items-center text-sky-300">
         <button onClick={e => setShowReplyInput(!showReplyInput)} className={`${buttonStyle} text-xs`}>
           <FontAwesomeIcon icon={faReply} />
         </button>
 
-        <button onClick={e => setShowComments(!showComments)} className={buttonStyle}>
-          <CommentPreview count={el.comments ? el.comments.length : 0} />
-        </button>
+        {el.comments ?
+          <button onClick={e => setShowComments(!showComments)} className={`flex gap-1 text-sm items-center justify-center ${buttonStyle}`}>
+            {showComments ? <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} /> : <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />}
+            <p className="text-xs">{el.comments.length}</p>
+          </button> : <></>}
       </div>
 
       {showReplyInput ?
