@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       // If depth is 0, insert comment to top level comment array
       if (depth.toString() == "0") {
-        const result = await recipes.updateOne({ _id: new ObjectId(recipeId?.toString()) }, { "$push": { "comments": commentToInsert } });
+        const result = await recipes.updateOne({ _id: new ObjectId(recipeId?.toString()) }, { "$push": { "comments": { "$each": [commentToInsert], "$position": 0 } } });
         if (result.matchedCount > 0) {
           res.status(200).json({ success: true, message: "Comment added successfuly" });
           break;
@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         indexString += "comments";
 
         // Push comment to database using constructed indexString from indexMap
-        const result = await recipes.updateOne({ _id: new ObjectId(recipeId?.toString()) }, { "$push": { [indexString]: commentToInsert } });
+        const result = await recipes.updateOne({ _id: new ObjectId(recipeId?.toString()) }, { "$push": { [indexString]: { "$each": [commentToInsert], "$position": 0 } } });
         if (result.matchedCount > 0) {
           res.status(200).json({ success: true, message: "Comment added successfuly" });
           break;
