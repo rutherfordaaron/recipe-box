@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../util/db";
 import { ObjectId } from "mongodb";
 import { Comment } from "../../util/types";
+import getToken from "../../util/getToken";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const depth = req.headers["depth"];
@@ -13,6 +14,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const client = await clientPromise;
   const db = client.db(process.env.DB);
   const recipes = db.collection("recipes");
+  const token = getToken(req);
+
+  if (!token) {
+    res.status(400).json({ success: false, message: "No authorization token found. Please log in" })
+  }
 
 
   switch (req.method) {
@@ -83,10 +89,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const result = await recipes.updateOne({ _id: new ObjectId(recipeId.toString()) }, { "$set": { [bodyProperty]: "[removed]", [userProperty]: "[removed]" } });
       if (result.matchedCount > 0) {
-        res.status(200).json({ success: true, message: "Comment added successfuly" });
+        res.status(200).json({ success: true, message: "Comment removed successfuly" });
         break;
       } else {
-        res.status(500).json({ success: false, message: "Recipe was not added successfuly" });
+        res.status(500).json({ success: false, message: "Recipe was not removed successfuly" });
         break;
       }
 
