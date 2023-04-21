@@ -1,6 +1,5 @@
 import { Comment } from "../util/types";
 import { useState } from "react";
-import CommentPreview from "./commentPreview";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownLeftAndUpRightToCenter, faReply, faTrash, faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +9,7 @@ import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useSWRConfig } from "swr";
 import { Spinner } from "./spinner";
 import { DestructiveAction } from "./destructiveAction";
+import { useRouter } from "next/router";
 
 const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map: number[] }) => {
   const [showComments, setShowComments] = useState(false);
@@ -18,6 +18,7 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
   const [loading, setLoading] = useState(false);
   const [confrimDelete, setConfrimDelete] = useState(false);
 
+  const router = useRouter();
   const { userData } = getUser();
   const { mutate } = useSWRConfig();
   const { el, recipeId, depth, map } = props;
@@ -43,20 +44,28 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
         .then(data => {
           if (data.success) {
             mutate(`/api/recipe?id=${recipeId}`);
-            // push with succes url param
-            console.log("success")
+            router.push({
+              pathname: `/public-recipes/${recipeId}`,
+              query: { message: "Comment created", good: true }
+            }, `/public-recipes/${recipeId}`, { scroll: false })
           } else {
-            // push with unsuccessful url param
-            console.log("fail")
+            router.push({
+              pathname: `/public-recipes/${recipeId}`,
+              query: { message: data.message }
+            }, `/public-recipes/${recipeId}`, { scroll: false })
           }
         })
         .catch((err: Error) => {
-          // push with error
-          console.log("fail")
+          router.push({
+            pathname: `/public-recipes/${recipeId}`,
+            query: { message: err.message }
+          }, `/public-recipes/${recipeId}`, { scroll: false })
         })
     } else {
-      // push with error
-      console.log("fail")
+      router.push({
+        pathname: `/public-recipes/${recipeId}`,
+        query: { message: "Please fill out comment input" }
+      }, `/public-recipes/${recipeId}`, { scroll: false })
     }
     setLoading(false)
     setReply("");
@@ -65,6 +74,7 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
 
   const deleteComment = () => {
     setLoading(true);
+    setConfrimDelete(false);
     fetch("/api/comment", {
       method: "DELETE",
       headers:
@@ -79,16 +89,22 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
       .then(data => {
         if (data.success) {
           mutate(`/api/recipe?id=${recipeId}`);
-          // push with succes url param
-          console.log("success")
+          router.push({
+            pathname: `/public-recipes/${recipeId}`,
+            query: { message: "Comment Removed", good: true }
+          }, `/public-recipes/${recipeId}`, { scroll: false })
         } else {
-          // push with unsuccessful url param
-          console.log("fail")
+          router.push({
+            pathname: `/public-recipes/${recipeId}`,
+            query: { message: data.message }
+          }, `/public-recipes/${recipeId}`, { scroll: false })
         }
       })
       .catch((err: Error) => {
-        // push with error
-        console.log("fail")
+        router.push({
+          pathname: `/public-recipes/${recipeId}`,
+          query: { message: `Something went wrong: ${err.message}` }
+        }, `/public-recipes/${recipeId}`, { scroll: false })
       })
     setLoading(false);
   }

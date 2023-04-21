@@ -204,7 +204,7 @@ const PublicRecipeDetails = () => {
             <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={addRating}>Confrim</button>
           </div> : <></>
         }
-        <div>
+        <div className="mt-8">
           <Comments comments={recipe.comments ? recipe.comments : []} recipeId={id} />
         </div>
         <MessageBanner message={error} ok={ok} />
