@@ -34,7 +34,8 @@ export type Recipe = {
   tags?: string[],
   created: Date,
   updated?: Date,
-  public?: boolean
+  public?: boolean,
+  comments?: Comment[]
 }
 
 export type Ingredient = { ingredient: string, measurement: string, id: string }
@@ -67,6 +68,15 @@ export enum SortParameter {
 export type GetPublicRecipesAPIData = {
   recipes: Recipe[] | null,
   message: string
+}
+
+export type Comment = {
+  _id: ObjectId,
+  indexMap: number[],
+  user: string,
+  body: string,
+  likes?: string[],
+  comments?: Comment[],
 }
 
 export const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "sides", "drinks", "vegetarian", "gluten free", "lactose free", "vegan", "other"]

@@ -59,9 +59,8 @@ const RecipeDetails = () => {
     return (
       <article>
         <BackButton href="/profile/my-recipe-box" />
-        {!confrimDelete ? <></> :
-          <DestructiveAction message="Are you sure you want to delete this recipe?" destroyMessage="Yes, I'm sure" cancelMessage="No, nevermind" setVisible={setConfirmDelete} destructiveAction={deleteRecipe} />
-        }
+        <DestructiveAction message="Are you sure you want to delete this recipe?" destroyMessage="Yes, I'm sure" cancelMessage="No, nevermind" setVisible={setConfirmDelete} destructiveAction={deleteRecipe} visible={confrimDelete} />
+
         <section className="relative">
           <Rating ratings={recipe.ratings ? recipe.ratings : []} />
           <h1>{recipe.name}</h1>

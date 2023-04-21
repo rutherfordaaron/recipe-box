@@ -1,7 +1,8 @@
-import { useState } from "react";
 import Link from "next/link";
 import { Recipe } from "../util/types";
 import { Rating } from "./rating";
+import { getCommentCount } from "../util/getCommentCount";
+import CommentPreview from "./commentPreview";
 
 const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const recipe = props.recipe;
@@ -30,7 +31,10 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       href={!props.forPublic ? `/profile/my-recipe-box/recipe/${String(recipe._id)}` : `/public-recipes/${String(recipe._id)}`}
       className="rounded-md p-3 block bg-sky-100 hover:bg-sky-200 relative w-full shadow-md transition-all"
     >
-      <Rating ratings={recipe.ratings ? recipe.ratings : []} />
+      <div className="flex justify-between items-center">
+        <CommentPreview count={getCommentCount(recipe.comments ? recipe.comments : [])} />
+        <Rating ratings={recipe.ratings ? recipe.ratings : []} />
+      </div>
       <h2 className="my-0 line-clamp-1">{recipe.name}</h2>
       <p className="line-clamp-4 h-24 text-sky-700 mb-4">{recipe.description}</p>
       <p className="text-sm text-sky-500 line-clamp-1 font-bold">{getTags()}</p>
