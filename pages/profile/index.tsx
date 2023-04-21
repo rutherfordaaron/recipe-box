@@ -55,8 +55,7 @@ const Profile = () => {
         Delete Profile
       </button>
       {/* ---------- DELETE USER CONFIRMATION CONTAINER ---------- */}
-      {!deleteConfirmation ? <></> : <DestructiveAction message="Are you sure you want to delete your profile and all recipes associated with it?" destroyMessage="Yes, delete my profile" cancelMessage="No, nevermind" setVisible={setDeleteConfirmation} destructiveAction={deleteUser} />
-      }
+      <DestructiveAction message="Are you sure you want to delete your profile and all recipes associated with it?" destroyMessage="Yes, delete my profile" cancelMessage="No, nevermind" setVisible={setDeleteConfirmation} destructiveAction={deleteUser} visible={deleteConfirmation} />
     </>
   )
 }

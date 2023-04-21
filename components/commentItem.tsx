@@ -9,12 +9,14 @@ import Input from "./input";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useSWRConfig } from "swr";
 import { Spinner } from "./spinner";
+import { DestructiveAction } from "./destructiveAction";
 
 const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map: number[] }) => {
   const [showComments, setShowComments] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confrimDelete, setConfrimDelete] = useState(false);
 
   const { userData } = getUser();
   const { mutate } = useSWRConfig();
@@ -123,7 +125,7 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
           </button> : <></>}
 
         {userData && userData.user && userData.user.username == el.user ?
-          <button onClick={deleteComment} className={`${buttonStyle} text-xs flex justify-center items-center gap-2`}>
+          <button onClick={e => setConfrimDelete(true)} className={`${buttonStyle} text-xs flex justify-center items-center gap-2`}>
             <FontAwesomeIcon icon={faTrash} />
             {loading ? <Spinner /> : <></>}
           </button> : <></>}
@@ -154,6 +156,14 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
           <CommentItem key={`${depth + 1}comment${i}`} depth={props.depth + 1} el={el} recipeId={recipeId} map={newMap} />
         )
       })}
+      <DestructiveAction
+        message="Are you sure you want to delete this comment? Only this specific comment will be removed."
+        destroyMessage="Yes, I'm sure"
+        cancelMessage="No, nevermind"
+        setVisible={setConfrimDelete}
+        destructiveAction={deleteComment}
+        visible={confrimDelete}
+      />
     </motion.div>
   )
 }
