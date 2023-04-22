@@ -13,7 +13,7 @@ const Comments = (props: { comments: Comment[], recipeId: string }) => {
 
   return (
     <AnimatePresence>
-      <div>
+      <div className="mt-10">
         {mapComments(props.comments)}
       </div>
     </AnimatePresence>

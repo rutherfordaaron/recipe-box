@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Recipe } from "../../util/types";
-import { Rating } from "./rating";
+import { Rating } from "./recipeDetails/rating";
 import { getCommentCount } from "../../util/getCommentCount";
 import CommentPreview from "../comments/commentPreview";
 

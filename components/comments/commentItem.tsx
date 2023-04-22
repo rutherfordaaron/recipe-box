@@ -129,19 +129,19 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
                 // push url with ereror
               }
             }}
-            className={`${buttonStyle} text-xs`}
+            className={`icon-button text-xs`}
           >
             <FontAwesomeIcon icon={faReply} />
           </button>}
 
         {el.comments ?
-          <button onClick={e => setShowComments(!showComments)} className={`flex gap-1 text-sm items-center justify-center ${buttonStyle}`}>
+          <button onClick={e => setShowComments(!showComments)} className={`flex gap-1 text-sm items-center justify-center icon-button`}>
             {showComments ? <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} /> : <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />}
             <p className="text-xs">{el.comments.length}</p>
           </button> : <></>}
 
         {userData && userData.user && userData.user.username == el.user ?
-          <button onClick={e => setConfrimDelete(true)} className={`${buttonStyle} text-xs flex justify-center items-center gap-2`}>
+          <button onClick={e => setConfrimDelete(true)} className={`icon-button text-xs flex justify-center items-center gap-2`}>
             <FontAwesomeIcon icon={faTrash} />
             {loading ? <Spinner /> : <></>}
           </button> : <></>}
@@ -159,7 +159,7 @@ const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map:
               valid={!!reply}
             />
           </div>
-          <button onClick={submitReply} className="shadow-none text-sky-400 hover:bg-transparent hover:text-sky-600 flex items-center justify-center gap-4">
+          <button onClick={submitReply} className="icon-button flex items-center justify-center gap-4">
             <FontAwesomeIcon icon={faPaperPlane} />
             {loading ? <Spinner /> : <></>}
           </button>

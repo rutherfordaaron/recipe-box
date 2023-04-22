@@ -40,4 +40,28 @@
   .bg-translucent {
     background-color: rgba(250, 250, 250, .9);
   }
+
+  .update-recipe-button {
+    @apply border-b-2 border-t-0 border-l-0 border-r-0 rounded-none transition-all shadow-none text-slate-300 border-slate-200 py-0;
+  }
+
+  .update-recipe-button:hover {
+    @apply text-black border-black bg-transparent;
+  }
+
+  .delete-recipe-button {
+    @apply border-b-2 border-t-0 border-l-0 border-r-0 rounded-none transition-all shadow-none text-slate-300 border-slate-200 py-0;
+  }
+
+  .delete-recipe-button:hover {
+    @apply text-red-500 border-red-300 bg-transparent;
+  }
+
+  .icon-button {
+    @apply shadow-none text-sky-300;
+  }
+
+  .icon-button:hover {
+    @apply bg-transparent text-sky-500;
+  }
 }

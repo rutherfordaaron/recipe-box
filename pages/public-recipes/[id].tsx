@@ -2,19 +2,18 @@ import { useRouter } from "next/router";
 import Loading from "../../components/loading";
 import getRecipe from "../../util/getRecipe";
 import getUser from "../../util/getUser";
-import { BackButton } from "../../components/recipeView/backButton";
-import { Rating } from "../../components/recipeView/rating";
+import { BackButton } from "../../components/recipeView/recipeDetails/backButton";
 import { useState } from "react";
 import MessageBanner from "../../components/layout/messageBanner";
-import RatingInput from "../../components/recipeView/ratingInput";
+import RatingInput from "../../components/recipeView/recipeDetails/ratingInput";
 import Comments from "../../components/comments/comments";
-import CommentPreview from "../../components/comments/commentPreview";
-import { getCommentCount } from "../../util/getCommentCount";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faHeart, faStar } from "@fortawesome/free-regular-svg-icons";
 import Input from "../../components/input";
 import { Spinner } from "../../components/spinner";
 import { useSWRConfig } from "swr";
+import RecipeHead from "../../components/recipeView/recipeDetails/recipeHead";
+import IngredientsAndDirections from "../../components/recipeView/recipeDetails/ingredientsAndDirections";
 
 const PublicRecipeDetails = () => {
   const [newComment, setNewComment] = useState("");
@@ -141,54 +140,17 @@ const PublicRecipeDetails = () => {
     return (
       <article>
         <BackButton href="/public-recipes" />
+        <RecipeHead recipe={recipe} />
+        <IngredientsAndDirections recipe={recipe} />
 
-        <section className="relative">
-          <div className="flex gap-6 justify-end">
-            <CommentPreview count={!recipe.comments ? 0 : getCommentCount(recipe.comments)} />
-            <Rating ratings={recipe.ratings ? recipe.ratings : []} />
-          </div>
-          <h1>{recipe.name}</h1>
-          <p>{recipe.recipeType} from {recipe.origin}</p>
-          <p>Owned by {recipe.owner}</p>
-          {recipe.description ? <p className="mb-4">{recipe.description}</p> : <></>}
-          <div className="flex flex-col text-sm text-gray-400">
-            {recipe.servings ? <p>Servings: {recipe.servings}</p> : <></>}
-            {recipe.prepTime ? <p>Prep Time: {recipe.prepTime >= 60 ? `${Math.floor(recipe.prepTime / 60)} hrs. ${recipe.prepTime % 60} min.` : `${recipe.prepTime} min.`}</p> : <></>}
-            {recipe.cookTime ? <p>Cook Time: {recipe.cookTime >= 60 ? `${Math.floor(recipe.cookTime / 60)} hrs. ${recipe.cookTime % 60} min.` : `${recipe.cookTime} min.`}</p> : <></>}
-          </div>
-          <div className="text-sm w-full text-sky-400 flex gap-2 flex-wrap">
-            {getTags()}
-          </div>
-        </section>
-
-        <section>
-          <h2 className="border-b-2 border-sky-900">Ingredients</h2>
-          <ul>
-            {recipe.ingredients.map((el, i) => {
-              return (
-                <li key={`${recipe._id}Ingredient${i}`}>{el.measurement} {/[a-zA-Z]/.test(el.measurement) ? "of " : ""}{el.ingredient}</li>
-              )
-            })}
-          </ul>
-        </section>
-
-        <section>
-          <h2 className="border-b-2 border-sky-900">Directions</h2>
-          <ol className="flex flex-col gap-3">
-            {recipe.directions.map((el, i) => {
-              return (
-                <li key={`${recipe._id}Direction${i}`}>{el}</li>
-              )
-            })}
-          </ol>
-        </section>
-
-        <div className="flex justify-center items-center gap-6 text-[24px] text-sky-400 my-12">
-          <button type="button" onClick={rateRecipe} className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faStar} /></button>
-          <button type="button" onClick={startComment} className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faComment} /></button>
+        {/* Rate, Comment, and Like buttons */}
+        <div className="flex justify-center items-center gap-6 text-[24px] my-12">
+          <button type="button" onClick={rateRecipe} className="icon-button"><FontAwesomeIcon icon={faStar} /></button>
+          <button type="button" onClick={startComment} className="icon-button"><FontAwesomeIcon icon={faComment} /></button>
           {/* <button className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faHeart} /></button> */}
         </div>
 
+        {/* Comment input */}
         {showCommentInput ?
           <div className="flex justify-center items-center flex-col relative bottom-10">
             <Input id="comment" type="textarea" label="Your Comment" onChange={e => setNewComment(e.target.value)} state={newComment} valid={Boolean(newComment)} />
@@ -198,15 +160,17 @@ const PublicRecipeDetails = () => {
             </button>
           </div> : <></>}
 
+        {/* Rating input */}
         {showRatingInput ?
           <div>
             <RatingInput rating={newRating} setRating={setNewRating} />
             <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={addRating}>Confrim</button>
           </div> : <></>
         }
-        <div className="mt-8">
-          <Comments comments={recipe.comments ? recipe.comments : []} recipeId={id} />
-        </div>
+
+        {/* Comments */}
+        <Comments comments={recipe.comments ? recipe.comments : []} recipeId={id} />
+
         <MessageBanner message={error} ok={ok} />
       </article>
     )
