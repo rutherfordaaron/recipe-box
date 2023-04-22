@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Recipe } from "../util/types";
+import { Recipe } from "../../util/types";
 import { Rating } from "./rating";
-import { getCommentCount } from "../util/getCommentCount";
-import CommentPreview from "./commentPreview";
+import { getCommentCount } from "../../util/getCommentCount";
+import CommentPreview from "../comments/commentPreview";
 
 const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
   const recipe = props.recipe;

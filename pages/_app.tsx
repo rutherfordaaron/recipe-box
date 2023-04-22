@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app'
-import "../public/styles/global.css";
+import "../styles/global.css";
 import { CookiesProvider } from "react-cookie";
 import Layout from '../components/layout/layout';
 import { PrivateRoute } from '../components/layout/privateRoute';

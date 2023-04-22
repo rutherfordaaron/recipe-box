@@ -1,12 +1,12 @@
-import { Recipe, RecipeType, Ingredient, User } from "../util/types";
+import { Recipe, RecipeType, Ingredient, User } from "../../util/types";
 import { useRouter } from "next/router";
-import Input from "./input";
-import RadioButton from "./radioButton";
+import Input from "../input";
+import RadioButton from "../radioButton";
 import EditableList from "./editableList";
 import { useState } from "react";
 import { uuid } from "uuidv4";
-import MessageBanner from "./layout/messageBanner";
-import { Spinner } from "./spinner";
+import MessageBanner from "../layout/messageBanner";
+import { Spinner } from "../spinner";
 import { BackButton } from "./backButton";
 import { AnimatePresence, motion } from "framer-motion";
 

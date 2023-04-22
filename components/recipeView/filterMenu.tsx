@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import getUser from "../util/getUser"
-import { Spinner } from "./spinner";
+import getUser from "../../util/getUser"
+import { Spinner } from "../spinner";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { defaultTags } from "../util/types";
+import { defaultTags } from "../../util/types";
 
 export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function }) => {
   const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter } = props;

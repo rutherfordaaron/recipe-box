@@ -1,5 +1,4 @@
 import Link from "next/link";
-import getPublicRecipes from "../util/getPublicRecieps";
 import getUser from "../util/getUser";
 
 export default function Home() {

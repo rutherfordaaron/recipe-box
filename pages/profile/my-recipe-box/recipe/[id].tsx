@@ -4,7 +4,7 @@ import Loading from "../../../../components/loading";
 import getRecipe from "../../../../util/getRecipe";
 import getUser from "../../../../util/getUser";
 import RecipeEditMode from "../../../../components/recipeEditMode";
-import { BackButton } from "../../../../components/backButton";
+import { BackButton } from "../../../../components/recipeView/backButton";
 import { DestructiveAction } from "../../../../components/destructiveAction";
 import { Rating } from "../../../../components/rating";
 

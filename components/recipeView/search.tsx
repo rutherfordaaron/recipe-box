@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faSort } from "@fortawesome/free-solid-svg-icons";
 import { SortMenu } from "./sortMenu";
 import { FilterMenu } from "./filterMenu";
-import Input from "./input";
+import Input from "../input";
 import { useState, useEffect } from "react";
-import { Recipe, SortParameter } from "../util/types";
+import { Recipe, SortParameter } from "../../util/types";
 
 const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recipe[], setRecipes: Function, publicRoute?: boolean }) => {
   const { recipeData, recipes, setRecipes, publicRoute } = props;

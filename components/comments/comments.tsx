@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { Comment } from "../util/types";
+import { Comment } from "../../util/types";
 import CommentItem from "./commentItem";
 
 const Comments = (props: { comments: Comment[], recipeId: string }) => {

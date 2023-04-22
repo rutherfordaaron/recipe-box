@@ -3,7 +3,7 @@ import { useState } from "react";
 import Router from "next/router";
 import getUser from "../../util/getUser";
 import Loading from "../../components/loading";
-import { DestructiveAction } from "../../components/destructiveAction";
+import { DestructiveAction } from "../../components/layout/destructiveAction";
 
 const Profile = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);

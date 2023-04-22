@@ -1,14 +1,14 @@
-import { Comment } from "../util/types";
+import { Comment } from "../../util/types";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownLeftAndUpRightToCenter, faReply, faTrash, faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
-import getUser from "../util/getUser";
-import Input from "./input";
+import getUser from "../../util/getUser";
+import Input from "../input";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { useSWRConfig } from "swr";
-import { Spinner } from "./spinner";
-import { DestructiveAction } from "./destructiveAction";
+import { Spinner } from "../spinner";
+import { DestructiveAction } from "../layout/destructiveAction";
 import { useRouter } from "next/router";
 
 const CommentItem = (props: { el: Comment, recipeId: string, depth: number, map: number[] }) => {

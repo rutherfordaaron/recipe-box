@@ -1,5 +1,5 @@
-import { Recipe } from "../util/types";
-import { Spinner } from "./spinner";
+import { Recipe } from "../../util/types";
+import { Spinner } from "../spinner";
 import RecipeCard from "./RecipeCard";
 import { useRouter } from "next/router";
 

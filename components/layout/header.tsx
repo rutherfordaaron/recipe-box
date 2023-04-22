@@ -1,11 +1,10 @@
-import Link from "next/link";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import getUser from "../../util/getUser";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { faHome, faUser, faBookOpen, faGlobe, faBoxOpen, faBox } from "@fortawesome/free-solid-svg-icons";
-import NavLink from "../navLink";
+import NavLink from "./navLink";
 
 const Header = () => {
   const [cookie] = useCookies(["token"]);
