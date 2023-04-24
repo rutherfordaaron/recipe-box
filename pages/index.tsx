@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <article>
-      <h1 className="text-3xl font-bold">Welcome to Recipe Box!</h1>
+      <h1 className="text-3xl font-bold">Welcome to The Recipe Box!</h1>
       <p className="text-xl mb-4">A recipe management app to digitize your cookbook.</p>
       <p className="text-center">Have recipes you want to upload?</p>
       <div className="flex justify-center my-4">
