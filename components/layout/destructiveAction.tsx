@@ -1,6 +1,8 @@
 export const DestructiveAction = (props: { message: string, destroyMessage: string, cancelMessage: string, setVisible: Function, destructiveAction: Function, visible: boolean }) => {
   const { message, destroyMessage, cancelMessage, setVisible, visible, destructiveAction } = props;
+
   if (!visible) return <></>
+
   return (
     <div className="fixed inset-0 bg-translucent z-[5] flex flex-col justify-center items-center p-12 text-center">
       <p className="text-xl drop-shadow">{message}</p>

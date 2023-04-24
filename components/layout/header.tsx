@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import getUser from "../../util/getUser";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-import { faHome, faUser, faBookOpen, faGlobe, faBoxOpen, faBox } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBoxOpen, faBox } from "@fortawesome/free-solid-svg-icons";
 import NavLink from "./navLink";
 
 const Header = () => {
@@ -12,6 +12,7 @@ const Header = () => {
   const { userData, userError, userIsLoading } = getUser();
   const [authenticated, setAuthenticated] = useState<boolean | null>(false);
 
+  // check authentication any time user data, router path, or authentication token changes
   useEffect(() => {
     if (userIsLoading) {
       setAuthenticated(null);
@@ -31,6 +32,7 @@ const Header = () => {
 
         <motion.nav key={router.pathname} className="flex gap-5 text-sky-500" id="nav">
           <NavLink href="/public-recipes" text="Public Recipes" icon={faBoxOpen} />
+          {/* Only show private recipe link if user is authenticated */}
           {authenticated ? <NavLink href="/profile/my-recipe-box" text="Private Recipes" icon={faBox} /> : <></>}
         </motion.nav>
       </div>
