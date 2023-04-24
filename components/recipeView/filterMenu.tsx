@@ -7,8 +7,8 @@ import { useEffect } from "react";
 import { defaultTags } from "../../util/types";
 import Input from "../input";
 
-export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function, userFilter: string, setUserFilter: Function }) => {
-  const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter, userFilter, setUserFilter } = props;
+export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function, userFilter: string, setUserFilter: Function, minRating: number | "", setMinRating: Function }) => {
+  const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter, userFilter, setUserFilter, minRating, setMinRating } = props;
   let { userData: data, userError: error, userIsLoading: loading } = getUser();
 
   const addFilterTag = (value: string) => {
@@ -25,6 +25,9 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
   const resetFilters = () => {
     setTagFilter([]);
     setUserFilter("");
+    setMinRating("");
+    // @ts-ignore
+    document.getElementById("minRating").innerHTML = ""
   }
 
   useEffect(() => {
@@ -38,7 +41,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
       {showFilterMenu ?
         <motion.div
           key="filterMenu"
-          className={`fixed top-5 bottom-5 rounded-l right-0 bg-sky-50 flex flex-col gap-4 w-3/4 max-w-[500px] px-4 pt-16 md:py-4 max-sm:shadow-2xl md:relative md:w-full md:rounded shadow z-40`}
+          className={`fixed top-5 bottom-5 rounded-l right-0 bg-sky-50 flex flex-col gap-4 w-3/4 max-w-[500px] px-4 pt-16 md:py-4 max-sm:shadow-2xl md:shadow-none md:relative md:w-full md:h-[50vh] md:justify-start md:rounded shadow z-40`}
           initial={{ opacity: 0, x: 500 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 500, opacity: 0 }}
@@ -105,8 +108,18 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
               state={userFilter}
               valid={true}
             />
+            <Input
+              id="minRating"
+              label="Min. Rating (0-5)"
+              type="number"
+              onChange={e => setMinRating(e.target.value)}
+              state={minRating}
+              valid={true}
+              range={[0, 5]}
+            />
           </div>
-          <button type="button" className="mx-auto" onClick={resetFilters}>Reset filters</button>
+          <button type="button" className="mx-auto bg-sky-100 shadow-md" onClick={resetFilters}>Reset filters</button>
+          <p className="">.</p>
         </motion.div> : <></>}
     </AnimatePresence>
   )

@@ -26,7 +26,7 @@ const Header = () => {
   }, [router.pathname, userData?.user?.token, userError, userIsLoading, cookie.token])
 
   return (
-    <header className="bg-sky-200 shadow-md fixed inset-x-0 top-0 z-10">
+    <header className="bg-sky-200 shadow-md fixed inset-x-0 top-0 z-10 md:z-50">
       <div className="bg-sky-200 flex justify-between items-center p-3 max-w-[1000px] mx-auto gap-4">
         <NavLink href={authenticated && userData && userData.user ? "/profile" : "/login"} text={authenticated && userData && userData.user ? userData.user.username : "Login"} icon={faUser} />
 

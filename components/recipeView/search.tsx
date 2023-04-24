@@ -15,7 +15,8 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   let [sort, setSort] = useState<SortParameter>(SortParameter.Unsorted);
   let [tagFilter, setTagFilter] = useState<string[]>([]);
   let [userFilter, setUserFilter] = useState("");
-  useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData, userFilter])
+  let [minRating, setMinRating] = useState<"" | number>("");
+  useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData, userFilter, minRating])
 
   const filterSearchQuery = () => {
     if (recipeData) {
@@ -28,8 +29,18 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
       }
       // If user filter input, only show recipes by provided user (not case sensitive)
       if (userFilter) {
-        return (filtered.filter(item => new RegExp(userFilter, "i").test(item.owner)));
+        filtered = (filtered.filter(item => new RegExp(userFilter, "i").test(item.owner)));
       }
+
+      // Filter by minimum rating
+      filtered = filtered.filter(item => {
+        let sum = 0;
+        for (let i = 0; i < item.ratings.length; i++) {
+          sum += item.ratings[i].rating
+        }
+        const average = sum / item.ratings.length / 2
+        return average >= (minRating ? minRating : 0)
+      })
 
       return filtered;
     }
@@ -56,11 +67,11 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   }
 
   return (
-    <div className="flex flex-col relative mx-auto gap-2">
+    <div className="flex flex-col relative mx-auto gap-0 md:bg-sky-50 md:h-full md:rounded-md md:shadow-md md:overflow-y-scroll w-full md:overflow-x-hidden md:p-4">
       <div className="flex justify-center items-center relative max-w-[350px] mx-auto gap-2">
         <Input id="search" type="text" label="Search" onChange={e => setSearchQuery(e.target.value)} state={searchQuery} valid={true} />
 
-        <button type="button" className={`hover:bg-sky-200 shadow-none transition-all ${sort === SortParameter.Unsorted ? "" : "bg-sky-100"}`} onClick={e => setShowSortMenu(!showSortMenu)}>
+        <button type="button" className={`hover:bg-sky-200 text-sm shadow-none transition-all ${sort === SortParameter.Unsorted ? "" : "bg-sky-100"}`} onClick={e => setShowSortMenu(!showSortMenu)}>
           <FontAwesomeIcon icon={faSort} />
         </button>
         <SortMenu setSort={setSort} activeSortParameter={sort} visible={showSortMenu} setVisible={setShowSortMenu} />
@@ -69,7 +80,7 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
           <FontAwesomeIcon icon={faFilter} />
         </button>
       </div>
-      <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} userFilter={userFilter} setUserFilter={setUserFilter} />
+      <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} userFilter={userFilter} setUserFilter={setUserFilter} minRating={minRating} setMinRating={setMinRating} />
     </div>
   )
 }
