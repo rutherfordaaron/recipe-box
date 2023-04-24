@@ -4,9 +4,9 @@ import Link from "next/link";
 import Loading from "../../../components/loading";
 import getUserRecipes from "../../../util/getUserRecipes";
 import { useState } from "react";
-import Search from "../../../components/search";
-import { RecipeGrid } from "../../../components/recipeGrid";
-import SearchAndGridWrapper from "../../../components/searchAndGridWrapper";
+import Search from "../../../components/recipeView/search";
+import { RecipeGrid } from "../../../components/recipeView/recipeGrid";
+import SearchAndGridWrapper from "../../../components/recipeView/searchAndGridWrapper";
 
 const MyRecipeBox = () => {
   let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();

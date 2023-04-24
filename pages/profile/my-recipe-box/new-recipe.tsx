@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import getUser from "../../../util/getUser";
 import Loading from "../../../components/loading";
-import RecipeEditMode from "../../../components/recipeEditMode";
+import RecipeEditMode from "../../../components/recipeView/recipeDetails/recipeEditMode";
 import { Recipe, RecipeType } from "../../../util/types";
 
 

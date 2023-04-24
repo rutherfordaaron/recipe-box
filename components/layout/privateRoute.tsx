@@ -9,27 +9,22 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
   const { userData, userError, userIsLoading } = getUser();
   const [cookies] = useCookies(["token"]);
 
+  // Redirect to login page when attempting to view private data when not authenticated
   const redirect = () => {
     router.push({
       pathname: "/login",
       query: {
         message: "Please login before viewing this page",
         good: false,
-        returnTo: router.pathname
+        // Return to private route or as close as possible
+        returnTo: router.pathname.replace(/recipe\/\[id\]/, "").replace(/public-recipes\/\[id\]/, "public-recipes")
       }
     }, "/login");
   }
 
+  // Recheck if a reroute is needed anytime userData.user changes
   useEffect(() => {
-    const unprotectedRoutes = [
-      "/",
-      "/login",
-      "/sign-up",
-    ]
-
-    if (((userData && !userData.user && !userIsLoading) || !cookies.token) && !(/public/.test(router.pathname) || unprotectedRoutes.find(e => e == router.pathname))) {
-      redirect();
-    }
+    if (((userData && !userData.user && !userIsLoading) || !cookies.token)) redirect();
   }, [userData?.user])
 
   if (userIsLoading) return <Loading />

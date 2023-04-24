@@ -8,6 +8,7 @@ const MessageBanner = (props: { message?: string, ok?: boolean }) => {
   const good = "bg-emerald-100 text-green-600"
   const bad = "bg-red-200 text-red-600"
 
+  // Show message any time the router query message property changes
   useEffect(() => {
     if (router.query.message) {
       setShow(true);
@@ -17,6 +18,7 @@ const MessageBanner = (props: { message?: string, ok?: boolean }) => {
     }
   }, [router.pathname, router.query.message])
 
+  // Also show the message any time the passed in message prop is given
   useEffect(() => {
     if (props.message) {
       setShow(true);

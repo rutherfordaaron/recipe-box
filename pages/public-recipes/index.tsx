@@ -1,9 +1,9 @@
 import getPublicRecipes from "../../util/getPublicRecieps";
 import Loading from "../../components/loading";
 import { useState } from "react";
-import { RecipeGrid } from "../../components/recipeGrid";
-import Search from "../../components/search";
-import SearchAndGridWrapper from "../../components/searchAndGridWrapper";
+import { RecipeGrid } from "../../components/recipeView/recipeGrid";
+import Search from "../../components/recipeView/search";
+import SearchAndGridWrapper from "../../components/recipeView/searchAndGridWrapper";
 
 export default function PublicRecipes() {
   const { publicRecipesData: data, publicRecipesError: error, publicRecipesIsLoading: loading } = getPublicRecipes();

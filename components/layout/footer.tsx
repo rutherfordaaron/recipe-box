@@ -15,7 +15,7 @@ const Footer = () => {
           <li><Link href="https://github.com/hazipan/recipe-box" className={linkClass}>See the code <FontAwesomeIcon icon={faExternalLink} className="pl-1" /></Link></li>
         </ul>
         <div>
-          <p className="mb-1">Recipe Box is independantly created by <Link className={linkClass} href="https://aaronrutherford.dev" rel="noreferrer" target="_blank">Aaron Rutherford <FontAwesomeIcon icon={faExternalLink} className="pl-1" /></Link>.</p>
+          <p className="mb-1">The Recipe Box is independantly created by <Link className={linkClass} href="https://aaronrutherford.dev" rel="noreferrer" target="_blank">Aaron Rutherford <FontAwesomeIcon icon={faExternalLink} className="pl-1" /></Link>.</p>
           <p><Link className={linkClass} href="mailto:contact@aaronrutherford.dev">Contact me</Link> for suggestions, reporting bugs, and support help.</p>
         </div>
       </div>
