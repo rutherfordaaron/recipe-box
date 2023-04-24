@@ -12,7 +12,7 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   let [showSortMenu, setShowSortMenu] = useState(false);
   let [showFilterMenu, setShowFilterMenu] = useState(false);
   let [searchQuery, setSearchQuery] = useState("");
-  let [sort, setSort] = useState<SortParameter>(SortParameter.RecentlyCreated);
+  let [sort, setSort] = useState<SortParameter>(SortParameter.Unsorted);
   let [tagFilter, setTagFilter] = useState<string[]>([]);
 
   useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData])
@@ -45,7 +45,7 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
       case SortParameter.RecentlyUpdated:
         return filterSearchQuery().sort((a, b) => new Date(b.updated ? b.updated : b.created).getTime() - new Date(a.updated ? a.updated : a.created).getTime())
       default:
-        return filterSearchQuery()
+        return filterSearchQuery().sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
     }
   }
 
