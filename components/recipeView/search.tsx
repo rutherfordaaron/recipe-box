@@ -12,7 +12,7 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   let [showSortMenu, setShowSortMenu] = useState(false);
   let [showFilterMenu, setShowFilterMenu] = useState(false);
   let [searchQuery, setSearchQuery] = useState("");
-  let [sort, setSort] = useState<SortParameter>(SortParameter.Unsorted);
+  let [sort, setSort] = useState<SortParameter>(SortParameter.RecentlyCreated);
   let [tagFilter, setTagFilter] = useState<string[]>([]);
 
   useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData])
