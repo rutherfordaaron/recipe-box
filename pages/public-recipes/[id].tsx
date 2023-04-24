@@ -33,9 +33,9 @@ const PublicRecipeDetails = () => {
   let { userData, userError, userIsLoading } = getUser();
 
   if (recipeIsLoading || userIsLoading) return <Loading />
-  if (recipeError) return <p>Something went wrong! {recipeError.message}</p>
+  if (recipeError) return <p>Something went wrong!  {recipeError.message}</p>
   if (userError) return <p>Soemthing went wrong! {userError.message}</p>
-  if (recipeData && !recipeData.recipe) return <p>Something went wrong! {recipeData.message}</p>
+  if (recipeData && !recipeData.recipe) return <p>Something went wrong! Looks like this recipe is private. The owner of this recipe will need to mark it as public in order for you to access it.</p>
   if (recipeData && recipeData.recipe) {
     const recipe = recipeData.recipe;
 

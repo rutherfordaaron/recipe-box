@@ -37,9 +37,9 @@ const RecipeDetails = () => {
   }
 
   if (recipeIsLoading || userIsLoading || loading) return <Loading />
-  if (recipeError) return <p>Something went wrong! {recipeError.message}</p>
+  if (recipeError) return <p>{recipeError.message}</p>
   if (userError) return <p>Something went wrong! {userError.message}</p>
-  if (recipeData && !recipeData.recipe) return <p>Something went wrong! {recipeData.message}</p>
+  if (recipeData && !recipeData.recipe) return <p>Something went wrong! Looks like you're not logged into the right account to access this recipe.</p>
   if (recipeData && recipeData.recipe && !editMode) {
     const recipe = recipeData.recipe;
 
