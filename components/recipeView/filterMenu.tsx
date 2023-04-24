@@ -5,9 +5,10 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { defaultTags } from "../../util/types";
+import Input from "../input";
 
-export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function }) => {
-  const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter } = props;
+export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function, userFilter: string, setUserFilter: Function }) => {
+  const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter, userFilter, setUserFilter } = props;
   let { userData: data, userError: error, userIsLoading: loading } = getUser();
 
   const addFilterTag = (value: string) => {
@@ -23,6 +24,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
 
   const resetFilters = () => {
     setTagFilter([]);
+    setUserFilter("");
   }
 
   useEffect(() => {
@@ -94,6 +96,16 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
                   )
                 })}
             </div>}
+          <div className="flex flex-col justify-center items-center">
+            <Input
+              id="userFilter"
+              label="Recipe Owner"
+              type="text"
+              onChange={e => setUserFilter(e.target.value)}
+              state={userFilter}
+              valid={true}
+            />
+          </div>
           <button type="button" className="mx-auto" onClick={resetFilters}>Reset filters</button>
         </motion.div> : <></>}
     </AnimatePresence>

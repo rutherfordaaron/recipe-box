@@ -14,15 +14,21 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   let [searchQuery, setSearchQuery] = useState("");
   let [sort, setSort] = useState<SortParameter>(SortParameter.Unsorted);
   let [tagFilter, setTagFilter] = useState<string[]>([]);
-
-  useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData])
+  let [userFilter, setUserFilter] = useState("");
+  useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData, userFilter])
 
   const filterSearchQuery = () => {
     if (recipeData) {
+      // Filter reicpe array by users search query
       const searchFiltered = recipeData.filter(item => new RegExp(searchQuery, "i").test(item.name));
+      // Only show recipes that match all provided tags
       let filtered = [...searchFiltered];
       for (let i = 0; i < tagFilter.length; i++) {
         filtered = filtered.filter(item => item.tags?.find(item => item == tagFilter[i]));
+      }
+      // If user filter input, only show recipes by provided user (not case sensitive)
+      if (userFilter) {
+        return (filtered.filter(item => new RegExp(userFilter, "i").test(item.owner)));
       }
 
       return filtered;
@@ -63,7 +69,7 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
           <FontAwesomeIcon icon={faFilter} />
         </button>
       </div>
-      <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} />
+      <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} userFilter={userFilter} setUserFilter={setUserFilter} />
     </div>
   )
 }
