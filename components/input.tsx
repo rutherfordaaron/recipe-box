@@ -2,7 +2,7 @@ import { ChangeEventHandler } from "react";
 
 const Input = (props: {
   id: string,
-  type: "text" | "textarea" | "number" | "password",
+  type: "text" | "textarea" | "number" | "password" | "email",
   label: string,
   onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
   state: any,
