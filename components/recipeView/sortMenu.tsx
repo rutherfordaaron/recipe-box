@@ -9,7 +9,7 @@ export const SortMenu = (props: { setSort: Function, activeSortParameter: SortPa
       {visible ?
         <motion.div
           key="sortMenu"
-          className={`absolute top-14 -left-3 md:left-32 bg-sky-50 shadow-lg rounded overflow-hidden flex flex-col z-50`}
+          className={`absolute w-44 top-14 -left-3 md:left-28 bg-sky-50 shadow-lg rounded overflow-hidden flex flex-col z-50`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
