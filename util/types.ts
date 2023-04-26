@@ -80,3 +80,20 @@ export type Comment = {
 }
 
 export const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "sides", "drinks", "vegetarian", "gluten free", "lactose free", "vegan", "other"]
+
+export type Filter = {
+  searchQuery: string,
+  tags: string[],
+  userFilter: string,
+  minRating: number,
+  maxTime: number,
+  sort?: SortParameter
+}
+
+export const emptyFilter: Filter = {
+  searchQuery: "",
+  tags: [],
+  userFilter: "",
+  minRating: 0,
+  maxTime: 0,
+}
