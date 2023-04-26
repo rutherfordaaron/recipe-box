@@ -3,7 +3,7 @@ import { useState } from "react";
 import { RecipeGrid } from "../../components/recipeView/recipeGrid";
 import Search from "../../components/recipeView/search";
 import SearchAndGridWrapper from "../../components/recipeView/searchAndGridWrapper";
-import { Filter, emptyFilter } from "../../util/types";
+import { Filter, emptyFilter, Recipe } from "../../util/types";
 import { Spinner } from "../../components/spinner";
 import { useRouter } from "next/router";
 
@@ -12,7 +12,7 @@ export default function PublicRecipes() {
 
   const { publicRecipesData: data, publicRecipesError: error, publicRecipesIsLoading: loading } = getPublicRecipes(router.query.filter ? JSON.parse(router.query.filter.toString()) : emptyFilter);
 
-  let [recipes, setRecipes] = useState(data && data.recipes ? data.recipes : []);
+  let [recipes, setRecipes] = useState<Recipe[]>(data && data.recipes ? data.recipes : []);
   const [filter, setFilter] = useState<Filter>(emptyFilter)
 
 

@@ -7,20 +7,23 @@ import { useState } from "react";
 import Search from "../../../components/recipeView/search";
 import { RecipeGrid } from "../../../components/recipeView/recipeGrid";
 import SearchAndGridWrapper from "../../../components/recipeView/searchAndGridWrapper";
-import { Filter } from "../../../util/types";
+import { Filter, Recipe, emptyFilter } from "../../../util/types";
+import { Spinner } from "../../../components/spinner";
 
 const MyRecipeBox = () => {
-  const [filter, setFilter] = useState<Filter>({ searchQuery: "", userFilter: "", minRating: 0, maxTime: Infinity, tags: [] })
   let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
-  let [recipes, setRecipes] = useState([]);
-  if (isLoading) return <Loading />
+
+  const [filter, setFilter] = useState<Filter>(emptyFilter)
+  let [recipes, setRecipes] = useState<Recipe[]>(data && data.recipes ? data.recipes : []);
+
   if (error) return <p>Error: {error.message}</p>
+
   return (
     <>
       <h1 className="text-center">My Recipe Box</h1>
       <SearchAndGridWrapper>
-        <Search recipeData={data?.recipes} recipes={recipes} setRecipes={setRecipes} filter={filter} setFilter={setFilter} />
-        <RecipeGrid recipes={recipes} isLoading={isLoading} />
+        <Search recipeData={data?.recipes} setRecipes={setRecipes} filter={filter} setFilter={setFilter} />
+        {isLoading ? <Spinner /> : <RecipeGrid recipes={recipes} isLoading={isLoading} />}
       </SearchAndGridWrapper>
 
       {/* ---------- NEW RECIPE BUTTON ---------- */}
