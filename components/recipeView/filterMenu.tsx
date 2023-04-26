@@ -7,8 +7,8 @@ import { useEffect } from "react";
 import { defaultTags } from "../../util/types";
 import Input from "../input";
 
-export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function, userFilter: string, setUserFilter: Function, minRating: number | "", setMinRating: Function }) => {
-  const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter, userFilter, setUserFilter, minRating, setMinRating } = props;
+export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function, userFilter: string, setUserFilter: Function, minRating: number | "", setMinRating: Function, maxHours: "" | number, setMaxHours: Function, maxMinutes: "" | number, setMaxMinutes: Function }) => {
+  const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter, userFilter, setUserFilter, minRating, setMinRating, maxHours, setMaxHours, maxMinutes, setMaxMinutes } = props;
   let { userData: data, userError: error, userIsLoading: loading } = getUser();
 
   const addFilterTag = (value: string) => {
@@ -26,8 +26,14 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
     setTagFilter([]);
     setUserFilter("");
     setMinRating("");
+    setMaxHours("");
+    setMaxMinutes("");
     // @ts-ignore
     document.getElementById("minRating").innerHTML = ""
+    // @ts-ignore
+    document.getElementById("maxMinutes").innerHTML = ""
+    // @ts-ignore
+    document.getElementById("maxHours").innerHTML = ""
   }
 
   useEffect(() => {
@@ -50,7 +56,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
           <button onClick={e => setShowFilterMenu(false)} type="button" className="shadow-none absolute top-5 right-5 md:hidden">
             <FontAwesomeIcon icon={faX} />
           </button>
-          <p>Filter by tag:</p>
+          <p className="text-sky-500 text-xs">Filter by tag:</p>
           {loading ? <Spinner /> : error ? <p>Error: {error.message}</p> :
             <div className="grid grid-cols-2 gap-2 w-full mx-auto">
               {data && data.user && data.user.tags ? data.user.tags.map((el, i) => {
@@ -76,7 +82,6 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
                 )
               }) :
                 defaultTags.map((el, i) => {
-                  console.log("mapping default tags");
                   // Active Tag Filters
                   if (tagFilter.find(item => item === el)) return (
                     <button
@@ -112,11 +117,32 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
               id="minRating"
               label="Min. Rating (0-5)"
               type="number"
-              onChange={e => setMinRating(e.target.value)}
+              onChange={e => setMinRating(Number(e.target.value) > 0 ? Number(e.target.value) : e.target.value)}
               state={minRating}
               valid={true}
               range={[0, 5]}
             />
+            <p className="text-sky-500 text-xs">Max Total Time:</p>
+            <div className="flex gap-4">
+              <Input
+                id="maxHours"
+                label="Hrs."
+                type="number"
+                onChange={(e => setMaxHours(Number(e.target.value) > 0 ? Number(e.target.value) : e.target.value))}
+                state={maxHours}
+                valid={true}
+                size="small"
+              />
+              <Input
+                id="maxMinutes"
+                label="Min."
+                type="number"
+                onChange={(e => setMaxMinutes(Number(e.target.value) > 0 ? Number(e.target.value) : e.target.value))}
+                state={maxMinutes}
+                valid={true}
+                size="small"
+              />
+            </div>
           </div>
           <button type="button" className="mx-auto bg-sky-100 shadow-md" onClick={resetFilters}>Reset filters</button>
           <p className="">.</p>

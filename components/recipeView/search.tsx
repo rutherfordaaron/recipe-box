@@ -16,7 +16,9 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
   let [tagFilter, setTagFilter] = useState<string[]>([]);
   let [userFilter, setUserFilter] = useState("");
   let [minRating, setMinRating] = useState<"" | number>("");
-  useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData, userFilter, minRating])
+  let [maxHours, setMaxHours] = useState<"" | number>("")
+  let [maxMinutes, setMaxMinutes] = useState<"" | number>("");
+  useEffect(() => setRecipes(sortRecipes()), [searchQuery, sort, tagFilter, recipeData, userFilter, minRating, maxHours, maxMinutes])
 
   const filterSearchQuery = () => {
     if (recipeData) {
@@ -41,6 +43,14 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
         const average = sum / item.ratings.length / 2
         return average >= (minRating ? minRating : 0)
       })
+      // Filter by max time
+      filtered = filtered.filter(item => {
+        const timeFilter = maxMinutes ? maxMinutes : 0 + (maxHours ? maxHours * 60 : 0);
+        const cooktime = item.cookTime ? item.cookTime : 0
+        const prepTime = item.prepTime ? item.prepTime : 0
+        const recipeTime = cooktime + prepTime;
+        return item.cookTime ? recipeTime <= (timeFilter > 0 ? timeFilter : Infinity) : false
+      });
 
       return filtered;
     }
@@ -80,7 +90,7 @@ const Search = (props: { recipeData: Recipe[] | null | undefined, recipes: Recip
           <FontAwesomeIcon icon={faFilter} />
         </button>
       </div>
-      <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} userFilter={userFilter} setUserFilter={setUserFilter} minRating={minRating} setMinRating={setMinRating} />
+      <FilterMenu tagFilter={tagFilter} setTagFilter={setTagFilter} showFilterMenu={showFilterMenu} setShowFilterMenu={setShowFilterMenu} userFilter={userFilter} setUserFilter={setUserFilter} minRating={minRating} setMinRating={setMinRating} maxHours={maxHours} setMaxHours={setMaxHours} maxMinutes={maxMinutes} setMaxMinutes={setMaxMinutes} />
     </div>
   )
 }
