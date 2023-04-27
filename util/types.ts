@@ -47,7 +47,8 @@ export type GetUserAPIData = {
 
 export type GetRecipesAPIData = {
   recipes: Recipe[] | null,
-  message: string
+  message: string,
+  matched: number;
 }
 
 export type GetRecipeAPIData = {
@@ -74,7 +75,7 @@ export type Filter = {
   userFilter: string,
   minRating: number,
   maxTime: number,
-  sort?: SortParameter
+  sort?: SortParameter,
 }
 
 export const emptyFilter: Filter = {
