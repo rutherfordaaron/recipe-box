@@ -23,11 +23,11 @@ const Header = () => {
     } else {
       setAuthenticated(false)
     };
-  }, [router.pathname, userData?.user?.token, userError, userIsLoading, cookie.token])
+  }, [router.pathname, userData, userError, userIsLoading, cookie.token])
 
   return (
     <header className="bg-sky-200 shadow-md fixed inset-x-0 top-0 z-10 md:z-50">
-      <div className="bg-sky-200 flex justify-between items-center p-3 max-w-[1000px] mx-auto gap-4">
+      <div className="bg-sky-200 flex justify-between items-center p-3 max-w-[1400px] mx-auto gap-4">
         <NavLink href={authenticated && userData && userData.user ? "/profile" : "/login"} text={authenticated && userData && userData.user ? userData.user.username : "Login"} icon={faUser} />
 
         <motion.nav key={router.pathname} className="flex gap-5 text-sky-500" id="nav">

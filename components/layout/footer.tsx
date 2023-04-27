@@ -7,7 +7,7 @@ const Footer = () => {
 
   return (
     <footer className="p-5 bg-slate-200 mt-4 text-sm">
-      <div className="max-w-[1000px] mx-auto flex max-sm:flex-col gap-4 justify-between">
+      <div className="max-w-[1400px] mx-auto flex max-sm:flex-col gap-4 justify-between">
         <ul>
           <li><Link href="/" className={linkClass}>Home</Link></li>
           <li><Link href="/public-recipes" className={linkClass}>Public Recipes</Link></li>

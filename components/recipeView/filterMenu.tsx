@@ -3,42 +3,37 @@ import getUser from "../../util/getUser"
 import { Spinner } from "../spinner";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
-import { defaultTags } from "../../util/types";
+import { useEffect, useState } from "react";
+import { Filter, defaultTags } from "../../util/types";
 import Input from "../input";
 
-export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, tagFilter: string[], setTagFilter: Function, userFilter: string, setUserFilter: Function, minRating: number | "", setMinRating: Function, maxHours: "" | number, setMaxHours: Function, maxMinutes: "" | number, setMaxMinutes: Function }) => {
-  const { showFilterMenu, setShowFilterMenu, tagFilter, setTagFilter, userFilter, setUserFilter, minRating, setMinRating, maxHours, setMaxHours, maxMinutes, setMaxMinutes } = props;
+export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: Function, applyFilter: Function, resetFilters: Function, filter: Filter, setFilter: Function }) => {
+  const { showFilterMenu, setShowFilterMenu, filter, setFilter, applyFilter, resetFilters } = props;
+
   let { userData: data, userError: error, userIsLoading: loading } = getUser();
+  const [largeScreen, setLargeScreen] = useState(false);
 
   const addFilterTag = (value: string) => {
-    const activeTags = [...tagFilter];
+    const activeTags = [...filter.tags];
     activeTags.push(value);
-    setTagFilter(activeTags)
+    const newFilter = { ...filter }
+    newFilter.tags = [...activeTags]
+    setFilter(newFilter)
   }
 
   const removeFilterTag = (value: string) => {
-    const activeTags = [...tagFilter];
-    setTagFilter(activeTags.filter(item => item !== value));
-  }
-
-  const resetFilters = () => {
-    setTagFilter([]);
-    setUserFilter("");
-    setMinRating("");
-    setMaxHours("");
-    setMaxMinutes("");
-    // @ts-ignore
-    document.getElementById("minRating").innerHTML = ""
-    // @ts-ignore
-    document.getElementById("maxMinutes").innerHTML = ""
-    // @ts-ignore
-    document.getElementById("maxHours").innerHTML = ""
+    const activeTags = [...filter.tags];
+    const newFilter = { ...filter }
+    newFilter.tags = [...activeTags.filter(item => item !== value)]
+    setFilter(newFilter);
   }
 
   useEffect(() => {
     if (window.screen.width >= 768) {
       setShowFilterMenu(true);
+      setLargeScreen(true);
+    } else {
+      setLargeScreen(false);
     }
   })
 
@@ -48,7 +43,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
         <motion.div
           key="filterMenu"
           className={`fixed top-5 bottom-5 rounded-l right-0 bg-sky-50 flex flex-col gap-4 w-3/4 max-w-[500px] px-4 pt-16 md:py-4 max-sm:shadow-2xl md:shadow-none md:relative md:w-full md:h-[50vh] md:justify-start md:rounded shadow z-40`}
-          initial={{ opacity: 0, x: 500 }}
+          initial={{ opacity: largeScreen ? 1 : 0, x: largeScreen ? 0 : 500 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 500, opacity: 0 }}
           transition={{ spring: 0 }}
@@ -61,7 +56,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
             <div className="grid grid-cols-2 gap-2 w-full mx-auto">
               {data && data.user && data.user.tags ? data.user.tags.map((el, i) => {
                 // Active Tag Filters
-                if (tagFilter.find(item => item === el)) return (
+                if (filter.tags.find(item => item === el)) return (
                   <button
                     key={`tagFilter${i}`}
                     className={`bg-sky-300 shadow`}
@@ -83,7 +78,7 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
               }) :
                 defaultTags.map((el, i) => {
                   // Active Tag Filters
-                  if (tagFilter.find(item => item === el)) return (
+                  if (filter.tags.find(item => item === el)) return (
                     <button
                       key={`tagFilter${i}`}
                       className={`bg-sky-300 shadow`}
@@ -109,16 +104,24 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
               id="userFilter"
               label="Recipe Owner"
               type="text"
-              onChange={e => setUserFilter(e.target.value)}
-              state={userFilter}
+              onChange={e => {
+                const newFilter = { ...filter }
+                newFilter.userFilter = e.target.value
+                setFilter(newFilter);
+              }}
+              state={filter.userFilter}
               valid={true}
             />
             <Input
               id="minRating"
               label="Min. Rating (0-5)"
               type="number"
-              onChange={e => setMinRating(Number(e.target.value) > 0 ? Number(e.target.value) : e.target.value)}
-              state={minRating}
+              onChange={e => {
+                const newFilter = { ...filter };
+                newFilter.minRating = Number(e.target.value)
+                setFilter(newFilter)
+              }}
+              state={filter.minRating == 0 ? "" : filter.minRating}
               valid={true}
               range={[0, 5]}
             />
@@ -128,8 +131,13 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
                 id="maxHours"
                 label="Hrs."
                 type="number"
-                onChange={(e => setMaxHours(Number(e.target.value) > 0 ? Number(e.target.value) : e.target.value))}
-                state={maxHours}
+                onChange={(e => {
+                  const newFilter = { ...filter }
+                  const minutes = filter.maxTime % 60;
+                  newFilter.maxTime = (Number(e.target.value) * 60) + minutes;
+                  setFilter(newFilter);
+                })}
+                state={filter.maxTime < 60 ? "" : Math.floor(filter.maxTime / 60)}
                 valid={true}
                 size="small"
               />
@@ -137,15 +145,23 @@ export const FilterMenu = (props: { showFilterMenu: boolean, setShowFilterMenu: 
                 id="maxMinutes"
                 label="Min."
                 type="number"
-                onChange={(e => setMaxMinutes(Number(e.target.value) > 0 ? Number(e.target.value) : e.target.value))}
-                state={maxMinutes}
+                onChange={(e => {
+                  const newFilter = { ...filter }
+                  const hours = Math.floor(filter.maxTime / 60)
+                  newFilter.maxTime = Number(e.target.value) + (hours * 60)
+                  setFilter(newFilter);
+                })}
+                state={filter.maxTime % 60 == 0 ? "" : filter.maxTime % 60}
                 valid={true}
                 size="small"
               />
             </div>
           </div>
-          <button type="button" className="mx-auto bg-sky-100 shadow-md" onClick={resetFilters}>Reset filters</button>
-          <p className="">.</p>
+          <div className="flex gap-2 justify-center">
+            <button type="button" className="mx-auto bg-sky-100 shadow-md" onClick={e => applyFilter()}>Apply filters</button>
+            <button type="button" className="mx-auto bg-sky-100 shadow-md" onClick={e => resetFilters()}>Reset filters</button>
+          </div>
+          <p className="text-sky-50">.</p>
         </motion.div> : <></>}
     </AnimatePresence>
   )

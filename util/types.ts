@@ -55,15 +55,7 @@ export type GetRecipeAPIData = {
   message: string
 }
 
-export enum SortParameter {
-  Unsorted = "Unsorted",
-  Ascending = "Ascending",
-  Descending = "Descending",
-  RecentlyCreated = "Recently Created",
-  RecentlyUpdated = "Recently Updated",
-  OldestCreated = "Oldest Created",
-  OldestUpdated = "Oldest Updated"
-}
+export type SortParameter = "New" | "Rating" | "User"
 
 export type GetPublicRecipesAPIData = {
   recipes: Recipe[] | null,
@@ -80,3 +72,21 @@ export type Comment = {
 }
 
 export const defaultTags = ["breakfast", "lunch", "dinner", "dessert", "snack", "sides", "drinks", "vegetarian", "gluten free", "lactose free", "vegan", "other"]
+
+export type Filter = {
+  searchQuery: string,
+  tags: string[],
+  userFilter: string,
+  minRating: number,
+  maxTime: number,
+  sort?: SortParameter
+}
+
+export const emptyFilter: Filter = {
+  searchQuery: "",
+  tags: [],
+  userFilter: "",
+  minRating: 0,
+  maxTime: 0,
+  sort: "New"
+}

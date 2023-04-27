@@ -1,11 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../util/db";
 import parseCookie from "../../util/parseCookie";
+import { Filter } from "../../util/types";
+import { getRecipeFilter } from "../../util/pipelines";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Connect to the "recipes" collection on the database
   const client = await clientPromise;
   const db = client.db(process.env.DB);
+  const filter: Filter = JSON.parse(req.query.filter ? req.query.filter.toString() : "");
 
   switch (req.method) {
     case "GET":
@@ -29,9 +32,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // If everything looks good, find all user recipes and send back as array
+      // generate an aggregation pipeline from the filter object to filter recipes
       const recipes = db.collection("recipes");
-      const userRecipes = await recipes.find({ owner: user.username }).toArray();
-      res.status(200).json({ message: "success", recipes: userRecipes });
+      const filteredRecipes = await recipes.aggregate(getRecipeFilter(filter, true, user.username)).toArray();
+      res.status(200).json({ message: "success", recipes: filteredRecipes });
       break;
     default:
       // If anyother method other than GET, 405: Method not allowed

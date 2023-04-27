@@ -1,24 +1,38 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import Loading from "../../../components/loading";
 import getUserRecipes from "../../../util/getUserRecipes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Search from "../../../components/recipeView/search";
 import { RecipeGrid } from "../../../components/recipeView/recipeGrid";
 import SearchAndGridWrapper from "../../../components/recipeView/searchAndGridWrapper";
+import { Filter, Recipe, emptyFilter } from "../../../util/types";
+import { Spinner } from "../../../components/spinner";
 
 const MyRecipeBox = () => {
-  let { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes();
-  let [recipes, setRecipes] = useState([]);
-  if (isLoading) return <Loading />
+
+  const [filter, setFilter] = useState<Filter>(emptyFilter)
+  const [newFilter, setNewFilter] = useState<Filter>(emptyFilter);
+  const { userRecipesData: data, userRecipesError: error, userRecipesIsLoading: isLoading } = getUserRecipes
+    (newFilter);
+  const [recipes, setRecipes] = useState<Recipe[]>(data && data.recipes ? data.recipes : []);
+
+  useEffect(() => {
+    if (data && data.recipes) {
+      setRecipes(data.recipes)
+    } else {
+      setRecipes([])
+    }
+  }, [data])
+
   if (error) return <p>Error: {error.message}</p>
+
   return (
     <>
       <h1 className="text-center">My Recipe Box</h1>
       <SearchAndGridWrapper>
-        <Search recipeData={data?.recipes} recipes={recipes} setRecipes={setRecipes} />
-        <RecipeGrid recipes={recipes} isLoading={isLoading} />
+        <Search setNewFilter={setNewFilter} filter={filter} setFilter={setFilter} />
+        {isLoading ? <Spinner /> : <RecipeGrid recipes={recipes} isLoading={isLoading} />}
       </SearchAndGridWrapper>
 
       {/* ---------- NEW RECIPE BUTTON ---------- */}

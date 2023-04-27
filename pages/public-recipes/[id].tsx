@@ -39,21 +39,6 @@ const PublicRecipeDetails = () => {
   if (recipeData && recipeData.recipe) {
     const recipe = recipeData.recipe;
 
-    const getTags = () => {
-      if (recipe.tags) {
-        return (
-          recipe.tags.map((el, i) => {
-            return (
-              <div key={`${recipe._id}tag${i}`} className="whitespace-nowrap">
-                <p>#{el}</p>
-              </div>
-            )
-          })
-        )
-      }
-      return <></>
-    }
-
     const startComment = () => {
       setShowRatingInput(false);
       if (!(userData && userData.user)) {
@@ -139,37 +124,39 @@ const PublicRecipeDetails = () => {
 
     return (
       <article>
-        <BackButton href="/public-recipes" />
-        <RecipeHead recipe={recipe} />
-        <IngredientsAndDirections recipe={recipe} />
+        <div className="max-w-[800px] mx-auto">
+          <BackButton href="/public-recipes" />
+          <RecipeHead recipe={recipe} />
+          <IngredientsAndDirections recipe={recipe} />
 
-        {/* Rate, Comment, and Like buttons */}
-        <div className="flex justify-center items-center gap-6 text-[24px] my-12">
-          <button type="button" onClick={rateRecipe} className="icon-button"><FontAwesomeIcon icon={faStar} /></button>
-          <button type="button" onClick={startComment} className="icon-button"><FontAwesomeIcon icon={faComment} /></button>
-          {/* <button className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faHeart} /></button> */}
+          {/* Rate, Comment, and Like buttons */}
+          <div className="flex justify-center items-center gap-6 text-[24px] my-12">
+            <button type="button" onClick={rateRecipe} className="icon-button"><FontAwesomeIcon icon={faStar} /></button>
+            <button type="button" onClick={startComment} className="icon-button"><FontAwesomeIcon icon={faComment} /></button>
+            {/* <button className="shadow-none hover:bg-transparent hover:text-sky-600"><FontAwesomeIcon icon={faHeart} /></button> */}
+          </div>
+
+          {/* Comment input */}
+          {showCommentInput ?
+            <div className="flex justify-center items-center flex-col relative bottom-10">
+              <Input id="comment" type="textarea" label="Your Comment" onChange={e => setNewComment(e.target.value)} state={newComment} valid={Boolean(newComment)} />
+              <button disabled={!newComment} type="button" className="bg-sky-200 shadow-lg text-lg px-5 py-2 hover:bg-sky-400 transition-all mt-2 flex justify-center items-center gap-4 disabled:bg-sky-100 disabled:text-sky-200 disabled:shadow-none" onClick={submitNewComment}>
+                Submit
+                {commentLoading ? <Spinner /> : <></>}
+              </button>
+            </div> : <></>}
+
+          {/* Rating input */}
+          {showRatingInput ?
+            <div>
+              <RatingInput rating={newRating} setRating={setNewRating} />
+              <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={addRating}>Confrim</button>
+            </div> : <></>
+          }
+
+          {/* Comments */}
+          <Comments comments={recipe.comments ? recipe.comments : []} recipeId={id} />
         </div>
-
-        {/* Comment input */}
-        {showCommentInput ?
-          <div className="flex justify-center items-center flex-col relative bottom-10">
-            <Input id="comment" type="textarea" label="Your Comment" onChange={e => setNewComment(e.target.value)} state={newComment} valid={Boolean(newComment)} />
-            <button disabled={!newComment} type="button" className="bg-sky-200 shadow-lg text-lg px-5 py-2 hover:bg-sky-400 transition-all mt-2 flex justify-center items-center gap-4 disabled:bg-sky-100 disabled:text-sky-200 disabled:shadow-none" onClick={submitNewComment}>
-              Submit
-              {commentLoading ? <Spinner /> : <></>}
-            </button>
-          </div> : <></>}
-
-        {/* Rating input */}
-        {showRatingInput ?
-          <div>
-            <RatingInput rating={newRating} setRating={setNewRating} />
-            <button className="block mx-auto bg-sky-200 shadow-lg py-2 px-4 hover:bg-sky-400 transition-all mt-6" type="button" onClick={addRating}>Confrim</button>
-          </div> : <></>
-        }
-
-        {/* Comments */}
-        <Comments comments={recipe.comments ? recipe.comments : []} recipeId={id} />
 
         <MessageBanner message={error} ok={ok} />
       </article>
