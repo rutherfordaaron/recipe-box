@@ -15,7 +15,7 @@ const SearchAndGridWrapper = (props: PropsWithChildren) => {
   useEffect(() => {
     let recipePageArr = [];
     for (let i = 0; i <= page; i++) {
-      recipePageArr.push(<RecipeGridPage index={i} size={4} filter={filter} />)
+      recipePageArr.push(<RecipeGridPage index={i} size={4} filter={filter} setEndOfData={setEndOfData} />)
     }
     setRecipes(recipePageArr);
   }, [page])
@@ -23,7 +23,7 @@ const SearchAndGridWrapper = (props: PropsWithChildren) => {
   useEffect(() => {
     setPage(0);
     let recipePageArr = [];
-    recipePageArr.push(<RecipeGridPage index={0} size={4} filter={filter} />)
+    recipePageArr.push(<RecipeGridPage index={0} size={4} filter={filter} setEndOfData={setEndOfData} />)
     setRecipes(recipePageArr);
   }, [newFilter])
 
@@ -38,7 +38,7 @@ const SearchAndGridWrapper = (props: PropsWithChildren) => {
         {/* <div className="col-span-2 py-8">
         {endOfData ? <></> : <Spinner />}
       </div> */}
-        <button className="col-span-2 block w-[200px] mx-auto" onClick={e => setPage(page + 1)}>Show More</button>
+        <button className={`col-span-2 block w-[200px] mx-auto ${endOfData ? "hidden" : ""}`} onClick={e => setPage(page + 1)}>Show More</button>
       </div>
     </div>
   )
