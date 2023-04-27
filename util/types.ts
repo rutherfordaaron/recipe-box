@@ -45,7 +45,7 @@ export type GetUserAPIData = {
   message: string
 }
 
-export type GetUserRecipesAPIData = {
+export type GetRecipesAPIData = {
   recipes: Recipe[] | null,
   message: string
 }
@@ -56,11 +56,6 @@ export type GetRecipeAPIData = {
 }
 
 export type SortParameter = "New" | "Rating" | "User"
-
-export type GetPublicRecipesAPIData = {
-  recipes: Recipe[] | null,
-  message: string
-}
 
 export type Comment = {
   _id: ObjectId,
