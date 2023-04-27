@@ -9,7 +9,7 @@ export const getRecipeFilter = (filter: Filter, isPrivate?: boolean, user?: stri
   filter.tags[0] ? { "$match": { tags: { "$all": filter.tags } } } : matchAll,
   { "$match": { "$expr": { "$gte": [{ "$avg": "$ratings.rating" }, filter.minRating * 2] } } },
   { "$match": { "$expr": { "$lte": [filter.maxTime, { "$sum": ["$prepTime", "$cookTime"] }] } } },
-  { "$project": { name: 1, description: 1, owner: 1, prepTime: 1, cookTime: 1, rating: 1, comments: 1, created: 1, updated: 1, tags: 1, origin: 1, ratings: 1, public: 1, avgRating: { "$divide": [{ "$avg": "$ratings.rating" }, 2] } } },
+  { "$project": { ...projectFields, avgRating: { "$divide": [{ "$avg": "$ratings.rating" }, 2] } } },
   ...getSortStep(filter.sort)
 ]
 
@@ -23,3 +23,5 @@ const getSortStep = (sort: SortParameter | undefined): Object[] => {
       return [{ "$sort": { "created": -1 } }]
   }
 }
+
+const projectFields = { name: 1, description: 1, owner: 1, prepTime: 1, cookTime: 1, rating: 1, comments: 1, created: 1, updated: 1, tags: 1, origin: 1, ratings: 1, public: 1, }

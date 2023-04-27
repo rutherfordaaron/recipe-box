@@ -45,9 +45,10 @@ export type GetUserAPIData = {
   message: string
 }
 
-export type GetUserRecipesAPIData = {
+export type GetRecipesAPIData = {
   recipes: Recipe[] | null,
-  message: string
+  message: string,
+  matched: number;
 }
 
 export type GetRecipeAPIData = {
@@ -56,11 +57,6 @@ export type GetRecipeAPIData = {
 }
 
 export type SortParameter = "New" | "Rating" | "User"
-
-export type GetPublicRecipesAPIData = {
-  recipes: Recipe[] | null,
-  message: string
-}
 
 export type Comment = {
   _id: ObjectId,
@@ -79,7 +75,7 @@ export type Filter = {
   userFilter: string,
   minRating: number,
   maxTime: number,
-  sort?: SortParameter
+  sort?: SortParameter,
 }
 
 export const emptyFilter: Filter = {

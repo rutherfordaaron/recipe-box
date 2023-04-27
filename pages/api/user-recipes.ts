@@ -9,6 +9,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const client = await clientPromise;
   const db = client.db(process.env.DB);
   const filter: Filter = JSON.parse(req.query.filter ? req.query.filter.toString() : "");
+  const size = req.query.size;
+  const page = req.query.page;
 
   switch (req.method) {
     case "GET":
@@ -34,8 +36,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // If everything looks good, find all user recipes and send back as array
       // generate an aggregation pipeline from the filter object to filter recipes
       const recipes = db.collection("recipes");
-      const filteredRecipes = await recipes.aggregate(getRecipeFilter(filter, true, user.username)).toArray();
-      res.status(200).json({ message: "success", recipes: filteredRecipes });
+      const filteredPublicRecipes = recipes.aggregate(getRecipeFilter(filter, true, user.username));
+      const matchedCount = (await recipes.aggregate(getRecipeFilter(filter, true, user.username)).toArray()).length
+      const limitedResults = await filteredPublicRecipes.skip(Number(size) * Number(page)).limit(Number(size)).toArray();
+      res.status(200).json({ message: "success", recipes: limitedResults, matched: matchedCount });
       break;
     default:
       // If anyother method other than GET, 405: Method not allowed

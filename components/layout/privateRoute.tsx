@@ -22,10 +22,6 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
 
   // Recheck if a reroute is needed anytime userData.user changes
   useEffect(() => {
-    console.log("REFETCHING USER")
-    console.log("userData:", !!userData)
-    console.log("user:", !!userData?.user)
-    console.log("isLoading:", !!userIsLoading)
     if (((userData && !userData.user && !userIsLoading))) redirect();
   }, [userData?.user])
 
