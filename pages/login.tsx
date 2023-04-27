@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import crypto from "crypto";
-import Loading from "../components/loading";
 import MessageBanner from "../components/layout/messageBanner";
 import { Spinner } from "../components/spinner";
+import { useSWRConfig } from "swr";
 
 const Login = () => {
   let [cookie, setCookie] = useCookies(["token"])
@@ -16,6 +16,8 @@ const Login = () => {
   let [passwordValid, setPasswordValid] = useState(true);
   let [error, setError] = useState("");
   let [loading, setLoading] = useState(false);
+
+  const { mutate } = useSWRConfig();
 
   const router = useRouter();
 
@@ -48,13 +50,16 @@ const Login = () => {
           if (!data.error) {
             // Redirect to the main page after successful login
             createCookie(data.data);
-            router.push({
-              pathname: router.query.returnTo ? router.query.returnTo.toString() : "/profile/my-recipe-box",
-              query: {
-                message: "Successfully logged in!",
-                good: true,
-              }
-            }, router.query.returnTo ? router.query.returnTo.toString() : "/profile/my-recipe-box");
+            mutate("/api/users");
+            setTimeout(() => {
+              router.push({
+                pathname: router.query.returnTo ? router.query.returnTo.toString() : "/profile/my-recipe-box",
+                query: {
+                  message: "Successfully logged in!",
+                  good: true,
+                }
+              }, router.query.returnTo ? router.query.returnTo.toString() : "/profile/my-recipe-box");
+            }, 500)
           } else {
             setLoading(false)
             setError(data.data);
