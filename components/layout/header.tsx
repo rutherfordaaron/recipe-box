@@ -23,7 +23,7 @@ const Header = () => {
     } else {
       setAuthenticated(false)
     };
-  }, [router.pathname, userData?.user?.token, userError, userIsLoading, cookie.token])
+  }, [router.pathname, userData, userError, userIsLoading, cookie.token])
 
   return (
     <header className="bg-sky-200 shadow-md fixed inset-x-0 top-0 z-10 md:z-50">

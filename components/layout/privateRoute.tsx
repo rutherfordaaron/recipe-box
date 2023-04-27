@@ -24,8 +24,9 @@ export const PrivateRoute = (props: { children: JSX.Element }) => {
 
   // Recheck if a reroute is needed anytime userData.user changes
   useEffect(() => {
+    while (userIsLoading) { }
     if (((userData && !userData.user && !userIsLoading) || !cookies.token)) redirect();
-  }, [userData?.user])
+  }, [])
 
   if (userIsLoading) return <Loading />
   return props.children
