@@ -3,15 +3,16 @@ import { faFilter, faSort } from "@fortawesome/free-solid-svg-icons";
 import { SortMenu } from "./sortMenu";
 import { FilterMenu } from "./filterMenu";
 import Input from "../input";
-import { useState } from "react";
-import { Filter, Recipe, SortParameter, emptyFilter } from "../../util/types";
+import { useEffect, useState } from "react";
+import { Filter, emptyFilter } from "../../util/types";
 
 const Search = (props: { filter: Filter, setFilter: Function, setNewFilter: Function }) => {
   const { setNewFilter, filter, setFilter } = props;
 
   let [showSortMenu, setShowSortMenu] = useState(false);
   let [showFilterMenu, setShowFilterMenu] = useState(false);
-  let [sort, setSort] = useState<SortParameter>("New");
+
+  useEffect(() => setNewFilter(filter), [filter.sort])
 
   const resetFilters = () => {
     setFilter(emptyFilter)
@@ -44,6 +45,7 @@ const Search = (props: { filter: Filter, setFilter: Function, setNewFilter: Func
           }}
           state={filter.searchQuery}
           valid={true}
+          onKeyDown={e => { if (e.key === "Enter") setNewFilter(filter) }}
         />
 
         <button type="button" className={`hover:bg-sky-200 text-sm shadow-none transition-all ${filter.sort === "New" ? "" : "bg-sky-100"}`} onClick={e => setShowSortMenu(!showSortMenu)}>

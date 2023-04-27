@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, KeyboardEventHandler } from "react";
 
 const Input = (props: {
   id: string,
@@ -9,6 +9,7 @@ const Input = (props: {
   valid: boolean,
   range?: [number, number],
   size?: "small" | "default",
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>
 }) => {
   const { id, type, label, onChange, state, valid, range, size } = props;
 
@@ -69,6 +70,7 @@ const Input = (props: {
         id={id}
         name={id}
         onKeyDown={(e) => {
+          if (props.onKeyDown) props.onKeyDown(e);
           if (type === "number") {
             if (e.key === "Backspace" || e.key === "Tab") {
               return
