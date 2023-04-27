@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // If everything looks good, find all user recipes and send back as array
       // generate an aggregation pipeline from the filter object to filter recipes
       const recipes = db.collection("recipes");
-      const filteredRecipes = await recipes.aggregate(getRecipeFilter(filter)).toArray();
+      const filteredRecipes = await recipes.aggregate(getRecipeFilter(filter, true, user.username)).toArray();
       res.status(200).json({ message: "success", recipes: filteredRecipes });
       break;
     default:

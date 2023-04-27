@@ -55,15 +55,7 @@ export type GetRecipeAPIData = {
   message: string
 }
 
-export enum SortParameter {
-  Unsorted = "Unsorted",
-  Ascending = "Ascending",
-  Descending = "Descending",
-  RecentlyCreated = "Recently Created",
-  RecentlyUpdated = "Recently Updated",
-  OldestCreated = "Oldest Created",
-  OldestUpdated = "Oldest Updated"
-}
+export type SortParameter = "New" | "Rating" | "User"
 
 export type GetPublicRecipesAPIData = {
   recipes: Recipe[] | null,
@@ -96,4 +88,5 @@ export const emptyFilter: Filter = {
   userFilter: "",
   minRating: 0,
   maxTime: 0,
+  sort: "New"
 }

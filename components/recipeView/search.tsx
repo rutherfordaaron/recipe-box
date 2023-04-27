@@ -11,7 +11,7 @@ const Search = (props: { filter: Filter, setFilter: Function, setNewFilter: Func
 
   let [showSortMenu, setShowSortMenu] = useState(false);
   let [showFilterMenu, setShowFilterMenu] = useState(false);
-  let [sort, setSort] = useState<SortParameter>(SortParameter.Unsorted);
+  let [sort, setSort] = useState<SortParameter>("New");
 
   const resetFilters = () => {
     setFilter(emptyFilter)
@@ -46,10 +46,10 @@ const Search = (props: { filter: Filter, setFilter: Function, setNewFilter: Func
           valid={true}
         />
 
-        <button type="button" className={`hover:bg-sky-200 text-sm shadow-none transition-all ${sort === SortParameter.Unsorted ? "" : "bg-sky-100"}`} onClick={e => setShowSortMenu(!showSortMenu)}>
+        <button type="button" className={`hover:bg-sky-200 text-sm shadow-none transition-all ${filter.sort === "New" ? "" : "bg-sky-100"}`} onClick={e => setShowSortMenu(!showSortMenu)}>
           <FontAwesomeIcon icon={faSort} />
         </button>
-        <SortMenu setSort={setSort} activeSortParameter={sort} visible={showSortMenu} setVisible={setShowSortMenu} />
+        <SortMenu filter={filter} setFilter={setFilter} visible={showSortMenu} setVisible={setShowSortMenu} />
 
         <button type="button" className={`hover:bg-sky-200 md:hidden shadow-none transition-all ${!filter.tags[0] ? "" : "bg-sky-100"}`} onClick={(e => setShowFilterMenu(!showFilterMenu))}>
           <FontAwesomeIcon icon={faFilter} />

@@ -1,9 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { SortParameter } from "../../util/types";
+import { Filter, SortParameter } from "../../util/types";
+import { useRouter } from "next/router";
 
-export const SortMenu = (props: { setSort: Function, activeSortParameter: SortParameter, visible: boolean, setVisible: Function }) => {
-  const { setSort, activeSortParameter, visible, setVisible } = props;
-  const sortArr = [SortParameter.Unsorted, SortParameter.Ascending, SortParameter.Descending, SortParameter.RecentlyCreated, SortParameter.RecentlyUpdated, SortParameter.OldestCreated, SortParameter.OldestUpdated]
+export const SortMenu = (props: { setFilter: Function, filter: Filter, visible: boolean, setVisible: Function }) => {
+  const { visible, setVisible, setFilter, filter } = props;
+  const sortArr: SortParameter[] = ["New", "Rating", "User"];
+  const router = useRouter();
   return (
     <AnimatePresence>
       {visible ?
@@ -16,11 +18,17 @@ export const SortMenu = (props: { setSort: Function, activeSortParameter: SortPa
           transition={{ spring: 0 }}
         >
           {sortArr.map((el, i) => {
+            if (el == "User" && /profile/.test(router.pathname)) return
             return (
-              <button key={`sortParameter${i}`} onClick={e => {
-                setSort(el);
-                setVisible(false);
-              }} className={`${el == activeSortParameter ? "bg-sky-300" : ""} rounded-none border-b-2 shadow-none border-sky-100`}>
+              <button
+                key={`sortParameter${i}`}
+                onClick={e => {
+                  const newFilter = { ...filter };
+                  newFilter.sort = el;
+                  setFilter(newFilter);
+                  setVisible(false);
+                }}
+                className={`${el == filter.sort ? "bg-sky-300" : ""} rounded-none border-b-2 shadow-none border-sky-100`}>
                 {el}
               </button>
             )
