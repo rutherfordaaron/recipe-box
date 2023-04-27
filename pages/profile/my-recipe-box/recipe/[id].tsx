@@ -45,27 +45,29 @@ const RecipeDetails = () => {
 
     return (
       <article>
-        <BackButton href="/profile/my-recipe-box" />
-        <RecipeHead recipe={recipe} />
-        <IngredientsAndDirections recipe={recipe} />
+        <div className="max-w-[800px] mx-auto">
+          <BackButton href="/profile/my-recipe-box" />
+          <RecipeHead recipe={recipe} />
+          <IngredientsAndDirections recipe={recipe} />
 
-        <div className="flex justify-around items-center py-4">
-          {recipeData.recipe.owner === userData?.user?.username ?
-            <button
-              className="update-recipe-button"
-              type="button"
-              onClick={e => setEditMode(true)}
-            >
-              Edit
-            </button> : <></>}
-          {recipeData.recipe.owner === userData?.user?.username ?
-            <button
-              className="delete-recipe-button"
-              type="button"
-              onClick={e => setConfirmDelete(true)}
-            >
-              Delete
-            </button> : <></>}
+          <div className="flex justify-around items-center py-4">
+            {recipeData.recipe.owner === userData?.user?.username ?
+              <button
+                className="update-recipe-button"
+                type="button"
+                onClick={e => setEditMode(true)}
+              >
+                Edit
+              </button> : <></>}
+            {recipeData.recipe.owner === userData?.user?.username ?
+              <button
+                className="delete-recipe-button"
+                type="button"
+                onClick={e => setConfirmDelete(true)}
+              >
+                Delete
+              </button> : <></>}
+          </div>
         </div>
 
         <DestructiveAction
