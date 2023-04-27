@@ -1,13 +1,13 @@
 import useSWR from "swr";
-import { GetUserRecipesAPIData } from "./types";
+import { GetUserRecipesAPIData, Filter } from "./types";
 
 const fetcher = async (route: string): Promise<GetUserRecipesAPIData> => {
   const data = await fetch(route, { method: "GET" }).then(res => res.json());
   return data;
 }
 
-const getUserRecipes = () => {
-  let { data, error, isLoading } = useSWR<GetUserRecipesAPIData | null, Error>("/api/user-recipes", fetcher);
+const getUserRecipes = (filter: Filter) => {
+  let { data, error, isLoading } = useSWR<GetUserRecipesAPIData | null, Error>(`/api/user-recipes?filter=${JSON.stringify(filter)}`, fetcher);
 
   return {
     userRecipesData: data,
