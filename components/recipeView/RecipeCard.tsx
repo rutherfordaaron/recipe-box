@@ -38,6 +38,7 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
       <h2 className="my-0 line-clamp-1">{recipe.name}</h2>
       <p className="line-clamp-4 h-24 text-sky-700 mb-4">{recipe.description}</p>
       <p className="text-sm text-sky-500 line-clamp-1 font-bold">{getTags()}</p>
+
       <div className="flex justify-between h-[20px] text-sky-400">
         {getCookTime() ? <p className="text-sm">Total time: {getCookTime() >= 60 ? `${Math.floor(getCookTime() / 60)} hrs. ${getCookTime() % 60} min.` : `${getCookTime()} min.`}</p> : <></>}
       </div>
@@ -46,7 +47,10 @@ const RecipeCard = (props: { recipe: Recipe, forPublic?: boolean }) => {
         <p>Created: {created.getMonth()}/{created.getDate()}/{created.getFullYear()}</p>
         {updated ? <p className="text-right">Updated: {updated.getMonth()}/{updated.getDate()}/{updated.getFullYear()}</p> : <p></p>}
         <p className="line-clamp-1">{recipe.recipeType} from {recipe.origin}</p>
-        {props.forPublic ? <p className="text-right">Owner: {recipe.owner}</p> : <p className="text-right">{recipe.public ? "Public" : "Private"} Recipe</p>}
+        {props.forPublic ?
+          <Link href={`/profile/public/${recipe.owner}`} className="text-right underline italic">Owner: {recipe.owner}</Link> :
+          <p className="text-right">{recipe.public ? "Public" : "Private"} Recipe</p>
+        }
       </div>
     </Link>
   )

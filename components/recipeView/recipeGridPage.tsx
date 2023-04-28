@@ -11,7 +11,7 @@ const RecipeGridPage = (props: { index: number, size: number, filter: Filter, se
     <>
       {data && data.recipes ? data.recipes.map((el, i) => {
         if (data.matched <= (index + 1) * size) { setEndOfData(true) } else { setEndOfData(false) };
-        return <RecipeCard recipe={el} key={`${index}recipe${i}`} />
+        return <RecipeCard recipe={el} key={`${index}recipe${i}`} forPublic={/public/.test(router.pathname)} />
       }) : <></>}
     </>
   )
